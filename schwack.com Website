@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -22,78 +21,78 @@ ml('account','DEINE-ACCOUNT-ID');
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 4rem;background:rgba(19,19,19,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(–line)}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 4rem;background:rgba(19,19,19,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .nav-brand{display:flex;align-items:center;gap:.9rem;text-decoration:none}
-.nav-name{font-size:.82rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(–text);line-height:1.25}
-.nav-name span{display:block;font-size:.63rem;color:var(–muted);letter-spacing:.12em;font-weight:300}
-.nav-link{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(–muted);text-decoration:none;border:1px solid var(–line);padding:.45rem 1rem;border-radius:2px;transition:color .2s,border-color .2s}
-.nav-link:hover{color:var(–teal);border-color:var(–teal)}
+.nav-name{font-size:.82rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--text);line-height:1.25}
+.nav-name span{display:block;font-size:.63rem;color:var(--muted);letter-spacing:.12em;font-weight:300}
+.nav-link{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:.45rem 1rem;border-radius:2px;transition:color .2s,border-color .2s}
+.nav-link:hover{color:var(--teal);border-color:var(--teal)}
 
 .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:8rem 4rem 5rem;gap:4rem;position:relative;overflow:hidden}
-.hero::before{content:’’;position:absolute;inset:0;background:radial-gradient(ellipse 55% 50% at 80% 38%,rgba(0,176,154,.08) 0%,transparent 65%),radial-gradient(ellipse 30% 40% at 18% 72%,rgba(0,107,96,.05) 0%,transparent 60%);pointer-events:none}
-.hero-eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(–teal);margin-bottom:1.8rem;display:flex;align-items:center;gap:.8rem}
-.hero-eyebrow::before{content:’’;display:block;width:2rem;height:1px;background:var(–teal)}
-.hero-title{font-family:‘Cormorant Garamond’,serif;font-size:clamp(3rem,5.5vw,4.6rem);font-weight:300;line-height:1.12;margin-bottom:2rem}
-.hero-title em{font-style:italic;color:var(–teal)}
-.hero-sub{font-size:1rem;color:var(–muted);line-height:1.82;max-width:40ch;margin-bottom:2.5rem}
-.hero-cta{display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(–teal);text-decoration:none;border-bottom:1px solid rgba(0,176,154,.3);padding-bottom:.2rem;transition:border-color .2s}
-.hero-cta:hover{border-color:var(–teal)}
-.hero-right{display:flex;flex-direction:column;gap:2rem;padding-left:3rem;border-left:1px solid var(–line)}
-.hero-quote{font-family:‘Cormorant Garamond’,serif;font-size:1.55rem;font-weight:300;font-style:italic;line-height:1.55;color:rgba(240,237,232,.72)}
-.hero-quote-attr{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(–muted)}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 50% at 80% 38%,rgba(0,176,154,.08) 0%,transparent 65%),radial-gradient(ellipse 30% 40% at 18% 72%,rgba(0,107,96,.05) 0%,transparent 60%);pointer-events:none}
+.hero-eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:1.8rem;display:flex;align-items:center;gap:.8rem}
+.hero-eyebrow::before{content:'';display:block;width:2rem;height:1px;background:var(--teal)}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,5.5vw,4.6rem);font-weight:300;line-height:1.12;margin-bottom:2rem}
+.hero-title em{font-style:italic;color:var(--teal)}
+.hero-sub{font-size:1rem;color:var(--muted);line-height:1.82;max-width:40ch;margin-bottom:2.5rem}
+.hero-cta{display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(0,176,154,.3);padding-bottom:.2rem;transition:border-color .2s}
+.hero-cta:hover{border-color:var(--teal)}
+.hero-right{display:flex;flex-direction:column;gap:2rem;padding-left:3rem;border-left:1px solid var(--line)}
+.hero-quote{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;font-style:italic;line-height:1.55;color:rgba(240,237,232,.72)}
+.hero-quote-attr{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 
-.section-divider{height:1px;background:var(–line);margin:0 4rem}
-.section-label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(–muted);padding-top:.4rem;position:sticky;top:5rem;display:flex;align-items:center;gap:.6rem}
-.section-label::before{content:’’;display:block;width:1.2rem;height:1px;background:var(–teal);flex-shrink:0}
+.section-divider{height:1px;background:var(--line);margin:0 4rem}
+.section-label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);padding-top:.4rem;position:sticky;top:5rem;display:flex;align-items:center;gap:.6rem}
+.section-label::before{content:'';display:block;width:1.2rem;height:1px;background:var(--teal);flex-shrink:0}
 .two-col{display:grid;grid-template-columns:1fr 2fr;gap:5rem;align-items:start}
 
 .insight{padding:7rem 4rem}
-.insight-content h2{font-family:‘Cormorant Garamond’,serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:2rem}
-.insight-content h2 strong{font-weight:600;color:var(–teal)}
+.insight-content h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:2rem}
+.insight-content h2 strong{font-weight:600;color:var(--teal)}
 .insight-content p{color:rgba(240,237,232,.65);font-size:.97rem;line-height:1.85;max-width:62ch;margin-bottom:1.4rem}
-.insight-cards{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(–line);margin-top:3rem;border:1px solid var(–line)}
-.insight-card{background:var(–bg-card);padding:2rem;transition:background .25s}
+.insight-cards{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:3rem;border:1px solid var(--line)}
+.insight-card{background:var(--bg-card);padding:2rem;transition:background .25s}
 .insight-card:hover{background:#272727}
-.insight-card-num{font-family:‘Cormorant Garamond’,serif;font-size:2rem;font-weight:300;color:var(–teal);opacity:.4;line-height:1;margin-bottom:.8rem}
-.insight-card h3{font-size:.85rem;font-weight:500;color:var(–text);margin-bottom:.5rem}
-.insight-card p{font-size:.84rem;color:var(–muted);line-height:1.7}
+.insight-card-num{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--teal);opacity:.4;line-height:1;margin-bottom:.8rem}
+.insight-card h3{font-size:.85rem;font-weight:500;color:var(--text);margin-bottom:.5rem}
+.insight-card p{font-size:.84rem;color:var(--muted);line-height:1.7}
 
 .thema{padding:7rem 4rem}
-.thema-content h2{font-family:‘Cormorant Garamond’,serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:2rem}
+.thema-content h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:2rem}
 .thema-content p{color:rgba(240,237,232,.65);font-size:.97rem;line-height:1.85;max-width:62ch;margin-bottom:1.4rem}
-.thema-quote{margin-top:2.5rem;padding:1.8rem 2rem;border-left:2px solid var(–teal);background:var(–bg-card)}
-.thema-quote p{font-family:‘Cormorant Garamond’,serif;font-size:1.35rem;font-style:italic;font-weight:300;color:rgba(240,237,232,.82);line-height:1.55;margin:0}
-.thema-example{margin-top:2.5rem;border-left:2px solid var(–teal);padding-left:1.8rem}
-.thema-example-label{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(–teal);margin-bottom:1rem}
+.thema-quote{margin-top:2.5rem;padding:1.8rem 2rem;border-left:2px solid var(--teal);background:var(--bg-card)}
+.thema-quote p{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-style:italic;font-weight:300;color:rgba(240,237,232,.82);line-height:1.55;margin:0}
+.thema-example{margin-top:2.5rem;border-left:2px solid var(--teal);padding-left:1.8rem}
+.thema-example-label{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:1rem}
 .thema-steps{display:flex;flex-direction:column;gap:.65rem}
 .thema-step{display:flex;align-items:baseline;gap:1rem;font-size:.9rem;color:rgba(240,237,232,.65)}
-.thema-step-num{font-family:‘Cormorant Garamond’,serif;font-size:.85rem;color:var(–teal);min-width:1.2rem}
-.thema-step.ai{color:var(–muted);font-style:italic;margin-top:.6rem;padding-top:.8rem;border-top:1px solid var(–line)}
+.thema-step-num{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:var(--teal);min-width:1.2rem}
+.thema-step.ai{color:var(--muted);font-style:italic;margin-top:.6rem;padding-top:.8rem;border-top:1px solid var(--line)}
 
 .leistungen{padding:7rem 4rem}
-.leistung-item{padding:2rem 0;border-bottom:1px solid var(–line);display:grid;grid-template-columns:3fr 1.5fr;gap:2rem;align-items:start;cursor:default}
-.leistung-item:first-child{border-top:1px solid var(–line)}
-.leistung-title{font-family:‘Cormorant Garamond’,serif;font-size:1.45rem;font-weight:400;color:var(–text);margin-bottom:.5rem;transition:color .2s}
-.leistung-item:hover .leistung-title{color:var(–teal)}
-.leistung-desc{font-size:.87rem;color:var(–muted);line-height:1.75}
-.leistung-tag{font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:var(–muted);text-align:right;padding-top:.4rem;opacity:.5}
+.leistung-item{padding:2rem 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:3fr 1.5fr;gap:2rem;align-items:start;cursor:default}
+.leistung-item:first-child{border-top:1px solid var(--line)}
+.leistung-title{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;color:var(--text);margin-bottom:.5rem;transition:color .2s}
+.leistung-item:hover .leistung-title{color:var(--teal)}
+.leistung-desc{font-size:.87rem;color:var(--muted);line-height:1.75}
+.leistung-tag{font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right;padding-top:.4rem;opacity:.5}
 
 .ueber{padding:7rem 4rem}
 .ueber-content p{color:rgba(240,237,232,.65);line-height:1.85;max-width:60ch;margin-bottom:1.2rem;font-size:.97rem}
 .ueber-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2rem}
-.ueber-tag{font-size:.69rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(–line);color:var(–muted);padding:.35rem .9rem;border-radius:2px;transition:border-color .2s,color .2s}
-.ueber-tag:hover{border-color:var(–teal);color:var(–teal)}
+.ueber-tag{font-size:.69rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);color:var(--muted);padding:.35rem .9rem;border-radius:2px;transition:border-color .2s,color .2s}
+.ueber-tag:hover{border-color:var(--teal);color:var(--teal)}
 
 .kontakt{padding:7rem 4rem;position:relative}
-.kontakt::before{content:’’;position:absolute;top:0;left:4rem;right:4rem;height:2px;background:linear-gradient(to right,var(–teal),transparent)}
-.kontakt-intro h2{font-family:‘Cormorant Garamond’,serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:1rem}
+.kontakt::before{content:'';position:absolute;top:0;left:4rem;right:4rem;height:2px;background:linear-gradient(to right,var(--teal),transparent)}
+.kontakt-intro h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:1rem}
 .kontakt-intro p{color:rgba(240,237,232,.6);line-height:1.85;max-width:55ch;font-size:.97rem;margin-bottom:3rem}
 
-footer{padding:1.8rem 4rem;border-top:1px solid var(–line);display:flex;justify-content:space-between;align-items:center;gap:1rem}
+footer{padding:1.8rem 4rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:1rem}
 .footer-left{display:flex;align-items:center;gap:.8rem}
-footer span{font-size:.7rem;color:var(–muted);letter-spacing:.04em}
-footer a{font-size:.7rem;color:var(–muted);text-decoration:none;transition:color .2s;letter-spacing:.06em}
-footer a:hover{color:var(–teal)}
+footer span{font-size:.7rem;color:var(--muted);letter-spacing:.04em}
+footer a{font-size:.7rem;color:var(--muted);text-decoration:none;transition:color .2s;letter-spacing:.06em}
+footer a:hover{color:var(--teal)}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .hero-eyebrow{animation:fadeUp .6s ease .1s both}
@@ -103,21 +102,20 @@ footer a:hover{color:var(–teal)}
 .hero-right  {animation:fadeUp .6s ease .4s both}
 
 @media(max-width:900px){
-nav{padding:1rem 1.6rem}
-.hero{padding:6rem 1.6rem 4rem;grid-template-columns:1fr;gap:2.5rem}
-.two-col{grid-template-columns:1fr;gap:2rem}
-.insight,.thema,.leistungen,.ueber,.kontakt{padding:5rem 1.6rem}
-.hero-right{padding-left:0;border-left:none;border-top:1px solid var(–line);padding-top:2rem}
-.insight-cards,.logo-cards{grid-template-columns:1fr}
-.section-label{position:static}
-.section-divider{margin:0 1.6rem}
-.leistung-item{grid-template-columns:1fr}
-.leistung-tag{text-align:left}
-footer{flex-direction:column;text-align:center;padding:1.6rem}
-.thema.mid::before,.kontakt::before{left:1.6rem;right:1.6rem}
+  nav{padding:1rem 1.6rem}
+  .hero{padding:6rem 1.6rem 4rem;grid-template-columns:1fr;gap:2.5rem}
+  .two-col{grid-template-columns:1fr;gap:2rem}
+  .insight,.thema,.leistungen,.ueber,.kontakt{padding:5rem 1.6rem}
+  .hero-right{padding-left:0;border-left:none;border-top:1px solid var(--line);padding-top:2rem}
+  .insight-cards,.logo-cards{grid-template-columns:1fr}
+  .section-label{position:static}
+  .section-divider{margin:0 1.6rem}
+  .leistung-item{grid-template-columns:1fr}
+  .leistung-tag{text-align:left}
+  footer{flex-direction:column;text-align:center;padding:1.6rem}
+  .thema.mid::before,.kontakt::before{left:1.6rem;right:1.6rem}
 }
 </style>
-
 </head>
 <body>
 
@@ -136,45 +134,40 @@ footer{flex-direction:column;text-align:center;padding:1.6rem}
   TR: same D, 180°  #00b09a   flat right(x=91), bulge LEFT
       rect x=73..91, arc center(73,27) r=18, to x=55
 -->
-
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
   <defs>
     <symbol id="hs" viewBox="0 0 100 100">
       <!-- teal border frame -->
       <rect x="2" y="2" width="96" height="96" fill="none" stroke="#007d75" stroke-width="4"/>
 
-```
-  <!-- TL: square, dark teal -->
-  <rect x="9" y="9" width="36" height="36" fill="#006b60"/>
+      <!-- TL: square, dark teal -->
+      <rect x="9" y="9" width="36" height="36" fill="#006b60"/>
 
-  <!-- BL: square, sage — identical size -->
-  <rect x="9" y="55" width="36" height="36" fill="#88b4af"/>
+      <!-- BL: square, sage — identical size -->
+      <rect x="9" y="55" width="36" height="36" fill="#88b4af"/>
 
-  <!--
-    BR: D-shape — rect (left half) + semicircle (right)
-    Bounding box x=55..91, y=55..91 (36×36)
-    Rect portion: x=55 to 73, full height
-    Semicircle: center (73,73), r=18, bulge RIGHT (x up to 91)
-    Path: top-left → top-mid → arc down-right → bottom-mid → bottom-left → close
-  -->
-  <path d="M55,55 L73,55 A18,18,0,0,1,73,91 L55,91 Z" fill="#004e48"/>
+      <!--
+        BR: D-shape — rect (left half) + semicircle (right)
+        Bounding box x=55..91, y=55..91 (36×36)
+        Rect portion: x=55 to 73, full height
+        Semicircle: center (73,73), r=18, bulge RIGHT (x up to 91)
+        Path: top-left → top-mid → arc down-right → bottom-mid → bottom-left → close
+      -->
+      <path d="M55,55 L73,55 A18,18,0,0,1,73,91 L55,91 Z" fill="#004e48"/>
 
-  <!--
-    TR: same D, rotated 180° — rect (right half) + semicircle (left)
-    Bounding box x=55..91, y=9..45 (36×36)
-    Rect portion: x=73 to 91, full height
-    Semicircle: center (73,27), r=18, bulge LEFT (x down to 55)
-    Path: top-right → top-mid → arc down-left → bottom-mid → bottom-right → close
-  -->
-  <path d="M89,9 L71,9 A18,18,0,0,0,71,45 L89,45 Z" fill="#00b09a"/>
-</symbol>
-```
-
+      <!--
+        TR: same D, rotated 180° — rect (right half) + semicircle (left)
+        Bounding box x=55..91, y=9..45 (36×36)
+        Rect portion: x=73 to 91, full height
+        Semicircle: center (73,27), r=18, bulge LEFT (x down to 55)
+        Path: top-right → top-mid → arc down-left → bottom-mid → bottom-right → close
+      -->
+      <path d="M89,9 L71,9 A18,18,0,0,0,71,45 L89,45 Z" fill="#00b09a"/>
+    </symbol>
   </defs>
 </svg>
 
 <!-- NAV -->
-
 <nav>
   <a href="#" class="nav-brand">
     <svg width="36" height="36" aria-label="Harald Schwack"><use href="#hs"/></svg>
@@ -187,7 +180,6 @@ footer{flex-direction:column;text-align:center;padding:1.6rem}
 </nav>
 
 <!-- HERO -->
-
 <section class="hero">
   <div>
     <div class="hero-eyebrow">Unternehmensberatung · Wien</div>
@@ -215,7 +207,6 @@ footer{flex-direction:column;text-align:center;padding:1.6rem}
 <div class="section-divider"></div>
 
 <!-- INSIGHT -->
-
 <section class="insight" id="insight">
   <div class="two-col">
     <div class="section-label">Das Problem</div>
@@ -252,7 +243,6 @@ footer{flex-direction:column;text-align:center;padding:1.6rem}
 <div class="section-divider"></div>
 
 <!-- ZIELE & KLARHEIT -->
-
 <section class="thema" id="ziele">
   <div class="two-col">
     <div class="section-label">Ziele &amp; Klarheit</div>
@@ -271,7 +261,6 @@ footer{flex-direction:column;text-align:center;padding:1.6rem}
 <div class="section-divider"></div>
 
 <!-- CHANGE MANAGEMENT -->
-
 <section class="thema" id="change">
   <div class="two-col">
     <div class="section-label">Change Management</div>
@@ -290,7 +279,6 @@ footer{flex-direction:column;text-align:center;padding:1.6rem}
 <div class="section-divider"></div>
 
 <!-- KI & AUTOMATISIERUNG -->
-
 <section class="thema" id="ki">
   <div class="two-col">
     <div class="section-label">KI &amp; Automatisierung</div>
@@ -316,7 +304,6 @@ footer{flex-direction:column;text-align:center;padding:1.6rem}
 <div class="section-divider"></div>
 
 <!-- LEISTUNGEN -->
-
 <section class="leistungen" id="leistungen">
   <div class="two-col">
     <div class="section-label">Leistungen</div>
@@ -348,7 +335,6 @@ footer{flex-direction:column;text-align:center;padding:1.6rem}
 <div class="section-divider"></div>
 
 <!-- ÜBER -->
-
 <section class="ueber" id="ueber">
   <div class="two-col">
     <div class="section-label">Zur Person</div>
@@ -371,7 +357,6 @@ footer{flex-direction:column;text-align:center;padding:1.6rem}
 <div class="section-divider"></div>
 
 <!-- KONTAKT -->
-
 <section class="kontakt" id="kontakt">
   <div class="two-col">
     <div class="section-label">Kontakt</div>
@@ -379,6 +364,7 @@ footer{flex-direction:column;text-align:center;padding:1.6rem}
       <div class="kontakt-intro">
         <h2>Ein erstes Gespräch<br>kostet nichts.</h2>
         <p>Wenn Sie das Gefühl haben, dass Ihr Unternehmen eigentlich alle Voraussetzungen hat — und es trotzdem nicht reibungslos läuft, ist das ein gutes Zeichen. Das Thema ist gefunden. Ich helfe, es zu benennen.</p>
+        <p style="font-size:.82rem;color:var(--muted);margin-top:-.5rem">Hinweis: Das Gewerbe ist aktuell ruhend gemeldet. Für Anfragen und unverbindliche Erstgespräche stehe ich selbstverständlich zur Verfügung.</p>
       </div>
       <div class="ml-embedded" data-form="KwxBb8"></div>
     </div>
@@ -386,7 +372,6 @@ footer{flex-direction:column;text-align:center;padding:1.6rem}
 </section>
 
 <!-- FOOTER -->
-
 <footer>
   <div class="footer-left">
     <svg width="22" height="22" aria-hidden="true" style="opacity:.35"><use href="#hs"/></svg>
