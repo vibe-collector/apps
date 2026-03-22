@@ -6,496 +6,173 @@
 <title>Harald Schwack – Unternehmensberatung</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script>
-  (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);};
-  l=d.createElement(e);l.async=1;l.src=u;n=d.getElementsByTagName(e)[0];n.parentNode.insertBefore(l,n);}})
-  (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-  ml('account', 'DEINE-ACCOUNT-ID');
+(function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);};
+l=d.createElement(e);l.async=1;l.src=u;n=d.getElementsByTagName(e)[0];n.parentNode.insertBefore(l,n);}})
+(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+ml('account','DEINE-ACCOUNT-ID');
 </script>
 <style>
-  :root {
-    --bg:        #131313;
-    --bg-mid:    #1a1a1a;
-    --bg-card:   #1f1f1f;
-    --text:      #f0ede8;
-    --muted:     #7a7870;
-    --teal-bdr:  #007d75;
-    --teal-dk:   #006b60;
-    --teal:      #00b09a;
-    --teal-sage: #88b4af;
-    --teal-deep: #004e48;
-    --line:      #2c2c2c;
-  }
+:root{
+  --bg:#131313;--bg-mid:#1a1a1a;--bg-card:#1f1f1f;
+  --text:#f0ede8;--muted:#7a7870;
+  --teal:#00b09a;--teal-dk:#007d75;--line:#2c2c2c;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 4rem;background:rgba(19,19,19,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav-brand{display:flex;align-items:center;gap:.9rem;text-decoration:none}
+.nav-name{font-size:.82rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--text);line-height:1.25}
+.nav-name span{display:block;font-size:.63rem;color:var(--muted);letter-spacing:.12em;font-weight:300}
+.nav-link{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:.45rem 1rem;border-radius:2px;transition:color .2s,border-color .2s}
+.nav-link:hover{color:var(--teal);border-color:var(--teal)}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:8rem 4rem 5rem;gap:4rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 50% at 80% 38%,rgba(0,176,154,.08) 0%,transparent 65%),radial-gradient(ellipse 30% 40% at 18% 72%,rgba(0,107,96,.05) 0%,transparent 60%);pointer-events:none}
+.hero-eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:1.8rem;display:flex;align-items:center;gap:.8rem}
+.hero-eyebrow::before{content:'';display:block;width:2rem;height:1px;background:var(--teal)}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,5.5vw,4.6rem);font-weight:300;line-height:1.12;margin-bottom:2rem}
+.hero-title em{font-style:italic;color:var(--teal)}
+.hero-sub{font-size:1rem;color:var(--muted);line-height:1.82;max-width:40ch;margin-bottom:2.5rem}
+.hero-cta{display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(0,176,154,.3);padding-bottom:.2rem;transition:border-color .2s}
+.hero-cta:hover{border-color:var(--teal)}
+.hero-right{display:flex;flex-direction:column;gap:2rem;padding-left:3rem;border-left:1px solid var(--line)}
+.hero-quote{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;font-style:italic;line-height:1.55;color:rgba(240,237,232,.72)}
+.hero-quote-attr{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 
-  /* ── HS LOGO COMPONENT ── */
-  /* Used at multiple sizes via width/height on the <svg> element */
+.section-divider{height:1px;background:var(--line);margin:0 4rem}
+.section-label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);padding-top:.4rem;position:sticky;top:5rem;display:flex;align-items:center;gap:.6rem}
+.section-label::before{content:'';display:block;width:1.2rem;height:1px;background:var(--teal);flex-shrink:0}
+.two-col{display:grid;grid-template-columns:1fr 2fr;gap:5rem;align-items:start}
 
-  /* ── NAV ── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 4rem;
-    background: rgba(19,19,19,0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line);
-  }
-  .nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-    text-decoration: none;
-  }
-  .nav-name {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text);
-    line-height: 1.25;
-  }
-  .nav-name span {
-    display: block;
-    font-size: 0.64rem;
-    color: var(--muted);
-    letter-spacing: 0.12em;
-    font-weight: 300;
-  }
-  .nav-link {
-    font-size: 0.74rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s, border-color 0.2s;
-    border: 1px solid var(--line);
-    padding: 0.45rem 1rem;
-    border-radius: 2px;
-  }
-  .nav-link:hover { color: var(--teal); border-color: var(--teal); }
+.insight{padding:7rem 4rem}
+.insight-content h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:2rem}
+.insight-content h2 strong{font-weight:600;color:var(--teal)}
+.insight-content p{color:rgba(240,237,232,.65);font-size:.97rem;line-height:1.85;max-width:62ch;margin-bottom:1.4rem}
+.insight-cards{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:3rem;border:1px solid var(--line)}
+.insight-card{background:var(--bg-card);padding:2rem;transition:background .25s}
+.insight-card:hover{background:#272727}
+.insight-card-num{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--teal);opacity:.4;line-height:1;margin-bottom:.8rem}
+.insight-card h3{font-size:.85rem;font-weight:500;color:var(--text);margin-bottom:.5rem}
+.insight-card p{font-size:.84rem;color:var(--muted);line-height:1.7}
 
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 8rem 4rem 5rem;
-    gap: 4rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 55% 50% at 80% 38%, rgba(0,176,154,0.08) 0%, transparent 65%),
-      radial-gradient(ellipse 30% 40% at 18% 72%, rgba(0,107,96,0.05) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .hero-eyebrow {
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--teal);
-    margin-bottom: 1.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    display: block;
-    width: 2rem;
-    height: 1px;
-    background: var(--teal);
-  }
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 5.5vw, 4.6rem);
-    font-weight: 300;
-    line-height: 1.12;
-    color: var(--text);
-    margin-bottom: 2rem;
-  }
-  .hero-title em { font-style: italic; color: var(--teal); }
-  .hero-sub {
-    font-size: 1rem;
-    color: var(--muted);
-    line-height: 1.82;
-    max-width: 40ch;
-    margin-bottom: 2.5rem;
-  }
-  .hero-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.78rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--teal);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(0,176,154,0.3);
-    padding-bottom: 0.2rem;
-    transition: border-color 0.2s;
-  }
-  .hero-cta:hover { border-color: var(--teal); }
-  .hero-right {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding-left: 3rem;
-    border-left: 1px solid var(--line);
-  }
-  .hero-quote {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.55rem;
-    font-weight: 300;
-    font-style: italic;
-    line-height: 1.55;
-    color: rgba(240,237,232,0.72);
-  }
-  .hero-quote-attr {
-    font-size: 0.7rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
+.logo-section{padding:7rem 4rem;background:var(--bg-mid);position:relative}
+.logo-section::before{content:'';position:absolute;top:0;left:4rem;right:4rem;height:2px;background:linear-gradient(to right,var(--teal),transparent)}
+.logo-section-content h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:1.8rem}
+.logo-section-content p{color:rgba(240,237,232,.65);font-size:.97rem;line-height:1.85;max-width:60ch;margin-bottom:1.2rem}
+.logo-cards{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:2.5rem}
+.logo-card{background:var(--bg-card);padding:1.8rem;transition:background .25s}
+.logo-card:hover{background:#272727}
+.logo-card-letter{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--teal);opacity:.5;line-height:1;margin-bottom:.6rem}
+.logo-card h3{font-size:.83rem;font-weight:500;color:var(--text);margin-bottom:.4rem}
+.logo-card p{font-size:.83rem;color:var(--muted);line-height:1.7}
 
-  /* ── DIVIDER ── */
-  .section-divider { height: 1px; background: var(--line); margin: 0 4rem; }
+.ki-section{padding:7rem 4rem}
+.ki-content h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:2rem}
+.ki-content p{color:rgba(240,237,232,.65);line-height:1.85;max-width:62ch;margin-bottom:1.4rem;font-size:.97rem}
+.ki-example{margin-top:2.5rem;border-left:2px solid var(--teal);padding-left:1.8rem}
+.ki-example-label{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:1rem}
+.ki-steps{display:flex;flex-direction:column;gap:.65rem}
+.ki-step{display:flex;align-items:baseline;gap:1rem;font-size:.9rem;color:rgba(240,237,232,.65)}
+.ki-step-num{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:var(--teal);min-width:1.2rem}
+.ki-step.ki-step-ai{color:var(--muted);font-style:italic;margin-top:.6rem;padding-top:.8rem;border-top:1px solid var(--line)}
+.ki-punchline{margin-top:2.5rem;font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-style:italic;font-weight:300;color:rgba(240,237,232,.8);line-height:1.5}
 
-  /* ── SECTION LABEL ── */
-  .section-label {
-    font-size: 0.68rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding-top: 0.4rem;
-    position: sticky;
-    top: 5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-  .section-label::before {
-    content: '';
-    display: block;
-    width: 1.2rem;
-    height: 1px;
-    background: var(--teal);
-    flex-shrink: 0;
-  }
+.leistungen{padding:7rem 4rem;background:var(--bg-mid)}
+.leistung-item{padding:2rem 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:3fr 1.5fr;gap:2rem;align-items:start;cursor:default}
+.leistung-item:first-child{border-top:1px solid var(--line)}
+.leistung-title{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;color:var(--text);margin-bottom:.5rem;transition:color .2s}
+.leistung-item:hover .leistung-title{color:var(--teal)}
+.leistung-desc{font-size:.87rem;color:var(--muted);line-height:1.75}
+.leistung-tag{font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right;padding-top:.4rem;opacity:.5}
 
-  /* ── TWO-COL ── */
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 5rem;
-    align-items: start;
-  }
+.ueber{padding:7rem 4rem}
+.ueber-content p{color:rgba(240,237,232,.65);line-height:1.85;max-width:60ch;margin-bottom:1.2rem;font-size:.97rem}
+.ueber-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2rem}
+.ueber-tag{font-size:.69rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);color:var(--muted);padding:.35rem .9rem;border-radius:2px;transition:border-color .2s,color .2s}
+.ueber-tag:hover{border-color:var(--teal);color:var(--teal)}
 
-  /* ── INSIGHT ── */
-  .insight { padding: 7rem 4rem; }
-  .insight-content h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
-    font-weight: 300;
-    line-height: 1.3;
-    margin-bottom: 2rem;
-  }
-  .insight-content h2 strong { font-weight: 600; color: var(--teal); }
-  .insight-content p {
-    color: rgba(240,237,232,0.65);
-    font-size: 0.97rem;
-    line-height: 1.85;
-    max-width: 62ch;
-    margin-bottom: 1.4rem;
-  }
-  .insight-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--line);
-    margin-top: 3rem;
-    border: 1px solid var(--line);
-  }
-  .insight-card {
-    background: var(--bg-card);
-    padding: 2rem;
-    transition: background 0.25s;
-  }
-  .insight-card:hover { background: #272727; }
-  .insight-card-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    font-weight: 300;
-    color: var(--teal);
-    opacity: 0.45;
-    line-height: 1;
-    margin-bottom: 0.8rem;
-  }
-  .insight-card h3 { font-size: 0.85rem; font-weight: 500; color: var(--text); margin-bottom: 0.5rem; }
-  .insight-card p  { font-size: 0.84rem; color: var(--muted); line-height: 1.7; }
+.kontakt{padding:7rem 4rem;background:var(--bg-mid);position:relative}
+.kontakt::before{content:'';position:absolute;top:0;left:4rem;right:4rem;height:2px;background:linear-gradient(to right,var(--teal),transparent)}
+.kontakt-intro h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:1rem}
+.kontakt-intro p{color:rgba(240,237,232,.6);line-height:1.85;max-width:55ch;font-size:.97rem;margin-bottom:3rem}
 
-  /* ── LOGO SECTION ── */
-  .logo-section {
-    padding: 7rem 4rem;
-    background: var(--bg-mid);
-    position: relative;
-    overflow: hidden;
-  }
-  .logo-section::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 4rem; right: 4rem;
-    height: 2px;
-    background: linear-gradient(to right, var(--teal), transparent);
-  }
-  .logo-section-content h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
-    font-weight: 300;
-    line-height: 1.3;
-    margin-bottom: 1.8rem;
-  }
-  .logo-section-content p {
-    color: rgba(240,237,232,0.65);
-    font-size: 0.97rem;
-    line-height: 1.85;
-    max-width: 60ch;
-    margin-bottom: 1.2rem;
-  }
-  .logo-large-wrap {
-    margin-bottom: 2.5rem;
-  }
-  .logo-explanation {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-    margin-top: 2.5rem;
-  }
-  .logo-letter {
-    background: var(--bg-card);
-    padding: 1.8rem;
-    transition: background 0.25s;
-  }
-  .logo-letter:hover { background: #272727; }
-  .logo-letter-mark {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem;
-    font-weight: 300;
-    line-height: 1;
-    color: var(--teal);
-    margin-bottom: 0.6rem;
-    opacity: 0.55;
-  }
-  .logo-letter h3 { font-size: 0.83rem; font-weight: 500; color: var(--text); letter-spacing: 0.04em; margin-bottom: 0.4rem; }
-  .logo-letter p  { font-size: 0.83rem; color: var(--muted); line-height: 1.7; }
+footer{padding:1.8rem 4rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.footer-left{display:flex;align-items:center;gap:.8rem}
+footer span{font-size:.7rem;color:var(--muted);letter-spacing:.04em}
+footer a{font-size:.7rem;color:var(--muted);text-decoration:none;transition:color .2s;letter-spacing:.06em}
+footer a:hover{color:var(--teal)}
 
-  /* ── KI SECTION ── */
-  .ki-section { padding: 7rem 4rem; }
-  .ki-content h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
-    font-weight: 300;
-    line-height: 1.3;
-    margin-bottom: 2rem;
-  }
-  .ki-content p {
-    color: rgba(240,237,232,0.65);
-    line-height: 1.85;
-    max-width: 62ch;
-    margin-bottom: 1.4rem;
-    font-size: 0.97rem;
-  }
-  .ki-example {
-    margin-top: 2.5rem;
-    border-left: 2px solid var(--teal);
-    padding-left: 1.8rem;
-  }
-  .ki-example-label {
-    font-size: 0.68rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--teal);
-    margin-bottom: 1rem;
-  }
-  .ki-steps { display: flex; flex-direction: column; gap: 0.65rem; }
-  .ki-step { display: flex; align-items: baseline; gap: 1rem; font-size: 0.9rem; color: rgba(240,237,232,0.65); }
-  .ki-step-num { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; color: var(--teal); min-width: 1.2rem; }
-  .ki-step.ki-step-ai {
-    color: var(--muted);
-    font-style: italic;
-    margin-top: 0.6rem;
-    padding-top: 0.8rem;
-    border-top: 1px solid var(--line);
-  }
-  .ki-punchline {
-    margin-top: 2.5rem;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.45rem;
-    font-style: italic;
-    font-weight: 300;
-    color: rgba(240,237,232,0.8);
-    line-height: 1.5;
-  }
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero-eyebrow{animation:fadeUp .6s ease .1s both}
+.hero-title  {animation:fadeUp .6s ease .25s both}
+.hero-sub    {animation:fadeUp .6s ease .38s both}
+.hero-cta    {animation:fadeUp .6s ease .5s both}
+.hero-right  {animation:fadeUp .6s ease .4s both}
 
-  /* ── LEISTUNGEN ── */
-  .leistungen { padding: 7rem 4rem; background: var(--bg-mid); }
-  .leistung-item {
-    padding: 2rem 0;
-    border-bottom: 1px solid var(--line);
-    display: grid;
-    grid-template-columns: 3fr 1.5fr;
-    gap: 2rem;
-    align-items: start;
-    cursor: default;
-  }
-  .leistung-item:first-child { border-top: 1px solid var(--line); }
-  .leistung-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.45rem;
-    font-weight: 400;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-    transition: color 0.2s;
-  }
-  .leistung-item:hover .leistung-title { color: var(--teal); }
-  .leistung-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.75; }
-  .leistung-tag { font-size: 0.67rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-align: right; padding-top: 0.4rem; opacity: 0.55; }
-
-  /* ── ÜBER ── */
-  .ueber { padding: 7rem 4rem; }
-  .ueber-content p { color: rgba(240,237,232,0.65); line-height: 1.85; max-width: 60ch; margin-bottom: 1.2rem; font-size: 0.97rem; }
-  .ueber-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
-  .ueber-tag {
-    font-size: 0.69rem; letter-spacing: 0.1em; text-transform: uppercase;
-    border: 1px solid var(--line); color: var(--muted); padding: 0.35rem 0.9rem; border-radius: 2px;
-    transition: border-color 0.2s, color 0.2s;
-  }
-  .ueber-tag:hover { border-color: var(--teal); color: var(--teal); }
-
-  /* ── KONTAKT ── */
-  .kontakt {
-    padding: 7rem 4rem;
-    background: var(--bg-mid);
-    position: relative;
-  }
-  .kontakt::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 4rem; right: 4rem;
-    height: 2px;
-    background: linear-gradient(to right, var(--teal), transparent);
-  }
-  .kontakt-intro h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
-    font-weight: 300;
-    line-height: 1.3;
-    margin-bottom: 1rem;
-  }
-  .kontakt-intro p {
-    color: rgba(240,237,232,0.6);
-    line-height: 1.85;
-    max-width: 55ch;
-    font-size: 0.97rem;
-    margin-bottom: 3rem;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    padding: 1.8rem 4rem;
-    border-top: 1px solid var(--line);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-  }
-  .footer-left { display: flex; align-items: center; gap: 0.8rem; }
-  footer span { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.04em; }
-  footer a { font-size: 0.7rem; color: var(--muted); text-decoration: none; transition: color 0.2s; letter-spacing: 0.06em; }
-  footer a:hover { color: var(--teal); }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .hero-eyebrow { animation: fadeUp 0.6s ease 0.1s both; }
-  .hero-title   { animation: fadeUp 0.6s ease 0.25s both; }
-  .hero-sub     { animation: fadeUp 0.6s ease 0.38s both; }
-  .hero-cta     { animation: fadeUp 0.6s ease 0.5s both; }
-  .hero-right   { animation: fadeUp 0.6s ease 0.4s both; }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    nav { padding: 1rem 1.6rem; }
-    .hero { padding: 6rem 1.6rem 4rem; grid-template-columns: 1fr; gap: 2.5rem; }
-    .two-col { grid-template-columns: 1fr; gap: 2rem; }
-    .insight, .logo-section, .ki-section, .leistungen, .ueber, .kontakt { padding: 5rem 1.6rem; }
-    .hero-right { padding-left: 0; border-left: none; border-top: 1px solid var(--line); padding-top: 2rem; }
-    .insight-cards, .logo-explanation { grid-template-columns: 1fr; }
-    .section-label { position: static; }
-    .section-divider { margin: 0 1.6rem; }
-    .leistung-item { grid-template-columns: 1fr; }
-    .leistung-tag { text-align: left; }
-    footer { flex-direction: column; text-align: center; padding: 1.6rem; }
-    .kontakt::before, .logo-section::before { left: 1.6rem; right: 1.6rem; }
-  }
+@media(max-width:900px){
+  nav{padding:1rem 1.6rem}
+  .hero{padding:6rem 1.6rem 4rem;grid-template-columns:1fr;gap:2.5rem}
+  .two-col{grid-template-columns:1fr;gap:2rem}
+  .insight,.logo-section,.ki-section,.leistungen,.ueber,.kontakt{padding:5rem 1.6rem}
+  .hero-right{padding-left:0;border-left:none;border-top:1px solid var(--line);padding-top:2rem}
+  .insight-cards,.logo-cards{grid-template-columns:1fr}
+  .section-label{position:static}
+  .section-divider{margin:0 1.6rem}
+  .leistung-item{grid-template-columns:1fr}
+  .leistung-tag{text-align:left}
+  footer{flex-direction:column;text-align:center;padding:1.6rem}
+  .logo-section::before,.kontakt::before{left:1.6rem;right:1.6rem}
+}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════
-     HS LOGO — inline SVG, reused via <use>
-     Colors faithfully from original:
-       border  #007d75  (teal frame)
-       TL      #006b60  (dark teal square)
-       TR      #00b09a  (bright teal circle, clipped)
-       BL      #88b4af  (sage/muted square)
-       BR      #004e48  (deep teal D-shape)
-     Background dark (#131313) replaces white
-═══════════════════════════════════════ -->
+<!--
+  HS LOGO — 100×100 viewBox
+  All 4 shapes are 36×36, placed in a 2×2 grid
+  with 9px outer margin and 10px cross gap.
+
+  Col 1: x=9..45    Col 2: x=55..91
+  Row 1: y=9..45    Row 2: y=55..91
+
+  TL: square #006b60    x=9,  y=9,  w=36, h=36
+  BL: square #88b4af    x=9,  y=55, w=36, h=36
+  BR: D-shape #004e48   flat left(x=55), bulge RIGHT
+      rect x=55..73, arc center(73,73) r=18, to x=91
+  TR: same D, 180°  #00b09a   flat right(x=91), bulge LEFT
+      rect x=73..91, arc center(73,27) r=18, to x=55
+-->
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
   <defs>
-    <!-- clip TR circle to its quadrant -->
-    <clipPath id="clip-tr">
-      <rect x="51" y="3.5" width="44.5" height="44.5"/>
-    </clipPath>
-    <!-- the full logo mark -->
-    <symbol id="hs-logo" viewBox="0 0 100 100">
-      <!-- dark bg fill -->
-      <rect width="100" height="100" fill="#131313"/>
+    <symbol id="hs" viewBox="0 0 100 100">
       <!-- teal border frame -->
-      <rect x="3" y="3" width="94" height="94" fill="none" stroke="#007d75" stroke-width="3.5"/>
-      <!-- TL: dark teal square -->
-      <rect x="10" y="10" width="33" height="33" fill="#006b60"/>
-      <!-- TR: bright teal circle, clipped to quadrant -->
-      <circle cx="74" cy="26" r="22" fill="#00b09a" clip-path="url(#clip-tr)"/>
-      <!-- BL: sage/muted teal square (slightly smaller — letter asymmetry) -->
-      <rect x="10" y="57" width="29" height="29" fill="#88b4af"/>
-      <!-- BR: deep teal D-shape (flat left, rounded right) -->
-      <path d="M54,57 H68 A18,18 0 0,1 68,93 H54 Z" fill="#004e48"/>
+      <rect x="2" y="2" width="96" height="96" fill="none" stroke="#007d75" stroke-width="4"/>
+
+      <!-- TL: square, dark teal -->
+      <rect x="9" y="9" width="36" height="36" fill="#006b60"/>
+
+      <!-- BL: square, sage — identical size -->
+      <rect x="9" y="55" width="36" height="36" fill="#88b4af"/>
+
+      <!--
+        BR: D-shape — rect (left half) + semicircle (right)
+        Bounding box x=55..91, y=55..91 (36×36)
+        Rect portion: x=55 to 73, full height
+        Semicircle: center (73,73), r=18, bulge RIGHT (x up to 91)
+        Path: top-left → top-mid → arc down-right → bottom-mid → bottom-left → close
+      -->
+      <path d="M55,55 L73,55 A18,18,0,0,1,73,91 L55,91 Z" fill="#004e48"/>
+
+      <!--
+        TR: same D, rotated 180° — rect (right half) + semicircle (left)
+        Bounding box x=55..91, y=9..45 (36×36)
+        Rect portion: x=73 to 91, full height
+        Semicircle: center (73,27), r=18, bulge LEFT (x down to 55)
+        Path: top-right → top-mid → arc down-left → bottom-mid → bottom-right → close
+      -->
+      <path d="M89,9 L71,9 A18,18,0,0,0,71,45 L89,45 Z" fill="#00b09a"/>
     </symbol>
   </defs>
 </svg>
@@ -503,9 +180,7 @@
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-brand">
-    <svg width="36" height="36" aria-label="Harald Schwack">
-      <use href="#hs-logo"/>
-    </svg>
+    <svg width="36" height="36" aria-label="Harald Schwack"><use href="#hs"/></svg>
     <div class="nav-name">
       Harald Schwack
       <span>Unternehmensberatung</span>
@@ -529,11 +204,8 @@
     </p>
     <a href="#insight" class="hero-cta">Mehr erfahren →</a>
   </div>
-
   <div class="hero-right">
-    <svg width="120" height="120" aria-label="Harald Schwack Markenzeichen">
-      <use href="#hs-logo"/>
-    </svg>
+    <svg width="110" height="110" aria-label="Harald Schwack Markenzeichen"><use href="#hs"/></svg>
     <p class="hero-quote">
       „Die Technologie ist bereit.<br>
       Die Frage ist, ob Sie es sind."
@@ -549,20 +221,9 @@
   <div class="two-col">
     <div class="section-label">Das Problem</div>
     <div class="insight-content">
-      <h2>
-        Unternehmen scheitern selten an<br>
-        <strong>fehlendem Wissen</strong> —<br>
-        sondern an unklaren Zielen.
-      </h2>
-      <p>
-        Zielkonflikte, konkurrierende Prioritäten und schlecht definierte Anforderungen
-        sind die eigentlichen Bremsklötze. Nicht Technologie. Nicht fehlende Ressourcen.
-      </p>
-      <p>
-        Wenn Ziele unklar sind, führt jede Maßnahme in drei Richtungen gleichzeitig.
-        Und jede neue Initiative — ob KI-Projekt, Reorganisation oder Strategieprozess —
-        verstärkt das Rauschen, anstatt es zu reduzieren.
-      </p>
+      <h2>Unternehmen scheitern selten an<br><strong>fehlendem Wissen</strong> —<br>sondern an unklaren Zielen.</h2>
+      <p>Zielkonflikte, konkurrierende Prioritäten und schlecht definierte Anforderungen sind die eigentlichen Bremsklötze. Nicht Technologie. Nicht fehlende Ressourcen.</p>
+      <p>Wenn Ziele unklar sind, führt jede Maßnahme in drei Richtungen gleichzeitig. Und jede neue Initiative — ob KI-Projekt, Reorganisation oder Strategieprozess — verstärkt das Rauschen, anstatt es zu reduzieren.</p>
       <div class="insight-cards">
         <div class="insight-card">
           <div class="insight-card-num">01</div>
@@ -591,40 +252,30 @@
 
 <div class="section-divider"></div>
 
-<!-- LOGO / MARKENZEICHEN -->
+<!-- LOGO SECTION -->
 <section class="logo-section">
   <div class="two-col">
     <div class="section-label">Das Zeichen</div>
     <div class="logo-section-content">
       <h2>Vier Felder.<br>Zwei Buchstaben.<br>Eine Haltung.</h2>
 
-      <div class="logo-large-wrap">
-        <svg width="140" height="140" aria-label="Harald Schwack Markenzeichen">
-          <use href="#hs-logo"/>
-        </svg>
-      </div>
+      <svg width="130" height="130" style="display:block;margin-bottom:2rem" aria-label="Harald Schwack Markenzeichen">
+        <use href="#hs"/>
+      </svg>
 
-      <p>
-        Das Markenzeichen ist kein dekoratives Element — es ist eine Aussage.
-        Vier geometrische Felder, angeordnet in einem Rahmen. Auf den ersten Blick
-        Quadrate, ein Kreis und ein D-Form. Auf den zweiten Blick: die Initialen H und S —
-        einmal in den Formen selbst, einmal im Negativ zwischen ihnen.
-      </p>
-      <p>
-        Genau das ist der Anspruch dieser Arbeit: Hinter der offensichtlichen Oberfläche
-        die eigentliche Struktur sichtbar machen.
-      </p>
+      <p>Das Markenzeichen ist kein dekoratives Element — es ist eine Aussage. Vier Felder in einem Rahmen: zwei Quadrate links, eine D-Form zweimal rechts. Auf den zweiten Blick: die Initialen H und S — einmal in den positiven Flächen, einmal im Negativ zwischen ihnen lesbar.</p>
+      <p>Genau das ist der Anspruch dieser Arbeit: Hinter der offensichtlichen Oberfläche die eigentliche Struktur sichtbar machen.</p>
 
-      <div class="logo-explanation">
-        <div class="logo-letter">
-          <div class="logo-letter-mark">H</div>
+      <div class="logo-cards">
+        <div class="logo-card">
+          <div class="logo-card-letter">H</div>
           <h3>Harald — im Positiv</h3>
-          <p>Die zwei Quadrate links — oben dunkel, unten gedämpft — bilden die Vertikalen. Der Freiraum dazwischen liest sich als Querbalken des H.</p>
+          <p>Die zwei Quadrate links bilden die Pfeiler. Das Kreuz des Rasters liest sich als Querbalken — H entsteht aus der Geometrie selbst.</p>
         </div>
-        <div class="logo-letter">
-          <div class="logo-letter-mark">S</div>
+        <div class="logo-card">
+          <div class="logo-card-letter">S</div>
           <h3>Schwack — im Negativ</h3>
-          <p>Der angeschnittene Kreis oben rechts und die D-Form unten rechts ergeben gemeinsam — im Zwischenraum — die zweite Initiale S.</p>
+          <p>Dieselbe D-Form, zweimal: oben gespiegelt (Buckel links), unten normal (Buckel rechts). Positiv gelesen ergibt der Wechsel das S.</p>
         </div>
       </div>
     </div>
@@ -639,11 +290,7 @@
     <div class="section-label">KI &amp; Klarheit</div>
     <div class="ki-content">
       <h2>KI kann vieles übernehmen —<br>wenn Sie vorher klar sind.</h2>
-      <p>
-        Die verbreitete Erwartung lautet: <em>„KI — löse mir Problem X."</em>
-        Die Realität sieht anders aus: KI ist ein hervorragender Ausführer.
-        Aber sie kann keine Fragestellungen definieren, die noch niemand durchgedacht hat.
-      </p>
+      <p>Die verbreitete Erwartung lautet: <em>„KI — löse mir Problem X."</em> Die Realität sieht anders aus: KI ist ein hervorragender Ausführer. Aber sie kann keine Fragestellungen definieren, die noch niemand durchgedacht hat.</p>
       <div class="ki-example">
         <div class="ki-example-label">Beispiel: Recruiting-Prozess</div>
         <div class="ki-steps">
@@ -654,10 +301,7 @@
           <div class="ki-step ki-step-ai"><span class="ki-step-num">●</span> Alles davor: Ihre Entscheidung. Den Rest macht KI.</div>
         </div>
       </div>
-      <p class="ki-punchline">
-        „Wenn Sie wissen, was zu tun ist —<br>
-        können Sie fast alles abgeben."
-      </p>
+      <p class="ki-punchline">„Wenn Sie wissen, was zu tun ist —<br>können Sie fast alles abgeben."</p>
     </div>
   </div>
 </section>
@@ -670,38 +314,23 @@
     <div class="section-label">Leistungen</div>
     <div>
       <div class="leistung-item">
-        <div>
-          <div class="leistung-title">Zielklarheit &amp; Zielkonflikte</div>
-          <div class="leistung-desc">Analyse konkurrierender Prioritäten, Werte und Erwartungen auf Führungsebene. Herausarbeiten eines gemeinsamen, handlungsleitenden Zielbilds.</div>
-        </div>
+        <div><div class="leistung-title">Zielklarheit &amp; Zielkonflikte</div><div class="leistung-desc">Analyse konkurrierender Prioritäten, Werte und Erwartungen auf Führungsebene. Herausarbeiten eines gemeinsamen, handlungsleitenden Zielbilds.</div></div>
         <div class="leistung-tag">Kernleistung</div>
       </div>
       <div class="leistung-item">
-        <div>
-          <div class="leistung-title">Change Management</div>
-          <div class="leistung-desc">Veränderung gelingt, wenn die Betroffenen das Ziel verstehen — nicht nur kennen. Klare Kommunikation, realistische Planung, Umsetzung auf Augenhöhe.</div>
-        </div>
+        <div><div class="leistung-title">Change Management</div><div class="leistung-desc">Veränderung gelingt, wenn die Betroffenen das Ziel verstehen — nicht nur kennen. Klare Kommunikation, realistische Planung, Umsetzung auf Augenhöhe.</div></div>
         <div class="leistung-tag">Transformation</div>
       </div>
       <div class="leistung-item">
-        <div>
-          <div class="leistung-title">Strategieentwicklung</div>
-          <div class="leistung-desc">Vom diffusen Anspruch zur konkreten Entscheidungsgrundlage. Was wollen wir wirklich — und was bedeutet das für die nächsten zwölf Monate?</div>
-        </div>
+        <div><div class="leistung-title">Strategieentwicklung</div><div class="leistung-desc">Vom diffusen Anspruch zur konkreten Entscheidungsgrundlage. Was wollen wir wirklich — und was bedeutet das für die nächsten zwölf Monate?</div></div>
         <div class="leistung-tag">Strategie</div>
       </div>
       <div class="leistung-item">
-        <div>
-          <div class="leistung-title">KI-Readiness</div>
-          <div class="leistung-desc">Bevor KI in Prozesse eingebunden wird: Klarheit über Anforderungen, Rollen und Übergabepunkte schaffen. Technologie folgt — Klarheit geht voraus.</div>
-        </div>
+        <div><div class="leistung-title">KI-Readiness</div><div class="leistung-desc">Bevor KI in Prozesse eingebunden wird: Klarheit über Anforderungen, Rollen und Übergabepunkte schaffen. Technologie folgt — Klarheit geht voraus.</div></div>
         <div class="leistung-tag">Innovation</div>
       </div>
       <div class="leistung-item">
-        <div>
-          <div class="leistung-title">Interimsmanagement</div>
-          <div class="leistung-desc">Unterstützung in Phasen des Übergangs. Mit breiter Erfahrung in unterschiedlichen Branchen — ohne lange Einarbeitungszeit.</div>
-        </div>
+        <div><div class="leistung-title">Interimsmanagement</div><div class="leistung-desc">Unterstützung in Phasen des Übergangs. Mit breiter Erfahrung in unterschiedlichen Branchen — ohne lange Einarbeitungszeit.</div></div>
         <div class="leistung-tag">Management</div>
       </div>
     </div>
@@ -715,20 +344,9 @@
   <div class="two-col">
     <div class="section-label">Zur Person</div>
     <div class="ueber-content">
-      <p>
-        Harald Schwack ist Unternehmensberater mit langjähriger Erfahrung in den Bereichen
-        Strategie, Veränderungsmanagement und Programm&shy;management. Er arbeitet mit
-        Führungsteams, die nicht mehr wissen, warum ihre guten Entscheidungen ins Leere laufen.
-      </p>
-      <p>
-        Der Ausgangspunkt ist fast immer derselbe: Nicht mangelndes Wissen oder fehlende
-        Ressourcen — sondern unausgesprochene Zielkonflikte, die alle weiteren Schritte
-        belasten. Diese sichtbar zu machen ist der erste und wichtigste Schritt.
-      </p>
-      <p>
-        Ergebnis der Zusammenarbeit: Klarheit, die Entscheidungen möglich macht.
-        Und Strukturen, die Übergabe möglich machen — an Teams, Prozesse oder KI-Systeme.
-      </p>
+      <p>Harald Schwack ist Unternehmensberater mit langjähriger Erfahrung in den Bereichen Strategie, Veränderungsmanagement und Programm&shy;management. Er arbeitet mit Führungsteams, die nicht mehr wissen, warum ihre guten Entscheidungen ins Leere laufen.</p>
+      <p>Der Ausgangspunkt ist fast immer derselbe: Nicht mangelndes Wissen oder fehlende Ressourcen — sondern unausgesprochene Zielkonflikte, die alle weiteren Schritte belasten. Diese sichtbar zu machen ist der erste und wichtigste Schritt.</p>
+      <p>Ergebnis der Zusammenarbeit: Klarheit, die Entscheidungen möglich macht. Und Strukturen, die Übergabe möglich machen — an Teams, Prozesse oder KI-Systeme.</p>
       <div class="ueber-tags">
         <span class="ueber-tag">Zielklarheit</span>
         <span class="ueber-tag">Change</span>
@@ -750,11 +368,7 @@
     <div>
       <div class="kontakt-intro">
         <h2>Ein erstes Gespräch<br>kostet nichts.</h2>
-        <p>
-          Wenn Sie das Gefühl haben, dass Ihr Unternehmen eigentlich alle Voraussetzungen hat —
-          und es trotzdem nicht reibungslos läuft, ist das ein gutes Zeichen.
-          Das Thema ist gefunden. Ich helfe, es zu benennen.
-        </p>
+        <p>Wenn Sie das Gefühl haben, dass Ihr Unternehmen eigentlich alle Voraussetzungen hat — und es trotzdem nicht reibungslos läuft, ist das ein gutes Zeichen. Das Thema ist gefunden. Ich helfe, es zu benennen.</p>
       </div>
       <div class="ml-embedded" data-form="KwxBb8"></div>
     </div>
@@ -764,9 +378,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-left">
-    <svg width="22" height="22" aria-hidden="true" style="opacity:0.4">
-      <use href="#hs-logo"/>
-    </svg>
+    <svg width="22" height="22" aria-hidden="true" style="opacity:.35"><use href="#hs"/></svg>
     <span>© 2026 Harald Schwack · Unternehmensberatung</span>
   </div>
   <a href="https://www.schwack.com/impressum/">Impressum</a>
