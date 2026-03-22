@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -13,96 +14,86 @@ ml('account','DEINE-ACCOUNT-ID');
 </script>
 <style>
 :root{
-  --bg:#131313;--bg-mid:#1a1a1a;--bg-card:#1f1f1f;
+  --bg:#141414;--bg-mid:#1d1d1d;--bg-card:#222222;
   --text:#f0ede8;--muted:#7a7870;
-  --teal:#00b09a;--teal-dk:#007d75;--line:#2c2c2c;
+  --teal:#00b09a;--teal-dk:#007d75;--line:#2e2e2e;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 4rem;background:rgba(19,19,19,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 4rem;background:rgba(19,19,19,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(–line)}
 .nav-brand{display:flex;align-items:center;gap:.9rem;text-decoration:none}
-.nav-name{font-size:.82rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--text);line-height:1.25}
-.nav-name span{display:block;font-size:.63rem;color:var(--muted);letter-spacing:.12em;font-weight:300}
-.nav-link{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:.45rem 1rem;border-radius:2px;transition:color .2s,border-color .2s}
-.nav-link:hover{color:var(--teal);border-color:var(--teal)}
+.nav-name{font-size:.82rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(–text);line-height:1.25}
+.nav-name span{display:block;font-size:.63rem;color:var(–muted);letter-spacing:.12em;font-weight:300}
+.nav-link{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(–muted);text-decoration:none;border:1px solid var(–line);padding:.45rem 1rem;border-radius:2px;transition:color .2s,border-color .2s}
+.nav-link:hover{color:var(–teal);border-color:var(–teal)}
 
 .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:8rem 4rem 5rem;gap:4rem;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 50% at 80% 38%,rgba(0,176,154,.08) 0%,transparent 65%),radial-gradient(ellipse 30% 40% at 18% 72%,rgba(0,107,96,.05) 0%,transparent 60%);pointer-events:none}
-.hero-eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:1.8rem;display:flex;align-items:center;gap:.8rem}
-.hero-eyebrow::before{content:'';display:block;width:2rem;height:1px;background:var(--teal)}
-.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,5.5vw,4.6rem);font-weight:300;line-height:1.12;margin-bottom:2rem}
-.hero-title em{font-style:italic;color:var(--teal)}
-.hero-sub{font-size:1rem;color:var(--muted);line-height:1.82;max-width:40ch;margin-bottom:2.5rem}
-.hero-cta{display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(0,176,154,.3);padding-bottom:.2rem;transition:border-color .2s}
-.hero-cta:hover{border-color:var(--teal)}
-.hero-right{display:flex;flex-direction:column;gap:2rem;padding-left:3rem;border-left:1px solid var(--line)}
-.hero-quote{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;font-style:italic;line-height:1.55;color:rgba(240,237,232,.72)}
-.hero-quote-attr{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.hero::before{content:’’;position:absolute;inset:0;background:radial-gradient(ellipse 55% 50% at 80% 38%,rgba(0,176,154,.08) 0%,transparent 65%),radial-gradient(ellipse 30% 40% at 18% 72%,rgba(0,107,96,.05) 0%,transparent 60%);pointer-events:none}
+.hero-eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(–teal);margin-bottom:1.8rem;display:flex;align-items:center;gap:.8rem}
+.hero-eyebrow::before{content:’’;display:block;width:2rem;height:1px;background:var(–teal)}
+.hero-title{font-family:‘Cormorant Garamond’,serif;font-size:clamp(3rem,5.5vw,4.6rem);font-weight:300;line-height:1.12;margin-bottom:2rem}
+.hero-title em{font-style:italic;color:var(–teal)}
+.hero-sub{font-size:1rem;color:var(–muted);line-height:1.82;max-width:40ch;margin-bottom:2.5rem}
+.hero-cta{display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(–teal);text-decoration:none;border-bottom:1px solid rgba(0,176,154,.3);padding-bottom:.2rem;transition:border-color .2s}
+.hero-cta:hover{border-color:var(–teal)}
+.hero-right{display:flex;flex-direction:column;gap:2rem;padding-left:3rem;border-left:1px solid var(–line)}
+.hero-quote{font-family:‘Cormorant Garamond’,serif;font-size:1.55rem;font-weight:300;font-style:italic;line-height:1.55;color:rgba(240,237,232,.72)}
+.hero-quote-attr{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(–muted)}
 
-.section-divider{height:1px;background:var(--line);margin:0 4rem}
-.section-label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);padding-top:.4rem;position:sticky;top:5rem;display:flex;align-items:center;gap:.6rem}
-.section-label::before{content:'';display:block;width:1.2rem;height:1px;background:var(--teal);flex-shrink:0}
+.section-divider{height:1px;background:var(–line);margin:0 4rem}
+.section-label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(–muted);padding-top:.4rem;position:sticky;top:5rem;display:flex;align-items:center;gap:.6rem}
+.section-label::before{content:’’;display:block;width:1.2rem;height:1px;background:var(–teal);flex-shrink:0}
 .two-col{display:grid;grid-template-columns:1fr 2fr;gap:5rem;align-items:start}
 
 .insight{padding:7rem 4rem}
-.insight-content h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:2rem}
-.insight-content h2 strong{font-weight:600;color:var(--teal)}
+.insight-content h2{font-family:‘Cormorant Garamond’,serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:2rem}
+.insight-content h2 strong{font-weight:600;color:var(–teal)}
 .insight-content p{color:rgba(240,237,232,.65);font-size:.97rem;line-height:1.85;max-width:62ch;margin-bottom:1.4rem}
-.insight-cards{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin-top:3rem;border:1px solid var(--line)}
-.insight-card{background:var(--bg-card);padding:2rem;transition:background .25s}
+.insight-cards{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(–line);margin-top:3rem;border:1px solid var(–line)}
+.insight-card{background:var(–bg-card);padding:2rem;transition:background .25s}
 .insight-card:hover{background:#272727}
-.insight-card-num{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--teal);opacity:.4;line-height:1;margin-bottom:.8rem}
-.insight-card h3{font-size:.85rem;font-weight:500;color:var(--text);margin-bottom:.5rem}
-.insight-card p{font-size:.84rem;color:var(--muted);line-height:1.7}
+.insight-card-num{font-family:‘Cormorant Garamond’,serif;font-size:2rem;font-weight:300;color:var(–teal);opacity:.4;line-height:1;margin-bottom:.8rem}
+.insight-card h3{font-size:.85rem;font-weight:500;color:var(–text);margin-bottom:.5rem}
+.insight-card p{font-size:.84rem;color:var(–muted);line-height:1.7}
 
-.logo-section{padding:7rem 4rem;background:var(--bg-mid);position:relative}
-.logo-section::before{content:'';position:absolute;top:0;left:4rem;right:4rem;height:2px;background:linear-gradient(to right,var(--teal),transparent)}
-.logo-section-content h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:1.8rem}
-.logo-section-content p{color:rgba(240,237,232,.65);font-size:.97rem;line-height:1.85;max-width:60ch;margin-bottom:1.2rem}
-.logo-cards{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:2.5rem}
-.logo-card{background:var(--bg-card);padding:1.8rem;transition:background .25s}
-.logo-card:hover{background:#272727}
-.logo-card-letter{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--teal);opacity:.5;line-height:1;margin-bottom:.6rem}
-.logo-card h3{font-size:.83rem;font-weight:500;color:var(--text);margin-bottom:.4rem}
-.logo-card p{font-size:.83rem;color:var(--muted);line-height:1.7}
+.thema{padding:7rem 4rem}
+.thema-content h2{font-family:‘Cormorant Garamond’,serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:2rem}
+.thema-content p{color:rgba(240,237,232,.65);font-size:.97rem;line-height:1.85;max-width:62ch;margin-bottom:1.4rem}
+.thema-quote{margin-top:2.5rem;padding:1.8rem 2rem;border-left:2px solid var(–teal);background:var(–bg-card)}
+.thema-quote p{font-family:‘Cormorant Garamond’,serif;font-size:1.35rem;font-style:italic;font-weight:300;color:rgba(240,237,232,.82);line-height:1.55;margin:0}
+.thema-example{margin-top:2.5rem;border-left:2px solid var(–teal);padding-left:1.8rem}
+.thema-example-label{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(–teal);margin-bottom:1rem}
+.thema-steps{display:flex;flex-direction:column;gap:.65rem}
+.thema-step{display:flex;align-items:baseline;gap:1rem;font-size:.9rem;color:rgba(240,237,232,.65)}
+.thema-step-num{font-family:‘Cormorant Garamond’,serif;font-size:.85rem;color:var(–teal);min-width:1.2rem}
+.thema-step.ai{color:var(–muted);font-style:italic;margin-top:.6rem;padding-top:.8rem;border-top:1px solid var(–line)}
 
-.ki-section{padding:7rem 4rem}
-.ki-content h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:2rem}
-.ki-content p{color:rgba(240,237,232,.65);line-height:1.85;max-width:62ch;margin-bottom:1.4rem;font-size:.97rem}
-.ki-example{margin-top:2.5rem;border-left:2px solid var(--teal);padding-left:1.8rem}
-.ki-example-label{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:1rem}
-.ki-steps{display:flex;flex-direction:column;gap:.65rem}
-.ki-step{display:flex;align-items:baseline;gap:1rem;font-size:.9rem;color:rgba(240,237,232,.65)}
-.ki-step-num{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:var(--teal);min-width:1.2rem}
-.ki-step.ki-step-ai{color:var(--muted);font-style:italic;margin-top:.6rem;padding-top:.8rem;border-top:1px solid var(--line)}
-.ki-punchline{margin-top:2.5rem;font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-style:italic;font-weight:300;color:rgba(240,237,232,.8);line-height:1.5}
-
-.leistungen{padding:7rem 4rem;background:var(--bg-mid)}
-.leistung-item{padding:2rem 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:3fr 1.5fr;gap:2rem;align-items:start;cursor:default}
-.leistung-item:first-child{border-top:1px solid var(--line)}
-.leistung-title{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;color:var(--text);margin-bottom:.5rem;transition:color .2s}
-.leistung-item:hover .leistung-title{color:var(--teal)}
-.leistung-desc{font-size:.87rem;color:var(--muted);line-height:1.75}
-.leistung-tag{font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right;padding-top:.4rem;opacity:.5}
+.leistungen{padding:7rem 4rem}
+.leistung-item{padding:2rem 0;border-bottom:1px solid var(–line);display:grid;grid-template-columns:3fr 1.5fr;gap:2rem;align-items:start;cursor:default}
+.leistung-item:first-child{border-top:1px solid var(–line)}
+.leistung-title{font-family:‘Cormorant Garamond’,serif;font-size:1.45rem;font-weight:400;color:var(–text);margin-bottom:.5rem;transition:color .2s}
+.leistung-item:hover .leistung-title{color:var(–teal)}
+.leistung-desc{font-size:.87rem;color:var(–muted);line-height:1.75}
+.leistung-tag{font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:var(–muted);text-align:right;padding-top:.4rem;opacity:.5}
 
 .ueber{padding:7rem 4rem}
 .ueber-content p{color:rgba(240,237,232,.65);line-height:1.85;max-width:60ch;margin-bottom:1.2rem;font-size:.97rem}
 .ueber-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2rem}
-.ueber-tag{font-size:.69rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);color:var(--muted);padding:.35rem .9rem;border-radius:2px;transition:border-color .2s,color .2s}
-.ueber-tag:hover{border-color:var(--teal);color:var(--teal)}
+.ueber-tag{font-size:.69rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(–line);color:var(–muted);padding:.35rem .9rem;border-radius:2px;transition:border-color .2s,color .2s}
+.ueber-tag:hover{border-color:var(–teal);color:var(–teal)}
 
-.kontakt{padding:7rem 4rem;background:var(--bg-mid);position:relative}
-.kontakt::before{content:'';position:absolute;top:0;left:4rem;right:4rem;height:2px;background:linear-gradient(to right,var(--teal),transparent)}
-.kontakt-intro h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:1rem}
+.kontakt{padding:7rem 4rem;position:relative}
+.kontakt::before{content:’’;position:absolute;top:0;left:4rem;right:4rem;height:2px;background:linear-gradient(to right,var(–teal),transparent)}
+.kontakt-intro h2{font-family:‘Cormorant Garamond’,serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;line-height:1.3;margin-bottom:1rem}
 .kontakt-intro p{color:rgba(240,237,232,.6);line-height:1.85;max-width:55ch;font-size:.97rem;margin-bottom:3rem}
 
-footer{padding:1.8rem 4rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:1rem}
+footer{padding:1.8rem 4rem;border-top:1px solid var(–line);display:flex;justify-content:space-between;align-items:center;gap:1rem}
 .footer-left{display:flex;align-items:center;gap:.8rem}
-footer span{font-size:.7rem;color:var(--muted);letter-spacing:.04em}
-footer a{font-size:.7rem;color:var(--muted);text-decoration:none;transition:color .2s;letter-spacing:.06em}
-footer a:hover{color:var(--teal)}
+footer span{font-size:.7rem;color:var(–muted);letter-spacing:.04em}
+footer a{font-size:.7rem;color:var(–muted);text-decoration:none;transition:color .2s;letter-spacing:.06em}
+footer a:hover{color:var(–teal)}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .hero-eyebrow{animation:fadeUp .6s ease .1s both}
@@ -112,20 +103,21 @@ footer a:hover{color:var(--teal)}
 .hero-right  {animation:fadeUp .6s ease .4s both}
 
 @media(max-width:900px){
-  nav{padding:1rem 1.6rem}
-  .hero{padding:6rem 1.6rem 4rem;grid-template-columns:1fr;gap:2.5rem}
-  .two-col{grid-template-columns:1fr;gap:2rem}
-  .insight,.logo-section,.ki-section,.leistungen,.ueber,.kontakt{padding:5rem 1.6rem}
-  .hero-right{padding-left:0;border-left:none;border-top:1px solid var(--line);padding-top:2rem}
-  .insight-cards,.logo-cards{grid-template-columns:1fr}
-  .section-label{position:static}
-  .section-divider{margin:0 1.6rem}
-  .leistung-item{grid-template-columns:1fr}
-  .leistung-tag{text-align:left}
-  footer{flex-direction:column;text-align:center;padding:1.6rem}
-  .logo-section::before,.kontakt::before{left:1.6rem;right:1.6rem}
+nav{padding:1rem 1.6rem}
+.hero{padding:6rem 1.6rem 4rem;grid-template-columns:1fr;gap:2.5rem}
+.two-col{grid-template-columns:1fr;gap:2rem}
+.insight,.thema,.leistungen,.ueber,.kontakt{padding:5rem 1.6rem}
+.hero-right{padding-left:0;border-left:none;border-top:1px solid var(–line);padding-top:2rem}
+.insight-cards,.logo-cards{grid-template-columns:1fr}
+.section-label{position:static}
+.section-divider{margin:0 1.6rem}
+.leistung-item{grid-template-columns:1fr}
+.leistung-tag{text-align:left}
+footer{flex-direction:column;text-align:center;padding:1.6rem}
+.thema.mid::before,.kontakt::before{left:1.6rem;right:1.6rem}
 }
 </style>
+
 </head>
 <body>
 
@@ -144,40 +136,45 @@ footer a:hover{color:var(--teal)}
   TR: same D, 180°  #00b09a   flat right(x=91), bulge LEFT
       rect x=73..91, arc center(73,27) r=18, to x=55
 -->
+
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
   <defs>
     <symbol id="hs" viewBox="0 0 100 100">
       <!-- teal border frame -->
       <rect x="2" y="2" width="96" height="96" fill="none" stroke="#007d75" stroke-width="4"/>
 
-      <!-- TL: square, dark teal -->
-      <rect x="9" y="9" width="36" height="36" fill="#006b60"/>
+```
+  <!-- TL: square, dark teal -->
+  <rect x="9" y="9" width="36" height="36" fill="#006b60"/>
 
-      <!-- BL: square, sage — identical size -->
-      <rect x="9" y="55" width="36" height="36" fill="#88b4af"/>
+  <!-- BL: square, sage — identical size -->
+  <rect x="9" y="55" width="36" height="36" fill="#88b4af"/>
 
-      <!--
-        BR: D-shape — rect (left half) + semicircle (right)
-        Bounding box x=55..91, y=55..91 (36×36)
-        Rect portion: x=55 to 73, full height
-        Semicircle: center (73,73), r=18, bulge RIGHT (x up to 91)
-        Path: top-left → top-mid → arc down-right → bottom-mid → bottom-left → close
-      -->
-      <path d="M55,55 L73,55 A18,18,0,0,1,73,91 L55,91 Z" fill="#004e48"/>
+  <!--
+    BR: D-shape — rect (left half) + semicircle (right)
+    Bounding box x=55..91, y=55..91 (36×36)
+    Rect portion: x=55 to 73, full height
+    Semicircle: center (73,73), r=18, bulge RIGHT (x up to 91)
+    Path: top-left → top-mid → arc down-right → bottom-mid → bottom-left → close
+  -->
+  <path d="M55,55 L73,55 A18,18,0,0,1,73,91 L55,91 Z" fill="#004e48"/>
 
-      <!--
-        TR: same D, rotated 180° — rect (right half) + semicircle (left)
-        Bounding box x=55..91, y=9..45 (36×36)
-        Rect portion: x=73 to 91, full height
-        Semicircle: center (73,27), r=18, bulge LEFT (x down to 55)
-        Path: top-right → top-mid → arc down-left → bottom-mid → bottom-right → close
-      -->
-      <path d="M89,9 L71,9 A18,18,0,0,0,71,45 L89,45 Z" fill="#00b09a"/>
-    </symbol>
+  <!--
+    TR: same D, rotated 180° — rect (right half) + semicircle (left)
+    Bounding box x=55..91, y=9..45 (36×36)
+    Rect portion: x=73 to 91, full height
+    Semicircle: center (73,27), r=18, bulge LEFT (x down to 55)
+    Path: top-right → top-mid → arc down-left → bottom-mid → bottom-right → close
+  -->
+  <path d="M89,9 L71,9 A18,18,0,0,0,71,45 L89,45 Z" fill="#00b09a"/>
+</symbol>
+```
+
   </defs>
 </svg>
 
 <!-- NAV -->
+
 <nav>
   <a href="#" class="nav-brand">
     <svg width="36" height="36" aria-label="Harald Schwack"><use href="#hs"/></svg>
@@ -190,6 +187,7 @@ footer a:hover{color:var(--teal)}
 </nav>
 
 <!-- HERO -->
+
 <section class="hero">
   <div>
     <div class="hero-eyebrow">Unternehmensberatung · Wien</div>
@@ -217,6 +215,7 @@ footer a:hover{color:var(--teal)}
 <div class="section-divider"></div>
 
 <!-- INSIGHT -->
+
 <section class="insight" id="insight">
   <div class="two-col">
     <div class="section-label">Das Problem</div>
@@ -252,31 +251,18 @@ footer a:hover{color:var(--teal)}
 
 <div class="section-divider"></div>
 
-<!-- LOGO SECTION -->
-<section class="logo-section">
+<!-- ZIELE & KLARHEIT -->
+
+<section class="thema" id="ziele">
   <div class="two-col">
-    <div class="section-label">Das Zeichen</div>
-    <div class="logo-section-content">
-      <h2>Vier Felder.<br>Zwei Buchstaben.<br>Eine Haltung.</h2>
-
-      <svg width="130" height="130" style="display:block;margin-bottom:2rem" aria-label="Harald Schwack Markenzeichen">
-        <use href="#hs"/>
-      </svg>
-
-      <p>Das Markenzeichen ist kein dekoratives Element — es ist eine Aussage. Vier Felder in einem Rahmen: zwei Quadrate links, eine D-Form zweimal rechts. Auf den zweiten Blick: die Initialen H und S — einmal in den positiven Flächen, einmal im Negativ zwischen ihnen lesbar.</p>
-      <p>Genau das ist der Anspruch dieser Arbeit: Hinter der offensichtlichen Oberfläche die eigentliche Struktur sichtbar machen.</p>
-
-      <div class="logo-cards">
-        <div class="logo-card">
-          <div class="logo-card-letter">H</div>
-          <h3>Harald — im Positiv</h3>
-          <p>Die zwei Quadrate links bilden die Pfeiler. Das Kreuz des Rasters liest sich als Querbalken — H entsteht aus der Geometrie selbst.</p>
-        </div>
-        <div class="logo-card">
-          <div class="logo-card-letter">S</div>
-          <h3>Schwack — im Negativ</h3>
-          <p>Dieselbe D-Form, zweimal: oben gespiegelt (Buckel links), unten normal (Buckel rechts). Positiv gelesen ergibt der Wechsel das S.</p>
-        </div>
+    <div class="section-label">Ziele &amp; Klarheit</div>
+    <div class="thema-content">
+      <h2>Wenn jede Abteilung<br>ihr eigenes Ziel verfolgt,<br>verliert das Unternehmen.</h2>
+      <p>Klare Ziele machen einen enormen Unterschied — das klingt selbstverständlich und ist es doch nicht. In der Praxis verfolgen unterschiedliche Abteilungen oft grundlegend unterschiedliche Prioritäten. Nicht aus bösem Willen, sondern weil niemand das große Bild klar genug gezeichnet hat.</p>
+      <p>Das Ergebnis ist Mikromanagement: endlose Abstimmungsschleifen, die im Grunde nur eine einzige Frage beantworten wollen — worauf kommt es hier eigentlich an? Diese Frage vorher zu klären ist die eigentliche Führungsaufgabe.</p>
+      <p>Ziele müssen so klar sein, dass sie jeder versteht. Nicht nur das Führungsteam. Jeder.</p>
+      <div class="thema-quote">
+        <p>„Wenn du nicht weißt wohin du willst, wird es schwierig — egal wie gut du unterwegs bist."</p>
       </div>
     </div>
   </div>
@@ -284,24 +270,45 @@ footer a:hover{color:var(--teal)}
 
 <div class="section-divider"></div>
 
-<!-- KI -->
-<section class="ki-section">
+<!-- CHANGE MANAGEMENT -->
+
+<section class="thema" id="change">
   <div class="two-col">
-    <div class="section-label">KI &amp; Klarheit</div>
-    <div class="ki-content">
-      <h2>KI kann vieles übernehmen —<br>wenn Sie vorher klar sind.</h2>
-      <p>Die verbreitete Erwartung lautet: <em>„KI — löse mir Problem X."</em> Die Realität sieht anders aus: KI ist ein hervorragender Ausführer. Aber sie kann keine Fragestellungen definieren, die noch niemand durchgedacht hat.</p>
-      <div class="ki-example">
-        <div class="ki-example-label">Beispiel: Recruiting-Prozess</div>
-        <div class="ki-steps">
-          <div class="ki-step"><span class="ki-step-num">→</span> Wen suche ich eigentlich — und woran erkenne ich diese Person?</div>
-          <div class="ki-step"><span class="ki-step-num">→</span> Welche Aufgaben oder Tests geben mir die relevanten Signale?</div>
-          <div class="ki-step"><span class="ki-step-num">→</span> Nach welchen Kriterien bewerte ich die Ergebnisse?</div>
-          <div class="ki-step"><span class="ki-step-num">→</span> Wen lade ich dann zum persönlichen Gespräch ein?</div>
-          <div class="ki-step ki-step-ai"><span class="ki-step-num">●</span> Alles davor: Ihre Entscheidung. Den Rest macht KI.</div>
+    <div class="section-label">Change Management</div>
+    <div class="thema-content">
+      <h2>Veränderung wird von<br>Menschen getragen —<br>nicht von Strategiepapieren.</h2>
+      <p>Wer Veränderung durchsetzen will, indem er nur erklärt was sich ändert — und das auch nur, wenn er gefragt wird — verliert seine Mitarbeiter. Nicht sofort. Aber sicher.</p>
+      <p>Was wirklich zählt, ist Haltung. Authentisch bleiben. Sagen was man weiß. Und den Mut haben, klar zu sagen was man noch nicht weiß — verbunden mit dem ehrlichen Versprechen, es nachzuliefern sobald es geht.</p>
+      <p>Vertrauen entsteht nicht durch perfekte Antworten. Es entsteht durch Verlässlichkeit. Und durch die Bereitschaft, sich selbst treu zu bleiben — auch wenn es unbequem wird.</p>
+      <div class="thema-quote">
+        <p>„Menschen folgen keiner Strategie. Sie folgen jemandem, dem sie glauben."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- KI & AUTOMATISIERUNG -->
+
+<section class="thema" id="ki">
+  <div class="two-col">
+    <div class="section-label">KI &amp; Automatisierung</div>
+    <div class="thema-content">
+      <h2>KI ist kein Selbstzweck —<br>aber ein unfassbarer Hebel,<br>wenn man weiß was man will.</h2>
+      <p>Die verbreitete Erwartung lautet: <em>„KI — löse mir Problem X."</em> Die Realität sieht anders aus. KI ist ein hervorragender Ausführer. Aber sie kann nicht definieren, was eigentlich das Ziel ist. Das ist Menschenarbeit.</p>
+      <p>Wer diese Arbeit macht — wer seine Prozesse wirklich versteht, seine Ziele klar hat und weiß wo er gebraucht wird — der hat heute Möglichkeiten, die vor wenigen Jahren undenkbar waren.</p>
+      <p>Ich arbeite seit Jahren mit KI-Agenten, die etwa meine Buchhaltung übernehmen. Nicht weil es modern ist — sondern weil es mir den Raum gibt, mich auf die Arbeit zu konzentrieren, für die es mich braucht. Das ist der eigentliche Hebel: nicht mehr tun, sondern das Richtige tun.</p>
+      <div class="thema-example">
+        <div class="thema-example-label">Beispiel: Recruiting</div>
+        <div class="thema-steps">
+          <div class="thema-step"><span class="thema-step-num">→</span> Wen suche ich — und woran erkenne ich diese Person?</div>
+          <div class="thema-step"><span class="thema-step-num">→</span> Welche Aufgaben geben mir die relevanten Signale?</div>
+          <div class="thema-step"><span class="thema-step-num">→</span> Nach welchen Kriterien bewerte ich die Ergebnisse?</div>
+          <div class="thema-step"><span class="thema-step-num">→</span> Wen lade ich zum persönlichen Gespräch ein?</div>
+          <div class="thema-step ai"><span class="thema-step-num">●</span> Alles davor: Ihre Entscheidung. Den Rest macht KI.</div>
         </div>
       </div>
-      <p class="ki-punchline">„Wenn Sie wissen, was zu tun ist —<br>können Sie fast alles abgeben."</p>
     </div>
   </div>
 </section>
@@ -309,6 +316,7 @@ footer a:hover{color:var(--teal)}
 <div class="section-divider"></div>
 
 <!-- LEISTUNGEN -->
+
 <section class="leistungen" id="leistungen">
   <div class="two-col">
     <div class="section-label">Leistungen</div>
@@ -340,6 +348,7 @@ footer a:hover{color:var(--teal)}
 <div class="section-divider"></div>
 
 <!-- ÜBER -->
+
 <section class="ueber" id="ueber">
   <div class="two-col">
     <div class="section-label">Zur Person</div>
@@ -362,6 +371,7 @@ footer a:hover{color:var(--teal)}
 <div class="section-divider"></div>
 
 <!-- KONTAKT -->
+
 <section class="kontakt" id="kontakt">
   <div class="two-col">
     <div class="section-label">Kontakt</div>
@@ -376,6 +386,7 @@ footer a:hover{color:var(--teal)}
 </section>
 
 <!-- FOOTER -->
+
 <footer>
   <div class="footer-left">
     <svg width="22" height="22" aria-hidden="true" style="opacity:.35"><use href="#hs"/></svg>
