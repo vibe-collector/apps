@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impressum – Harald Schwack</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141414;--bg-mid:#1d1d1d;--bg-card:#222222;
+  --text:#f0ede8;--muted:#7a7870;
+  --teal:#00b09a;--teal-dk:#007d75;--line:#2e2e2e;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 4rem;background:rgba(20,20,20,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav-brand{display:flex;align-items:center;gap:.9rem;text-decoration:none}
+.nav-name{font-size:.82rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--text);line-height:1.25}
+.nav-name span{display:block;font-size:.63rem;color:var(--muted);letter-spacing:.12em;font-weight:300}
+.nav-link{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:.45rem 1rem;border-radius:2px;transition:color .2s,border-color .2s}
+.nav-link:hover{color:var(--teal);border-color:var(--teal)}
+
+/* CONTENT */
+.page{padding:9rem 4rem 7rem;max-width:900px}
+
+.page-eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:1.8rem;display:flex;align-items:center;gap:.8rem}
+.page-eyebrow::before{content:'';display:block;width:2rem;height:1px;background:var(--teal)}
+
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,3.8rem);font-weight:300;line-height:1.15;margin-bottom:3rem;color:var(--text)}
+
+/* contact block */
+.contact-block{margin-bottom:4rem;padding-bottom:3rem;border-bottom:1px solid var(--line)}
+.contact-block p{font-size:.97rem;color:rgba(240,237,232,.75);line-height:1.9}
+.contact-block a{color:var(--teal);text-decoration:none}
+.contact-block a:hover{text-decoration:underline}
+.contact-note{margin-top:1rem;font-size:.82rem;color:var(--muted);font-style:italic}
+
+/* sections */
+.impr-section{margin-bottom:3rem;padding-bottom:3rem;border-bottom:1px solid var(--line)}
+.impr-section:last-of-type{border-bottom:none}
+
+h2{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--text);margin-bottom:1rem;letter-spacing:.01em}
+
+p{font-size:.93rem;color:rgba(240,237,232,.6);line-height:1.9;margin-bottom:1rem}
+p:last-child{margin-bottom:0}
+
+/* footer */
+footer{padding:1.8rem 4rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.footer-left{display:flex;align-items:center;gap:.8rem}
+footer span{font-size:.7rem;color:var(--muted);letter-spacing:.04em}
+footer a{font-size:.7rem;color:var(--muted);text-decoration:none;transition:color .2s}
+footer a:hover{color:var(--teal)}
+
+@media(max-width:900px){
+  nav{padding:1rem 1.6rem}
+  .page{padding:7rem 1.6rem 5rem}
+  footer{flex-direction:column;text-align:center;padding:1.6rem}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+  <defs>
+    <symbol id="hs" viewBox="0 0 100 100">
+      <rect x="2" y="2" width="96" height="96" fill="none" stroke="#007d75" stroke-width="4"/>
+      <rect x="9" y="9" width="36" height="36" fill="#006b60"/>
+      <rect x="9" y="55" width="36" height="36" fill="#88b4af"/>
+      <path d="M55,55 L73,55 A18,18,0,0,1,73,91 L55,91 Z" fill="#004e48"/>
+      <path d="M89,9 L71,9 A18,18,0,0,0,71,45 L89,45 Z" fill="#00b09a"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-brand">
+    <svg width="36" height="36" aria-label="Harald Schwack"><use href="#hs"/></svg>
+    <div class="nav-name">
+      Harald Schwack
+      <span>Unternehmensberatung</span>
+    </div>
+  </a>
+  <a href="/" class="nav-link">← Zurück</a>
+</nav>
+
+<!-- CONTENT -->
+<main class="page">
+
+  <div class="page-eyebrow">Rechtliche Angaben</div>
+  <h1>Impressum</h1>
+
+  <!-- Inhaber -->
+  <div class="contact-block">
+    <p>
+      <strong style="color:var(--text);font-weight:500">Harald Schwack</strong><br>
+      Hintere Liesingbachstr. 14-16/A4/3<br>
+      1100 Wien<br><br>
+      <a href="tel:+436991699241">+43 699 1699 2411</a><br>
+      <a href="mailto:office@schwack.com">office@schwack.com</a>
+    </p>
+    <p class="contact-note">Das Gewerbe ist aktuell ruhend gemeldet.</p>
+  </div>
+
+  <!-- Haftungsausschluss -->
+  <div class="impr-section">
+    <h2>Haftungsausschluss</h2>
+    <h2 style="font-size:1rem;font-family:'DM Sans',sans-serif;font-weight:500;color:rgba(240,237,232,.8);margin-bottom:.6rem;margin-top:1.4rem">Inhalt des Onlineangebotes</h2>
+    <p>Der Autor übernimmt keinerlei Gewähr für die Aktualität, Richtigkeit und Vollständigkeit der bereitgestellten Informationen auf dieser Website. Haftungsansprüche gegen den Autor, welche sich auf Schäden materieller oder ideeller Art beziehen, die durch die Nutzung oder Nichtnutzung der dargebotenen Informationen bzw. durch die Nutzung fehlerhafter und unvollständiger Informationen verursacht wurden, sind grundsätzlich ausgeschlossen, sofern seitens des Autors kein nachweislich vorsätzliches oder grob fahrlässiges Verschulden vorliegt.</p>
+    <p>Alle Angebote sind freibleibend und unverbindlich. Der Autor behält es sich ausdrücklich vor, Teile der Seiten oder das gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.</p>
+  </div>
+
+  <!-- Verweise -->
+  <div class="impr-section">
+    <h2>Verweise und Links</h2>
+    <p>Bei direkten oder indirekten Verweisen auf fremde Webseiten („Hyperlinks"), die außerhalb des Verantwortungsbereiches des Autors liegen, würde eine Haftungsverpflichtung ausschließlich in dem Fall in Kraft treten, in dem der Autor von den Inhalten Kenntnis hat und es ihm technisch möglich und zumutbar wäre, die Nutzung im Falle rechtswidriger Inhalte zu verhindern.</p>
+    <p>Der Autor erklärt hiermit ausdrücklich, dass zum Zeitpunkt der Linksetzung keine illegalen Inhalte auf den zu verlinkenden Seiten erkennbar waren. Auf die aktuelle und zukünftige Gestaltung, die Inhalte oder die Urheberschaft der verlinkten Seiten hat der Autor keinerlei Einfluss. Deshalb distanziert er sich hiermit ausdrücklich von allen Inhalten aller verlinkten Seiten, die nach der Linksetzung verändert wurden.</p>
+    <p>Für illegale, fehlerhafte oder unvollständige Inhalte und insbesondere für Schäden, die aus der Nutzung oder Nichtnutzung solcherart dargebotener Informationen entstehen, haftet allein der Anbieter der Seite, auf welche verwiesen wurde, nicht derjenige, der über Links auf die jeweilige Veröffentlichung lediglich verweist.</p>
+  </div>
+
+  <!-- Urheberrecht -->
+  <div class="impr-section">
+    <h2>Urheber- und Kennzeichenrecht</h2>
+    <p>Der Autor ist bestrebt, in allen Publikationen die Urheberrechte der verwendeten Bilder, Grafiken, Tondokumente, Videosequenzen und Texte zu beachten, von ihm selbst erstellte Inhalte zu nutzen oder auf lizenzfreie Materialien zurückzugreifen.</p>
+    <p>Alle innerhalb des Internetangebotes genannten und ggf. durch Dritte geschützten Marken- und Warenzeichen unterliegen uneingeschränkt den Bestimmungen des jeweils gültigen Kennzeichenrechts und den Besitzrechten der jeweiligen eingetragenen Eigentümer.</p>
+    <p>Das Copyright für veröffentlichte, vom Autor selbst erstellte Objekte bleibt allein beim Autor der Seiten. Eine Vervielfältigung oder Verwendung solcher Inhalte in anderen elektronischen oder gedruckten Publikationen ist ohne ausdrückliche Zustimmung des Autors nicht gestattet.</p>
+  </div>
+
+  <!-- Datenschutz -->
+  <div class="impr-section">
+    <h2>Datenschutz</h2>
+    <p>Sofern innerhalb des Internetangebotes die Möglichkeit zur Eingabe persönlicher oder geschäftlicher Daten besteht, so erfolgt die Preisgabe dieser Daten seitens des Nutzers auf ausdrücklich freiwilliger Basis.</p>
+    <p>Die Nutzung der im Rahmen des Impressums veröffentlichten Kontaktdaten wie Postanschriften, Telefon- und Faxnummern sowie E-Mail-Adressen durch Dritte zur Übersendung von nicht ausdrücklich angeforderten Informationen ist nicht gestattet. Rechtliche Schritte gegen die Versender von Spam-Mails bei Verstößen gegen dieses Verbot sind ausdrücklich vorbehalten.</p>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <svg width="20" height="20" aria-hidden="true" style="opacity:.35"><use href="#hs"/></svg>
+    <span>© 2026 Harald Schwack · Unternehmensberatung</span>
+  </div>
+  <a href="/">schwack.com</a>
+</footer>
+
+</body>
+</html>
