@@ -1,0 +1,2459 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Impostor</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --card: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #e8ff00;
+    --accent2: #ff3c6e;
+    --text: #f0f0f5;
+    --muted: #6b6b80;
+    --impostor: #ff3c6e;
+    --safe: #00e5a0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, #1e1e3a 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100svh;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .screen {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    animation: fadeUp 0.35s ease;
+  }
+  .screen.active { display: flex; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* TYPOGRAPHY */
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    letter-spacing: 4px;
+    line-height: 1;
+    color: var(--accent);
+    text-shadow: 0 0 40px rgba(232,255,0,0.3);
+  }
+  .logo span { color: var(--accent2); }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* INPUTS */
+  .input-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  input[type="text"], textarea {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    padding: 14px 18px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  input[type="text"]:focus, textarea:focus { border-color: var(--accent); }
+  input[type="text"]::placeholder, textarea::placeholder { color: var(--muted); }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* BUTTONS */
+  .btn {
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.15s;
+    padding: 14px 22px;
+    font-size: 15px;
+  }
+  .btn:active { transform: scale(0.96); }
+
+  .btn-accent {
+    background: var(--accent);
+    color: #000;
+    font-size: 17px;
+    padding: 16px;
+    border-radius: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-ghost {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+  }
+
+  .btn-icon {
+    background: var(--accent);
+    color: #000;
+    font-size: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .btn-danger {
+    background: transparent;
+    border: 1.5px solid var(--accent2);
+    color: var(--accent2);
+  }
+
+  .btn-sm {
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  /* PLAYER LIST */
+  .player-list {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    max-height: 240px;
+  }
+
+  .player-chip {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    animation: fadeUp 0.25s ease;
+  }
+
+  .player-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .player-name { font-weight: 500; flex: 1; }
+
+  .remove-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+  .remove-btn:hover { color: var(--accent2); }
+
+  /* REVEAL SCREEN */
+  .reveal-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 28px;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reveal-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  .reveal-card.impostor-card::before {
+    background: radial-gradient(ellipse at center, rgba(255,60,110,0.12) 0%, transparent 70%);
+    opacity: 1;
+  }
+
+  .reveal-card.safe-card::before {
+    background: radial-gradient(ellipse at center, rgba(0,229,160,0.1) 0%, transparent 70%);
+    opacity: 1;
+  }
+
+  .player-name-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    letter-spacing: 3px;
+    line-height: 1;
+  }
+
+  .hidden-word {
+    background: var(--border);
+    border-radius: 50px;
+    padding: 14px 24px;
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+    border: 1.5px solid var(--border);
+  }
+
+  .word-display {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 4px;
+    line-height: 1;
+    padding: 8px 0;
+  }
+
+  .word-display.impostor-word { color: var(--impostor); }
+  .word-display.safe-word { color: var(--safe); }
+
+  .role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .badge-impostor { background: rgba(255,60,110,0.15); color: var(--impostor); border: 1px solid rgba(255,60,110,0.3); }
+  .badge-safe { background: rgba(0,229,160,0.12); color: var(--safe); border: 1px solid rgba(0,229,160,0.25); }
+
+  .hint-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+    max-width: 280px;
+  }
+
+  /* PROGRESS */
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .player-counter {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  /* SECTION BOXES */
+  .section-box {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+
+  .section-header-title {
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .chevron {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform 0.2s;
+  }
+  .chevron.open { transform: rotate(180deg); }
+
+  .collapsible-body {
+    display: none;
+    margin-top: 14px;
+  }
+  .collapsible-body.open { display: block; }
+
+  .pair-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  .pair-item {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .pair-item:hover, .pair-item.selected { border-color: var(--accent); }
+  .pair-item .pair-main { font-weight: 700; color: var(--safe); font-size: 13px; }
+  .pair-item .pair-impostor { color: var(--impostor); }
+  .pair-item .pair-label { color: var(--muted); font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; }
+
+  .pair-random-item {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    grid-column: span 2;
+    text-align: center;
+  }
+  .pair-random-item:hover, .pair-random-item.selected { border-color: var(--accent); }
+  .pair-random-item .pair-main { font-weight: 700; color: var(--accent); font-size: 13px; }
+
+  /* BOTTOM AREA */
+  .bottom-actions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* START SCREEN */
+  .hero-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px 0;
+  }
+
+  .tagline {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 300px;
+    line-height: 1.6;
+  }
+
+  .rules-box {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 12px;
+  }
+
+  .rule-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 8px 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .rule-item:not(:last-child) { border-bottom: 1px solid var(--border); }
+  .rule-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #000;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ROUND DONE */
+  .round-done-card {
+    background: var(--card);
+    border: 1.5px solid var(--accent);
+    border-radius: 20px;
+    padding: 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .big-emoji { font-size: 64px; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: transform 0.3s;
+    z-index: 100;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,60,110,0.4); }
+    50% { box-shadow: 0 0 0 12px rgba(255,60,110,0); }
+  }
+  .impostor-card { animation: pulse 2s infinite; }
+
+  .dots { display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: background 0.2s; }
+  .dot.done { background: var(--accent); }
+  .dot.current { background: var(--accent2); }
+
+  /* ── GROUP TOGGLES ── */
+  .group-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    gap: 12px;
+  }
+  .group-toggle-row:last-child { border-bottom: none; }
+  .group-toggle-label { flex: 1; }
+  .group-count { color: var(--muted); font-size: 12px; margin-right: 8px; }
+
+  .toggle-switch {
+    width: 44px;
+    height: 24px;
+    border-radius: 12px;
+    background: var(--border);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+    border: none;
+  }
+  .toggle-switch.on { background: var(--accent); }
+  .toggle-switch::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    top: 3px;
+    left: 3px;
+    transition: left 0.2s;
+  }
+  .toggle-switch.on::after { left: 23px; }
+
+  .group-select-all {
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 8px 0 4px;
+    display: block;
+    text-align: right;
+  }
+
+  /* ═══════════════ WORD MANAGER ═══════════════ */
+  .wm-tabs {
+    display: flex;
+    gap: 8px;
+    margin: 16px 0;
+    flex-shrink: 0;
+  }
+
+  .wm-tab {
+    flex: 1;
+    padding: 10px 6px;
+    text-align: center;
+    border-radius: 10px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    color: var(--muted);
+  }
+  .wm-tab.active { border-color: var(--accent); color: var(--accent); }
+
+  .wm-panel { display: none; flex-direction: column; gap: 14px; }
+  .wm-panel.active { display: flex; }
+
+  .custom-pair-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .custom-pair-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    animation: fadeUp 0.2s ease;
+  }
+
+  .custom-pair-words {
+    flex: 1;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 14px;
+    flex-wrap: wrap;
+  }
+
+  .cw-main { color: var(--safe); font-weight: 700; }
+  .cw-sep { color: var(--muted); font-size: 12px; }
+  .cw-impostor { color: var(--impostor); }
+  .cw-source {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .cw-source.builtin { background: rgba(107,107,128,0.2); color: var(--muted); }
+  .cw-source.custom { background: rgba(232,255,0,0.12); color: var(--accent); }
+
+  .import-format-box {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+    font-family: monospace;
+  }
+
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn.active { border-color: var(--accent); color: var(--accent); }
+
+  .stats-row {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .stat-chip {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    text-align: center;
+  }
+  .stat-chip strong { font-size: 22px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; }
+  .stat-chip span { color: var(--muted); }
+
+  .drop-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
+    position: relative;
+    line-height: 1.6;
+  }
+  .drop-zone:hover, .drop-zone.dragover {
+    border-color: var(--accent);
+    background: rgba(232,255,0,0.04);
+    color: var(--text);
+  }
+  .drop-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+  }
+
+  .nav-back {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.15s;
+  }
+  .nav-back:hover { border-color: var(--accent); }
+
+  .scrollable {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 20px;
+  }
+
+  .input-label {
+    font-size: 12px;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+
+  hr.sep { height: 1px; background: var(--border); border: none; }
+
+  /* ── EDIT MODAL ── */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .modal-backdrop.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .modal-sheet {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 24px 24px 0 0;
+    padding: 28px 24px 40px;
+    width: 100%;
+    max-width: 480px;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.34,1.1,0.64,1);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .modal-backdrop.open .modal-sheet {
+    transform: translateY(0);
+  }
+  .modal-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 0 auto 8px;
+  }
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .modal-actions .btn { flex: 1; }
+
+  .cw-imp-chip {
+    background: rgba(255,60,110,0.15);
+    color: var(--accent2);
+    border-radius: 6px;
+    padding: 1px 7px;
+    font-size: 12px;
+  }
+
+  /* Edit pencil button on pair items */
+  .edit-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 6px;
+    line-height: 1;
+    transition: color 0.2s;
+    flex-shrink: 0;
+  }
+  .edit-btn:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ══════════════ SCREEN: START ══════════════ -->
+  <div class="screen active" id="screen-start">
+    <div class="hero-area">
+      <div class="logo">IMPOS<span>T</span>OR</div>
+      <p class="tagline">Wer lügt? Wer weiß es wirklich? Finde den Eindringling in eurer Mitte.</p>
+      <div class="rules-box">
+        <div class="rule-item"><span class="rule-num">1</span><span>Alle Spieler geben ihren Namen ein</span></div>
+        <div class="rule-item"><span class="rule-num">2</span><span>Jeder schaut reihum heimlich auf sein Wort</span></div>
+        <div class="rule-item"><span class="rule-num">3</span><span>Alle diskutieren – der Impostor versucht, sich zu verstecken</span></div>
+        <div class="rule-item"><span class="rule-num">4</span><span>Abgestimmt wird: Wer ist der Eindringling?</span></div>
+      </div>
+    </div>
+    <div class="bottom-actions">
+      <button class="btn btn-accent" onclick="goto('screen-players')">Los geht's →</button>
+      <button class="btn btn-ghost" onclick="showPinPrompt()">📝 Wortpaare verwalten</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ SCREEN: PLAYERS ══════════════ -->
+  <div class="screen" id="screen-players">
+    <h2>Spieler</h2>
+    <p class="subtitle">Mindestens 3 Spieler. Gebt eure Namen ein.</p>
+    <div class="input-row">
+      <input type="text" id="player-input" placeholder="Spielername…" maxlength="20" onkeydown="if(event.key==='Enter')addPlayer()">
+      <button class="btn btn-icon" onclick="addPlayer()">+</button>
+    </div>
+    <div class="player-list" id="player-list"></div>
+
+    <div class="section-box" style="margin-top:16px">
+      <div class="section-header" onclick="toggleSection('groups-body','groups-chevron')">
+        <span class="section-header-title">🗂 Kategorien wählen</span>
+        <span style="display:flex;align-items:center;gap:8px">
+          <span id="active-group-count" style="color:var(--accent);font-size:13px"></span>
+          <span class="chevron" id="groups-chevron">▼</span>
+        </span>
+      </div>
+      <div class="collapsible-body" id="groups-body">
+        <div id="group-toggle-list"></div>
+      </div>
+    </div>
+
+    <div class="bottom-actions">
+      <button class="btn btn-accent" onclick="startGame()">Spiel starten</button>
+      <button class="btn btn-ghost" onclick="goto('screen-start')">← Zurück</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ SCREEN: REVEAL ══════════════ -->
+  <div class="screen" id="screen-reveal">
+    <div class="player-counter" id="reveal-counter"></div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="reveal-card" id="reveal-card">
+      <div class="player-name-big" id="reveal-name"></div>
+      <div class="role-badge" id="reveal-badge"></div>
+      <div class="hidden-word" id="reveal-word-btn" onclick="revealWord()">
+        👆 Tippen um aufzudecken
+      </div>
+      <div id="reveal-word-display" style="display:none">
+        <div class="word-display" id="word-text"></div>
+      </div>
+      <p class="hint-text" id="reveal-hint"></p>
+    </div>
+    <div class="dots" id="reveal-dots"></div>
+    <div class="bottom-actions">
+      <button class="btn btn-accent" id="next-btn" onclick="nextPlayer()" style="display:none">Weiter →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ SCREEN: PLAY ══════════════ -->
+  <div class="screen" id="screen-play">
+    <div class="round-done-card">
+      <div class="big-emoji">🕵️</div>
+      <h2>Diskutiert!</h2>
+      <p class="subtitle" style="text-align:center;max-width:280px">Alle haben ihr Wort gesehen. Redet, stellt Fragen und findet den Impostoren.<br><br>Stimmt danach gemeinsam ab!</p>
+      <div id="play-word-count" style="font-size:13px;color:var(--muted)"></div>
+      <div id="play-last-played" style="font-size:12px;color:var(--muted);margin-top:6px;text-align:center"></div>
+    </div>
+    <div class="bottom-actions">
+      <button class="btn btn-accent" onclick="newRound()">Neue Runde</button>
+      <button class="btn btn-ghost" onclick="goto('screen-players')">Spieler ändern</button>
+      <button class="btn btn-ghost" onclick="goto('screen-start')">Hauptmenü</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ SCREEN: WORD MANAGER ══════════════ -->
+  <div class="screen" id="screen-wordmanager">
+    <div class="nav-bar">
+      <button class="nav-back" onclick="goto('screen-start')">←</button>
+      <h2 style="margin:0">Wortpaare</h2>
+    </div>
+
+    <div class="stats-row" id="wm-stats"></div>
+
+    <div class="wm-tabs">
+      <div class="wm-tab active" id="tab-list" onclick="switchWmTab('list')">📋 Alle</div>
+      <div class="wm-tab" id="tab-add" onclick="switchWmTab('add')">➕ Neu</div>
+      <div class="wm-tab" id="tab-import" onclick="switchWmTab('import')">📥 Import</div>
+    </div>
+
+    <div class="scrollable">
+
+      <!-- TAB: LIST -->
+      <div class="wm-panel active" id="panel-list">
+        <div class="filter-row">
+          <button class="filter-btn active" id="filter-all" onclick="setFilter('all')">Alle</button>
+          <button class="filter-btn" id="filter-custom" onclick="setFilter('custom')">Eigene</button>
+          <button class="filter-btn" id="filter-builtin" onclick="setFilter('builtin')">Vorinstalliert</button>
+        </div>
+        <div class="custom-pair-list" id="all-pairs-list"></div>
+        <button class="btn btn-danger btn-sm" id="delete-all-custom-btn" onclick="deleteAllCustom()" style="display:none">🗑 Alle eigenen löschen</button>
+      </div>
+
+      <!-- TAB: ADD -->
+      <div class="wm-panel" id="panel-add">
+        <p class="subtitle">Füge ein einzelnes Wortpaar manuell hinzu.</p>
+        <div class="field-group">
+          <label class="input-label">Hauptwort – alle Mitspieler sehen dieses</label>
+          <input type="text" id="add-main" placeholder="z.B. Strand" maxlength="40"
+            onkeydown="if(event.key==='Enter')document.getElementById('add-impostor').focus()">
+        </div>
+        <div class="field-group">
+          <label class="input-label">Tarnwort 1 (Pflichtfeld)</label>
+          <input type="text" id="add-impostor" placeholder="z.B. Steckdose" maxlength="40"
+            onkeydown="if(event.key==='Enter')document.getElementById('add-impostor2').focus()">
+        </div>
+        <div class="field-group">
+          <label class="input-label">Tarnwort 2 (optional)</label>
+          <input type="text" id="add-impostor2" placeholder="z.B. Brot" maxlength="40"
+            onkeydown="if(event.key==='Enter')document.getElementById('add-impostor3').focus()">
+        </div>
+        <div class="field-group">
+          <label class="input-label">Tarnwort 3 (optional)</label>
+          <input type="text" id="add-impostor3" placeholder="z.B. Küche" maxlength="40"
+            onkeydown="if(event.key==='Enter')addSinglePair()">
+        </div>
+        <button class="btn btn-accent" onclick="addSinglePair()">Wortpaar hinzufügen</button>
+      </div>
+
+      <!-- TAB: IMPORT -->
+      <div class="wm-panel" id="panel-import">
+        <p class="subtitle">Importiere viele Wortpaare auf einmal – als Text oder Datei.</p>
+
+        <div>
+          <h3>Text einfügen</h3>
+          <div class="import-format-box">
+            Ein Paar pro Zeile:<br>
+            <strong style="color:var(--safe)">Hauptwort</strong> <span>;</span> <strong style="color:var(--impostor)">Tarnwort</strong><br><br>
+            Strand ; Pool<br>
+            Flugzeug ; Helikopter<br>
+            Hund ; Wolf
+          </div>
+          <div style="margin-top:10px">
+            <textarea id="import-textarea" placeholder="Strand ; Pool&#10;Flugzeug ; Helikopter&#10;Hund ; Wolf"></textarea>
+          </div>
+          <button class="btn btn-accent" style="margin-top:10px;width:100%" onclick="importFromText()">📥 Text importieren</button>
+        </div>
+
+        <hr class="sep">
+
+        <div>
+          <h3>CSV-Datei hochladen</h3>
+          <p class="subtitle" style="margin-bottom:10px">Trennzeichen: Semikolon (;) oder Komma (,).<br>Spalte 1 = Hauptwort · Spalte 2 = Tarnwort</p>
+          <div class="drop-zone" id="drop-zone">
+            <input type="file" accept=".csv,.txt" onchange="handleFileImport(event)">
+            📂 Datei auswählen oder hierhin ziehen<br>
+            <span style="font-size:12px">.csv oder .txt</span>
+          </div>
+        </div>
+
+        <hr class="sep">
+
+        <div>
+          <h3>Exportieren</h3>
+          <p class="subtitle" style="margin-bottom:10px">Lade alle eigenen Wortpaare als CSV herunter.</p>
+          <button class="btn btn-ghost" style="width:100%" onclick="exportCustomPairs()">⬆️ Eigene Paare exportieren</button>
+        </div>
+      </div>
+
+    </div><!-- /scrollable -->
+  </div>
+
+</div>
+
+<!-- ══════════════ PIN MODAL ══════════════ -->
+<div class="modal-backdrop" id="pin-modal" onclick="closePinModal(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🔒 Zugangscode</div>
+    <p class="subtitle" style="margin-top:-4px">Bitte den Code eingeben, um die Wortpaare zu verwalten.</p>
+    <div style="position:relative">
+      <input type="password" id="pin-input" placeholder="••••" maxlength="10"
+        style="text-align:center;font-size:28px;letter-spacing:10px;padding:16px 18px"
+        onkeydown="if(event.key==='Enter')checkPin()" oninput="clearPinError()">
+      <div id="pin-error" style="color:var(--impostor);font-size:13px;margin-top:8px;text-align:center;min-height:20px"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closePinModal()">Abbrechen</button>
+      <button class="btn btn-accent" onclick="checkPin()">Weiter →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ EDIT MODAL ══════════════ -->
+<div class="modal-backdrop" id="edit-modal" onclick="closeEditModal(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Wortpaar bearbeiten</div>
+    <div class="field-group">
+      <label class="input-label">Hauptwort – alle Mitspieler sehen dieses</label>
+      <input type="text" id="edit-main" placeholder="Hauptwort" maxlength="40">
+    </div>
+    <div class="field-group">
+      <label class="input-label">Tarnwort 1</label>
+      <input type="text" id="edit-impostor" placeholder="Tarnwort 1" maxlength="40">
+    </div>
+    <div class="field-group">
+      <label class="input-label">Tarnwort 2</label>
+      <input type="text" id="edit-impostor2" placeholder="Tarnwort 2" maxlength="40">
+    </div>
+    <div class="field-group">
+      <label class="input-label">Tarnwort 3</label>
+      <input type="text" id="edit-impostor3" placeholder="Tarnwort 3" maxlength="40"
+        onkeydown="if(event.key==='Enter')saveEdit()">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeEditModal()">Abbrechen</button>
+      <button class="btn btn-accent" onclick="saveEdit()">✓ Speichern</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── BUILT-IN WORD PAIRS ──────────────────────────────────────────────────────
+const PAIR_GROUPS = [
+
+  {label:"🏛 Sehenswürdigkeiten",pairs:[
+    {main:"Eiffelturm",impostors:["Aufzug","Paris","Stahl"]},
+    {main:"Golden Gate Bridge",impostors:["rot","San Francisco","Nebel"]},
+    {main:"Empire State Building",impostors:["King Kong","New York","Aussichtsdeck"]},
+    {main:"Riesenrad Wien",impostors:["Prater","Gondel","Holz"]},
+    {main:"Kolosseum",impostors:["Gladiator","Rom","Bogen"]},
+    {main:"Taj Mahal",impostors:["Marmor","Agra","Kuppel"]},
+    {main:"Big Ben",impostors:["Glocke","London","Turm"]},
+    {main:"Brandenburger Tor",impostors:["Quadriga","Berlin","Sandstein"]},
+    {main:"Akropolis",impostors:["Säulen","Athen","Hügel"]},
+    {main:"Sagrada Família",impostors:["Kran","Barcelona","Türme"]},
+    {main:"Freiheitsstatue",impostors:["Fackel","New York","Kupfer"]},
+    {main:"Chinesische Mauer",impostors:["Wachtürme","Peking","Ziegel"]},
+    {main:"Alhambra",impostors:["Arabesken","Granada","Brunnen"]},
+    {main:"Stonehenge",impostors:["Druiden","England","Steine"]},
+    {main:"Schönbrunn",impostors:["Sissi","Wien","Gelb"]},
+    {main:"Stephansdom",impostors:["Dachziegel","Wien","Turm"]},
+    {main:"Louvre",impostors:["Glaspyramide","Paris","Mona Lisa"]},
+    {main:"Pyramiden von Gizeh",impostors:["Sphinx","Ägypten","Wüste"]},
+    {main:"Atomium",impostors:["Kugeln","Brüssel","Stahl"]},
+    {main:"Burj Khalifa",impostors:["Aussichtsdeck","Dubai","Wolke"]},
+    {main:"Sydney Opera House",impostors:["Segel","Hafen","Australien"]},
+    {main:"Hagia Sophia",impostors:["Minarett","Istanbul","Kuppel"]},
+    {main:"Vatikan",impostors:["Papst","Rom","Petersdom"]},
+    {main:"Buckingham Palace",impostors:["Wachsoldat","London","Balkon"]},
+    {main:"Neuschwanstein",impostors:["Ludwig II","Bayern","Märchen"]},
+    {main:"Mont-Saint-Michel",impostors:["Gezeiten","Normandie","Abtei"]},
+    {main:"Torre di Pisa",impostors:["schief","Toskana","Marmor"]},
+    {main:"Machu Picchu",impostors:["Lama","Peru","Inka"]},
+    {main:"Angkor Wat",impostors:["Dschungel","Kambodscha","Tempel"]},
+    {main:"Schloss Versailles",impostors:["Spiegelsaal","Ludwig XIV","Garten"]},
+    {main:"Petersdom",impostors:["Piazza","Papst","Kuppel"]},
+    {main:"Hofburg",impostors:["Kaiserappartements","Wien","Sissi"]},
+    {main:"Christusstatue Rio",impostors:["Corcovado","Brasilien","Arme"]},
+    {main:"Potala-Palast",impostors:["Tibet","Dalai Lama","rot-weiß"]},
+    {main:"Parthenon",impostors:["Friese","Athen","Marmor"]},
+    {main:"Blaue Moschee",impostors:["Iznik-Fliesen","Istanbul","sechs Minarette"]},
+    {main:"Windmühlen Kinderdijk",impostors:["Niederlande","Kanal","Flügel"]},
+    {main:"Chichen Itza",impostors:["Maya","Mexiko","Stufen"]},
+    {main:"Niagara-Fälle",impostors:["Vorhang","Kanada","Regenbogen"]},
+    {main:"Belvedere Wien",impostors:["Kuss","Klimt","Garten"]},
+  ]},
+
+  {label:"🏙 Städte Europas",pairs:[
+    {main:"Venedig",impostors:["Gondel","Kanal","Maske"]},
+    {main:"Amsterdam",impostors:["Fahrrad","Grachten","Tulpen"]},
+    {main:"Prag",impostors:["Karlsbrücke","Bier","Altstädter Ring"]},
+    {main:"Lissabon",impostors:["Straßenbahn","Fado","Pasteis"]},
+    {main:"Budapest",impostors:["Thermalbad","Donau","Kettenbrücke"]},
+    {main:"Dubrovnik",impostors:["Stadtmauer","Adria","Game of Thrones"]},
+    {main:"Kopenhagen",impostors:["Meerjungfrau","Fahrrad","Noma"]},
+    {main:"Edinburgh",impostors:["Dudelsack","Burg","Whisky"]},
+    {main:"Sevilla",impostors:["Flamenco","Orange","Kathedrale"]},
+    {main:"Stockholm",impostors:["IKEA","Archipel","Nobel"]},
+    {main:"Paris",impostors:["Eiffelturm","Mode","Croissant"]},
+    {main:"London",impostors:["roter Doppeldecker","Big Ben","Regen"]},
+    {main:"Berlin",impostors:["Currywurst","Mauer","Techno"]},
+    {main:"Wien",impostors:["Fiaker","Kaffeehaus","Walzer"]},
+    {main:"Rom",impostors:["Vespa","Kolosseum","Pasta"]},
+    {main:"Barcelona",impostors:["Gaudi","Strand","Tapas"]},
+    {main:"Madrid",impostors:["Flamenco","Prado","Tapas"]},
+    {main:"Athen",impostors:["Ouzo","Akropolis","Olivenöl"]},
+    {main:"Zürich",impostors:["Banken","See","Schokolade"]},
+    {main:"Brüssel",impostors:["Waffeln","Atomium","Pommes"]},
+    {main:"Helsinki",impostors:["Sauna","Finnland","Design"]},
+    {main:"Oslo",impostors:["Fjord","Viking","teuer"]},
+    {main:"Warschau",impostors:["Wodka","Altstadtmarkt","Chopin"]},
+    {main:"Reykjavik",impostors:["Nordlicht","Geysir","teuer"]},
+    {main:"Porto",impostors:["Portwein","Azulejos","Brücke"]},
+    {main:"Florenz",impostors:["David","Uffizien","Renaissance"]},
+    {main:"Neapel",impostors:["Vesuv","Pizza","Camorra"]},
+    {main:"Mailand",impostors:["Mode","Dom","Design"]},
+    {main:"Lyon",impostors:["Gastronomie","Seidenweberei","Flüsse"]},
+    {main:"Salzburg",impostors:["Mozart","Festung","Festspiele"]},
+    {main:"Graz",impostors:["Schlossberg","Uhrturm","steirisch"]},
+    {main:"Innsbruck",impostors:["Goldenes Dachl","Berge","Nordkette"]},
+    {main:"Krakau",impostors:["Wawel","Wodka","Marktplatz"]},
+    {main:"Tallinn",impostors:["Altstadt","Mittelalter","Estland"]},
+    {main:"Reykjavik",impostors:["Vulkan","Heiße Quellen","Island"]},
+  ]},
+
+  {label:"🌍 Länder & Essen",pairs:[
+    {main:"Frankreich",impostors:["Baguette","Croissant","Camembert"]},
+    {main:"Japan",impostors:["Ramen","Sushi","Miso"]},
+    {main:"USA",impostors:["Hamburger","Hot Dog","Pancakes"]},
+    {main:"Mexiko",impostors:["Tacos","Guacamole","Chili"]},
+    {main:"Indien",impostors:["Curry","Naan","Chai"]},
+    {main:"Deutschland",impostors:["Bratwurst","Sauerkraut","Brezel"]},
+    {main:"Spanien",impostors:["Paella","Tapas","Churros"]},
+    {main:"Griechenland",impostors:["Gyros","Feta","Moussaka"]},
+    {main:"China",impostors:["Dim Sum","Peking-Ente","Tofu"]},
+    {main:"Thailand",impostors:["Pad Thai","Kokossuppe","Mango"]},
+    {main:"Brasilien",impostors:["Caipirinha","Churrasco","Acai"]},
+    {main:"Türkei",impostors:["Köfte","Baklava","Kebap"]},
+    {main:"Russland",impostors:["Borschtsch","Pelmeni","Blini"]},
+    {main:"Marokko",impostors:["Tajine","Couscous","Minztee"]},
+    {main:"Argentinien",impostors:["Asado","Empanadas","Dulce de Leche"]},
+    {main:"Südkorea",impostors:["Kimchi","Bibimbap","Tteokbokki"]},
+    {main:"Vietnam",impostors:["Pho","Banh Mi","Frühlingsrollen"]},
+    {main:"Portugal",impostors:["Pasteis de Nata","Bacalhau","Portwein"]},
+    {main:"Schweiz",impostors:["Fondue","Rösti","Raclette"]},
+    {main:"Österreich",impostors:["Schnitzel","Knödel","Tafelspitz"]},
+    {main:"Libanon",impostors:["Hummus","Falafel","Taboulé"]},
+    {main:"Peru",impostors:["Ceviche","Lomo Saltado","Chicha"]},
+    {main:"Israel",impostors:["Falafel","Shakshuka","Challah"]},
+    {main:"Polen",impostors:["Pierogi","Bigos","Kielbasa"]},
+    {main:"Ungarn",impostors:["Gulasch","Langos","Paprika"]},
+    {main:"Schweden",impostors:["Köttbullar","Knäckebrot","Surströmming"]},
+    {main:"Indonesien",impostors:["Nasi Goreng","Satay","Tempeh"]},
+    {main:"Malaysia",impostors:["Laksa","Nasi Lemak","Roti Canai"]},
+    {main:"Kolumbien",impostors:["Empanadas","Bandeja Paisa","Arepas"]},
+    {main:"Kanada",impostors:["Poutine","Ahornsirup","Butter Tart"]},
+    {main:"Georgien",impostors:["Chatchapuri","Churchkhela","Tkemali"]},
+    {main:"Äthiopien",impostors:["Injera","Berbere","Kaffee"]},
+    {main:"Philippinen",impostors:["Adobo","Sinigang","Lechon"]},
+  ]},
+
+  {label:"🇦🇹 Österreich",pairs:[
+    {main:"Sachertorte",impostors:["Hotel","Aprikosenmarmelade","Wien"]},
+    {main:"Kaiserschmarrn",impostors:["Rosinen","Zwetschkenröster","Puderzucker"]},
+    {main:"Wiener Schnitzel",impostors:["Preiselbeeren","Erdäpfelsalat","Butterschmalz"]},
+    {main:"Apfelstrudel",impostors:["Vanillesoße","Zimt","Blätterteig"]},
+    {main:"Mozartkugel",impostors:["Marzipan","Salzburg","Pistazie"]},
+    {main:"Punschkrapfen",impostors:["rosa Glasur","Rum","Wien"]},
+    {main:"Wiener Philharmoniker",impostors:["Neujahrskonzert","Musikverein","Goldener Saal"]},
+    {main:"Kitzbühel",impostors:["Hahnenkamm","Streif","Tirol"]},
+    {main:"Red Bull",impostors:["Stratos","Fuschl","Flügel"]},
+    {main:"Arnold Schwarzenegger",impostors:["Terminator","Gouverneur","Thal"]},
+    {main:"Hallstatt",impostors:["Salzkammergut","Bergwerk","Postkarte"]},
+    {main:"Wachau",impostors:["Riesling","Grüner Veltliner","Donau"]},
+    {main:"Burgenland",impostors:["Blaufränkisch","Neusiedler See","Esterhazy"]},
+    {main:"Nordkette",impostors:["Seilbahn","Innsbruck","Klettern"]},
+    {main:"Bregenzerwald",impostors:["Käse","Vorarlberg","Almwiese"]},
+    {main:"Lipizzaner",impostors:["Hofreitschule","Wien","weiß"]},
+    {main:"Heuriger",impostors:["Viertel","Grüner Veltliner","Grinzing"]},
+    {main:"Fasching",impostors:["Krapfen","Maske","Mardigras"]},
+    {main:"Donauinselfest",impostors:["Gratiskonzert","Wien","Sommer"]},
+    {main:"Falco",impostors:["Amadeus","Rock me","Wien"]},
+    {main:"Niki Lauda",impostors:["Ferrari","Kappe","Formel 1"]},
+    {main:"Naschmarkt",impostors:["Melange","Wien","Gewürze"]},
+    {main:"Zell am See",impostors:["Kaprun","Gletscher","Pinzgau"]},
+    {main:"Manner",impostors:["Waffel","rosa","Stephansdom"]},
+    {main:"Prater",impostors:["Hauptallee","Riesenrad","Wien"]},
+    {main:"Marillenknödel",impostors:["Topfen","Wachau","Butter"]},
+    {main:"Grammelpogatscherl",impostors:["Grammel","Schmalz","steirisch"]},
+    {main:"Liptauer",impostors:["Topfen","Paprika","Heuriger"]},
+    {main:"Erdäpfelgulasch",impostors:["Würstel","Paprika","Hausmannskost"]},
+    {main:"Leberkäse",impostors:["Semmel","Senf","Fleischhauer"]},
+  ]},
+
+  {label:"🌊 Flüsse",pairs:[
+    {main:"Donau",impostors:["Wien","Wachau","blau"]},
+    {main:"Mur",impostors:["Graz","Steiermark","grün"]},
+    {main:"Salzach",impostors:["Salzburg","Mozart","Alpen"]},
+    {main:"Rhein",impostors:["Köln","Schweiz","Loreley"]},
+    {main:"Themse",impostors:["London","Big Ben","Nebel"]},
+    {main:"Seine",impostors:["Paris","Eiffelturm","Brücken"]},
+    {main:"Nil",impostors:["Kairo","Krokodil","Pyramiden"]},
+    {main:"Amazonas",impostors:["Regenwald","Piranha","Brasilien"]},
+    {main:"Mississippi",impostors:["New Orleans","Jazz","Dampfschiff"]},
+    {main:"Ganges",impostors:["Varanasi","heilig","Indien"]},
+    {main:"Tiber",impostors:["Rom","Vatikan","Brücken"]},
+    {main:"Elbe",impostors:["Hamburg","Dresden","Flut"]},
+    {main:"Sambesi",impostors:["Victoriafälle","Afrika","Krokodil"]},
+    {main:"Colorado",impostors:["Grand Canyon","Arizona","rot"]},
+    {main:"Inn",impostors:["Innsbruck","Bayern","Alpen"]},
+    {main:"Enns",impostors:["Steyr","Oberösterreich","Strudengau"]},
+    {main:"Traun",impostors:["Wels","Salzkammergut","blau"]},
+    {main:"Drau",impostors:["Villach","Kärnten","türkis"]},
+    {main:"Bregenzer Ache",impostors:["Vorarlberg","Bregenz","Bodensee"]},
+    {main:"Ybbs",impostors:["Niederösterreich","Donau","Wachau"]},
+  ]},
+
+  {label:"⚽ Fußball-Vereine",pairs:[
+    {main:"FC Bayern München",impostors:["Müller","Allianz Arena","Mia san mia"]},
+    {main:"Borussia Dortmund",impostors:["Reus","gelb-schwarz","Signal Iduna"]},
+    {main:"Real Madrid",impostors:["Ronaldo","Bernabéu","weiß"]},
+    {main:"FC Barcelona",impostors:["Messi","Camp Nou","blaugrana"]},
+    {main:"Manchester United",impostors:["Beckham","Old Trafford","rot"]},
+    {main:"Liverpool FC",impostors:["Gerrard","Anfield","You'll Never Walk"]},
+    {main:"Juventus Turin",impostors:["Del Piero","schwarz-weiß","Scudetto"]},
+    {main:"Paris Saint-Germain",impostors:["Mbappé","Eiffelturm","Neymar"]},
+    {main:"Arsenal",impostors:["Henry","Emirates","Kanonenkugel"]},
+    {main:"Chelsea",impostors:["Lampard","Stamford Bridge","blau"]},
+    {main:"Atletico Madrid",impostors:["Simeone","Wanda Metropolitano","rot-weiß"]},
+    {main:"Inter Mailand",impostors:["Zanetti","schwarz-blau","Nerazzurri"]},
+    {main:"AC Mailand",impostors:["Maldini","San Siro","rot-schwarz"]},
+    {main:"Ajax Amsterdam",impostors:["Cruyff","Arena","drei Streifen"]},
+    {main:"Galatasaray",impostors:["Istanbul","rot-gelb","Hells Bells"]},
+    {main:"Rapid Wien",impostors:["grün-weiß","Hütteldorf","Hachel"]},
+    {main:"Austria Wien",impostors:["Generali-Arena","violett","Veilchen"]},
+    {main:"Red Bull Salzburg",impostors:["Stier","Wals-Siezenheim","Mozartstadion"]},
+    {main:"LASK",impostors:["Linz","schwarz-weiß","Pasching"]},
+    {main:"Sturm Graz",impostors:["schwarz-weiß","Graz","Merkur Arena"]},
+    {main:"Napoli",impostors:["Maradona","hellblau","Vesuv"]},
+    {main:"AS Roma",impostors:["Wolf","Olimpico","giallorossi"]},
+    {main:"Tottenham",impostors:["Spurs","Hahn","North London"]},
+    {main:"Manchester City",impostors:["Guardiola","Etihad","himmelblau"]},
+    {main:"Celtic Glasgow",impostors:["grün-weiß","Parkhead","Shamrock"]},
+  ]},
+
+  {label:"⚽ Fußball-Situationen",pairs:[
+    {main:"Elfmeter",impostors:["Torhüter","Punkt","Elfmeterpunkt"]},
+    {main:"Freistoß",impostors:["Mauer","Abstand","Pfeife"]},
+    {main:"Gelbe Karte",impostors:["Schiedsrichter","Verwarnung","Tasche"]},
+    {main:"Abseits",impostors:["Linienrichter","Fahne","Timing"]},
+    {main:"Rote Karte",impostors:["Platzverweis","Dusche","Sperre"]},
+    {main:"Eckball",impostors:["Kopfball","Fahne","Viertelkreis"]},
+    {main:"Einwurf",impostors:["Seitenlinie","über den Kopf","Hände"]},
+    {main:"Abstoß",impostors:["Torwart","Strafraum","Auslinie"]},
+    {main:"Nachspielzeit",impostors:["Uhr","Board","Verletzung"]},
+    {main:"Elfmeterschießen",impostors:["Nerven","Münzwurf","Penalty"]},
+    {main:"Foul",impostors:["Pfiff","Schmerz","Beschwerde"]},
+    {main:"Handspiel",impostors:["VAR","absichtlich","Arm"]},
+    {main:"Dribbling",impostors:["Tunnel","Hüfte","Täuschung"]},
+    {main:"Fallrückzieher",impostors:["Akrobatik","Rücken","Volley"]},
+    {main:"Hattrick",impostors:["Matchball","dreimal","Torjubel"]},
+    {main:"Eigentor",impostors:["Facepalm","Pech","Jubel falsch"]},
+    {main:"Pressing",impostors:["hohes Anlaufen","Gegner","Druck"]},
+    {main:"Offside-Falle",impostors:["Timing","Verteidiger","Abseits"]},
+    {main:"Torwart-Parade",impostors:["Fingertip","Reflex","Hechtsprung"]},
+    {main:"Eckfahne",impostors:["Jubel","Viertelkreis","Seitenlinie"]},
+  ]},
+
+  {label:"🏅 Sport",pairs:[
+    {main:"Tennis",impostors:["Wimbledon","Aufschlag","Netz"]},
+    {main:"Formel 1",impostors:["Monaco","Boxenstopp","Helm"]},
+    {main:"Boxen",impostors:["Las Vegas","Ring","Handschuhe"]},
+    {main:"Skispringen",impostors:["Vierschanzentournee","Schanze","Telemark"]},
+    {main:"Radsport",impostors:["Tour de France","Trikot","Berge"]},
+    {main:"Golf",impostors:["Augusta","Caddy","Hole in One"]},
+    {main:"Leichtathletik",impostors:["Weitsprung","Stadion","Startblock"]},
+    {main:"Basketball",impostors:["Korb","Dribbling","NBA"]},
+    {main:"American Football",impostors:["Super Bowl","Helm","Touchdown"]},
+    {main:"Eishockey",impostors:["Stanley Cup","Puck","Schlittschuhe"]},
+    {main:"Handball",impostors:["Siebenmeter","Kreis","Torwart"]},
+    {main:"Surfen",impostors:["Pipeline","Brett","Welle"]},
+    {main:"Schwimmen",impostors:["Freistil","Bahn","Starblock"]},
+    {main:"Turnen",impostors:["Reck","Matte","Salto"]},
+    {main:"Fechten",impostors:["Degen","Maske","Treffer"]},
+    {main:"Bogenschießen",impostors:["Pfeil","Zielscheibe","Recurve"]},
+    {main:"Gewichtheben",impostors:["Hantel","Reißen","Stoßen"]},
+    {main:"Judo",impostors:["Tatami","Wurf","Gürtel"]},
+    {main:"Karate",impostors:["Kata","Gürtel","Kiai"]},
+    {main:"Klettern",impostors:["Karabiner","Seil","Griff"]},
+    {main:"Triathlon",impostors:["Kona","Rad","Wechselzone"]},
+    {main:"Biathlon",impostors:["Schießstand","Loipe","Stehend"]},
+    {main:"Curling",impostors:["Besen","Stein","Hausring"]},
+    {main:"Badminton",impostors:["Federball","Netz","Schläger"]},
+    {main:"Rugby",impostors:["Gedränge","oval","Try"]},
+    {main:"Cricket",impostors:["Wicket","Over","Schläger"]},
+    {main:"Baseball",impostors:["Pitcher","Home Run","Handschuh"]},
+    {main:"Volleyball",impostors:["Aufschlag","Block","Ass"]},
+    {main:"Darts",impostors:["Bullseye","Oche","180"]},
+    {main:"Olympia",impostors:["Fackel","fünf Ringe","Athen"]},
+  ]},
+
+  {label:"🔬 Wissenschaftler",pairs:[
+    {main:"Isaac Newton",impostors:["Apfel","Gravitation","Cambridge"]},
+    {main:"Albert Einstein",impostors:["Lichtgeschwindigkeit","Zunge","Relativität"]},
+    {main:"Erwin Schrödinger",impostors:["Katze","Wien","Quantenphysik"]},
+    {main:"Sigmund Freud",impostors:["Couch","Wien","Traum"]},
+    {main:"Charles Darwin",impostors:["Galapagos","Affe","Selektion"]},
+    {main:"Marie Curie",impostors:["Strahlung","Nobelpreis","Polen"]},
+    {main:"Nikola Tesla",impostors:["Blitz","Strom","Spule"]},
+    {main:"Galileo Galilei",impostors:["Teleskop","Erde dreht sich","Pisa"]},
+    {main:"Stephen Hawking",impostors:["Rollstuhl","schwarze Löcher","Stimme"]},
+    {main:"Louis Pasteur",impostors:["Milch","Impfung","Bakterien"]},
+    {main:"Alexander Fleming",impostors:["Schimmel","Penicillin","Zufall"]},
+    {main:"Gregor Mendel",impostors:["Erbsen","Brünn","Vererbung"]},
+    {main:"Ada Lovelace",impostors:["Programm","Byron","Algorithmus"]},
+    {main:"Alan Turing",impostors:["Enigma","Test","Apfel"]},
+    {main:"Carl Sagan",impostors:["Kosmos","Milliarden","Sterne"]},
+  ]},
+
+  {label:"🎤 Musiker",pairs:[
+    {main:"Michael Jackson",impostors:["Mondgang","weißer Handschuh","Neverland"]},
+    {main:"Elvis Presley",impostors:["Hüftschwung","Graceland","Jumpsuit"]},
+    {main:"Elton John",impostors:["Sonnenbrille","Federboa","Rocketman"]},
+    {main:"Queen",impostors:["Wembley","Freddie","Bohemian Rhapsody"]},
+    {main:"Beatles",impostors:["Zebrastreifen","Liverpool","Pilzkopf"]},
+    {main:"David Bowie",impostors:["Blitz im Gesicht","Ziggy","Aladdin Sane"]},
+    {main:"Madonna",impostors:["Spitzenunterwäsche","Material Girl","Kegel-BH"]},
+    {main:"AC/DC",impostors:["Schuluniform","angus","Highway to Hell"]},
+    {main:"Kiss",impostors:["Schminke","Zunge","Plattform-Stiefel"]},
+    {main:"Bob Marley",impostors:["Rastazöpfe","Jamaica","Ganja"]},
+    {main:"Amy Winehouse",impostors:["Bienenstock-Frisur","Rehab","Tätowierungen"]},
+    {main:"Johnny Cash",impostors:["schwarze Kleidung","Folsom","Ring of Fire"]},
+    {main:"Prince",impostors:["lila Gitarre","Minneapolis","Schminke"]},
+    {main:"Lady Gaga",impostors:["Fleischkleid","Monster","Poker Face"]},
+    {main:"ABBA",impostors:["Glitzeroutfits","Stockholm","Mamma Mia"]},
+    {main:"Freddie Mercury",impostors:["Schnurrbart","weißes Unterhemd","Wembley"]},
+    {main:"Mick Jagger",impostors:["Lippen","Tanzstil","Hyde Park"]},
+    {main:"Ozzy Osbourne",impostors:["Fledermaus","Birmingham","Biting"]},
+    {main:"Kurt Cobain",impostors:["Flanellhemd","Seattle","Unplugged"]},
+    {main:"Eminem",impostors:["weißes Tanktop","Detroit","8 Mile"]},
+    {main:"Bob Dylan",impostors:["Mundharmonika","Nobel","Zimmerman"]},
+    {main:"Bruce Springsteen",impostors:["New Jersey","Jeans","Born to Run"]},
+    {main:"Dolly Parton",impostors:["blonde Locken","Jolene","Nashville"]},
+    {main:"Frank Sinatra",impostors:["Fedora","Las Vegas","Rat Pack"]},
+    {main:"Rammstein",impostors:["Feuer","Till","Berlin"]},
+    {main:"Metallica",impostors:["schwarzes Album","Lars","San Francisco"]},
+    {main:"Pink Floyd",impostors:["Prisma","Wand","Roger Waters"]},
+    {main:"Daft Punk",impostors:["Helm","Paris","Around the World"]},
+    {main:"Björk",impostors:["Schwanenkleid","Island","Kokon"]},
+    {main:"Leonard Cohen",impostors:["Hallelujah","Hut","Montreal"]},
+  ]},
+
+  {label:"🎬 Film & Serien",pairs:[
+    {main:"Star Wars",impostors:["Lichtschwert","Darth Vader","Tatooine"]},
+    {main:"Harry Potter",impostors:["Zauberstab","Narbe","Hogwarts"]},
+    {main:"James Bond",impostors:["Aston Martin","Martini","Q"]},
+    {main:"Der Pate",impostors:["Angebot","Katzenstreicheln","Corleone"]},
+    {main:"Titanic",impostors:["Eisberg","Tür","DiCaprio"]},
+    {main:"Jurassic Park",impostors:["T-Rex","Elektrozaun","Raptoren"]},
+    {main:"Breaking Bad",impostors:["Wohnmobil","Methkoch","Unterhosen"]},
+    {main:"Die Simpsons",impostors:["Donut","gelb","Springfield"]},
+    {main:"Stranger Things",impostors:["Waffeln","Upside Down","Demogorgon"]},
+    {main:"Friends",impostors:["Sofa","Zentralperk","How you doin"]},
+    {main:"Game of Thrones",impostors:["Drache","Eisernen Thron","Winter kommt"]},
+    {main:"Der Herr der Ringe",impostors:["Ring","Gandalf","Auenland"]},
+    {main:"Matrix",impostors:["rote Pille","Löffel","Neoprenanzug"]},
+    {main:"Pulp Fiction",impostors:["Koffer","Royale mit Käse","Tanzen"]},
+    {main:"Fight Club",impostors:["Seife","erste Regel","Tyler"]},
+    {main:"Forrest Gump",impostors:["Schokolade","Laufen","Ping Pong"]},
+    {main:"Der weiße Hai",impostors:["Trommelwirbel","Amity","Käfig"]},
+    {main:"Terminator",impostors:["Daumen hoch","I'll be back","rotes Auge"]},
+    {main:"Back to the Future",impostors:["DeLorean","Flux-Kompensator","88 mph"]},
+    {main:"E.T.",impostors:["Fahrrad","Mondsilhouette","nach Hause"]},
+    {main:"Shining",impostors:["Axt","Labyrinth","Hier ist Johnny"]},
+    {main:"Inception",impostors:["Kreisel","Traumebene","Limbo"]},
+    {main:"Interstellar",impostors:["Schwarzes Loch","Gargantua","Wormhole"]},
+    {main:"Breaking Bad",impostors:["Porkpie Hut","Yo Mr. White","Meth"]},
+    {main:"Sopranos",impostors:["Tony","Ducks","New Jersey"]},
+    {main:"Peaky Blinders",impostors:["Schiebermütze","Birmingham","Tommy"]},
+    {main:"Sherlock Holmes",impostors:["Pfeife","Baker Street","Watson"]},
+    {main:"Dr. House",impostors:["Gehstock","Vicodin","Lupus"]},
+    {main:"Barbie",impostors:["rosa","Ken","Dreamhouse"]},
+    {main:"Oppenheimer",impostors:["Atompilz","Trinity","Hut"]},
+  ]},
+
+  {label:"🏷 Marken",pairs:[
+    {main:"Apple",impostors:["angebissener Apfel","Steve Jobs","Cupertino"]},
+    {main:"Nike",impostors:["Swoosh","Just Do It","Beaverton"]},
+    {main:"McDonald's",impostors:["goldenes M","Big Mac","Ronald"]},
+    {main:"Coca-Cola",impostors:["rote Dose","Weihnachtsmann","Kurvenflaschen"]},
+    {main:"IKEA",impostors:["Billy-Regal","Inbus","Köttbullar"]},
+    {main:"Ferrari",impostors:["springendes Pferd","Maranello","rot"]},
+    {main:"Lego",impostors:["Klemmstein","Dänemark","auf dem Fuß treten"]},
+    {main:"Adidas",impostors:["drei Streifen","Herzogenaurach","Trefoil"]},
+    {main:"Porsche",impostors:["Zuffenhausen","Elfer","Rücksitze klein"]},
+    {main:"Rolex",impostors:["Oyster","Genf","Krone"]},
+    {main:"Google",impostors:["Suchleiste","Mountain View","Doodle"]},
+    {main:"Amazon",impostors:["Lächeln-Pfeil","Bezos","Prime"]},
+    {main:"Tesla",impostors:["Autopilot","Musk","Elektro"]},
+    {main:"Disney",impostors:["Schloss","Micky Maus","Orlando"]},
+    {main:"Harley Davidson",impostors:["Motorengeräusch","Milwaukee","Chopper"]},
+    {main:"Lamborghini",impostors:["Stier","Türen nach oben","Sant'Agata"]},
+    {main:"Chanel",impostors:["doppeltes C","Coco","Nr. 5"]},
+    {main:"Louis Vuitton",impostors:["Monogramm","Paris","Koffer"]},
+    {main:"Starbucks",impostors:["Meerjungfrau","Venti","Seattle"]},
+    {main:"Red Bull",impostors:["zwei Stiere","Fuschl","Flügel"]},
+    {main:"Puma",impostors:["Sprungkatze","Herzogenaurach","Rudi"]},
+    {main:"Lacoste",impostors:["Krokodil","Rene","Poloshirt"]},
+    {main:"Mercedes",impostors:["Stern","Stuttgart","S-Klasse"]},
+    {main:"BMW",impostors:["blau-weißer Propeller","München","Freude"]},
+    {main:"Audi",impostors:["vier Ringe","Ingolstadt","Vorsprung"]},
+  ]},
+
+  {label:"🦁 Tiere",pairs:[
+    {main:"Pinguin",impostors:["Frack","Antarktis","watscheln"]},
+    {main:"Löwe",impostors:["Mähne","Savanne","brüllen"]},
+    {main:"Hai",impostors:["Kiemen","Trommelwirbel","Zähne"]},
+    {main:"Panda",impostors:["Bambus","China","schwarz-weiß"]},
+    {main:"Känguru",impostors:["Beutel","Australien","hüpfen"]},
+    {main:"Eisbär",impostors:["Arktis","weiß","schwimmen"]},
+    {main:"Chamäleon",impostors:["Farbe","Zunge","langsam"]},
+    {main:"Fledermaus",impostors:["Echolot","Höhle","kopfüber"]},
+    {main:"Oktopus",impostors:["acht Arme","Tinte","Krake"]},
+    {main:"Giraffe",impostors:["langer Hals","Akazie","Afrika"]},
+    {main:"Flamingo",impostors:["rosa","Stelzen","auf einem Bein"]},
+    {main:"Pfau",impostors:["Rad schlagen","blau-grün","Schrei"]},
+    {main:"Elefant",impostors:["Rüssel","Gedächtnis","Stoßzahn"]},
+    {main:"Zebra",impostors:["Streifen","Savanne","Tarnung"]},
+    {main:"Koala",impostors:["Eukalyptus","Australien","schläfrig"]},
+    {main:"Delfin",impostors:["Klicken","Sprung","Echolot"]},
+    {main:"Krokodil",impostors:["Tränen","Nil","Zähne"]},
+    {main:"Schnecke",impostors:["Gehäuse","Schleim","langsam"]},
+    {main:"Hummel",impostors:["brummen","aerodynamisch","Honig"]},
+    {main:"Tintenfisch",impostors:["Tinte","acht Arme","Tarnung"]},
+    {main:"Wal",impostors:["Fontäne","Gesang","riesig"]},
+    {main:"Nashorn",impostors:["Horn","gepanzert","Afrika"]},
+    {main:"Gorilla",impostors:["Brust trommeln","Silberrücken","Dschungel"]},
+    {main:"Gepard",impostors:["Punkte","schnell","Afrika"]},
+    {main:"Faultier",impostors:["langsam","hängen","Regenwald"]},
+    {main:"Axolotl",impostors:["Lächeln","regenerieren","Mexiko"]},
+    {main:"Qualle",impostors:["kein Gehirn","brennen","leuchten"]},
+    {main:"Seepferdchen",impostors:["Männchen trägt aus","Rüssel","aufrecht"]},
+    {main:"Schnabeltier",impostors:["Schnabel","Australien","legt Eier"]},
+    {main:"Lama",impostors:["spucken","Peru","Wolle"]},
+    {main:"Kamel",impostors:["Höcker","Wüste","Wasser speichern"]},
+    {main:"Pferd",impostors:["Hufeisen","Galopp","Mähne"]},
+    {main:"Hahn",impostors:["Kikeriki","Kamm","krähen"]},
+    {main:"Schwan",impostors:["treu","weiß","beißen"]},
+    {main:"Adler",impostors:["Wappentier","Krallen","Thermik"]},
+    {main:"Eule",impostors:["drehen","Nacht","weise"]},
+    {main:"Papagei",impostors:["nachsprechen","bunt","Schulter"]},
+    {main:"Kolibri",impostors:["rückwärts fliegen","Nektar","klein"]},
+    {main:"Erdmännchen",impostors:["Wache stehen","Kalahari","Wärme"]},
+    {main:"Otter",impostors:["Hände halten","Fluss","Muschel"]},
+    {main:"Igel",impostors:["Stacheln","Winterschlaf","rollen"]},
+    {main:"Waschbär",impostors:["Maske","waschen","Nordamerika"]},
+    {main:"Fuchs",impostors:["List","rot","Hühner"]},
+    {main:"Wolf",impostors:["Rudel","heulen","Märchen"]},
+    {main:"Bison",impostors:["Buckel","Prärie","Herde"]},
+    {main:"Alpaka",impostors:["Wolle","Südamerika","spucken"]},
+    {main:"Strauß",impostors:["Kopf in Sand","schnell","laufen"]},
+    {main:"Flamingo",impostors:["Salzsee","Krebse","schlafen"]},
+    {main:"Komodo-Waran",impostors:["Giftbiss","Indonesien","riesig"]},
+    {main:"Fliegenpilz",impostors:["rot-weiß","giftig","Märchen"]},
+  ]},
+
+  {label:"🍕 Essen & Trinken",pairs:[
+    {main:"Pizza",impostors:["Mozzarella","Holzofen","Napoli"]},
+    {main:"Sushi",impostors:["Reis","Nori","Wasabi"]},
+    {main:"Tiramisu",impostors:["Mascarpone","Löffelbiskuit","Espresso"]},
+    {main:"Gulasch",impostors:["Paprika","Rindfleisch","Ungarn"]},
+    {main:"Croissant",impostors:["Butter","blättrig","Bäcker"]},
+    {main:"Risotto",impostors:["Parmesan","Arborio","Rühren"]},
+    {main:"Lasagne",impostors:["Béchamel","Nudelblätter","Auflauf"]},
+    {main:"Crème brûlée",impostors:["Karamellkruste","Flämmer","Ei"]},
+    {main:"Tacos",impostors:["Avocado","Mais-Tortilla","Mexiko"]},
+    {main:"Paella",impostors:["Safran","Meeresfrüchte","Pfanne"]},
+    {main:"Käsekuchen",impostors:["Topfen","Mürbteig","Vanille"]},
+    {main:"Brezn",impostors:["Lauge","Salzkörner","Bayern"]},
+    {main:"Currywurst",impostors:["Ketchup","Curry","Berlin"]},
+    {main:"Eggs Benedict",impostors:["Hollandaise","pochiert","Speck"]},
+    {main:"Pancakes",impostors:["Ahornsirup","Buttermilch","USA"]},
+    {main:"Burger",impostors:["Sesam","Patty","Gurkerl"]},
+    {main:"Döner",impostors:["Fladenbrot","Fleischspieß","Soße"]},
+    {main:"Wiener Melange",impostors:["Milchschaum","Kaffeehaus","Wien"]},
+    {main:"Carbonara",impostors:["Guanciale","Ei","kein Obers"]},
+    {main:"Ceviche",impostors:["Limette","roh","Peru"]},
+    {main:"Falafel",impostors:["Tahini","Kichererbse","Fladenbrot"]},
+    {main:"Moussaka",impostors:["Aubergine","Faschiertes","Béchamel"]},
+    {main:"Baklava",impostors:["Honig","Phyllo","Pistazien"]},
+    {main:"Churros",impostors:["Schokoladensoße","Schmalzgebäck","Spanien"]},
+    {main:"Waffeln",impostors:["Puderzucker","Eisen","Belgien"]},
+    {main:"Donut",impostors:["Loch","Glasur","Homer"]},
+    {main:"Macarons",impostors:["Ganache","Mandelmehl","Paris"]},
+    {main:"Espresso",impostors:["Crema","klein","Italien"]},
+    {main:"Cappuccino",impostors:["Milchschaum","Zimt","Morgen"]},
+    {main:"Mojito",impostors:["Minze","Rum","Limette"]},
+    {main:"Aperol Spritz",impostors:["Orange","Prosecco","Sommer"]},
+    {main:"Margarita",impostors:["Salzrand","Tequila","Limette"]},
+    {main:"Champagner",impostors:["Perlage","Reims","Korken"]},
+    {main:"Irish Coffee",impostors:["Whiskey","Sahne","Shannon"]},
+    {main:"Latte Macchiato",impostors:["Schichten","Milch","Glas"]},
+    {main:"Kaiserschmarrn",impostors:["Rosinen","Puderzucker","Pfanne"]},
+    {main:"Topfenstrudel",impostors:["Topfen","Blätterteig","Vanillesoße"]},
+    {main:"Krapfen",impostors:["Marmelade","Fasching","Staubzucker"]},
+    {main:"Erdäpfelpüree",impostors:["Butter","Milch","glatt"]},
+    {main:"Palatschinken",impostors:["Marillenmarmelade","dünn","aufgerollt"]},
+  ]},
+
+  {label:"🔧 Berufe",pairs:[
+    {main:"Zahnarzt",impostors:["Bohrer","Mundschutz","Röntgen"]},
+    {main:"Koch",impostors:["Messer","Haube","Mise en place"]},
+    {main:"Pilot",impostors:["Cockpit","Sauerstoffmaske","Kurs"]},
+    {main:"Friseur",impostors:["Schere","Umhang","Tönung"]},
+    {main:"Chirurg",impostors:["Skalpell","OP-Saal","Naht"]},
+    {main:"Fotograf",impostors:["Blende","Stativ","Auslöser"]},
+    {main:"Tischler",impostors:["Hobel","Holzspan","Beize"]},
+    {main:"Architekt",impostors:["Grundriss","Modell","Bauherr"]},
+    {main:"Richter",impostors:["Hammer","Robe","Urteil"]},
+    {main:"Feuerwehrmann",impostors:["Schlauch","Helm","Leiter"]},
+    {main:"Dirigent",impostors:["Taktstock","Partitur","Bogen"]},
+    {main:"Astronaut",impostors:["Schwerelosigkeit","Raumanzug","ISS"]},
+    {main:"Taucher",impostors:["Sauerstoff","Maske","Tiefe"]},
+    {main:"Bergsteiger",impostors:["Pickel","Seil","Gipfel"]},
+    {main:"Bäcker",impostors:["Backofen","Mehl","früh aufstehen"]},
+    {main:"Winzer",impostors:["Kelter","Rebe","Lese"]},
+    {main:"Imker",impostors:["Schleier","Wabe","Smoker"]},
+    {main:"Jockey",impostors:["Gerte","Sattel","Gewicht"]},
+    {main:"Sommelier",impostors:["Dekantierkaraffe","Korken","Nase"]},
+    {main:"Matrose",impostors:["Anker","Knoten","Leuchtturm"]},
+    {main:"Lokführer",impostors:["Stellwerk","Signale","Schienen"]},
+    {main:"Fleischer",impostors:["Hackmesser","Schürze","Kühlraum"]},
+    {main:"Greißler",impostors:["Stammbunde","Tante-Emma","Eck"]},
+    {main:"Konditor",impostors:["Spritzbeutel","Zucker","Torte"]},
+    {main:"Hebamme",impostors:["Kreißsaal","Neugeborenes","heiß Wasser"]},
+  ]},
+
+  {label:"📚 Bücher & Autoren",pairs:[
+    {main:"Shakespeare",impostors:["Hamlet","Globe Theatre","Sonett"]},
+    {main:"Goethe",impostors:["Faust","Weimar","Sturm und Drang"]},
+    {main:"Kafka",impostors:["Käfer","Prag","Verwandlung"]},
+    {main:"Tolkien",impostors:["Auenland","Oxford","Hobbit"]},
+    {main:"Stephen King",impostors:["Clown","Maine","Horror"]},
+    {main:"Agatha Christie",impostors:["Schnurrbart","Poirot","Vergiftung"]},
+    {main:"George Orwell",impostors:["Big Brother","1984","Schweine"]},
+    {main:"Ernest Hemingway",impostors:["Havanna","Bart","Stier"]},
+    {main:"Mark Twain",impostors:["Floß","Mississippi","weißer Anzug"]},
+    {main:"Jules Verne",impostors:["U-Boot","Mond","Abenteuer"]},
+    {main:"Arthur Conan Doyle",impostors:["Baker Street","Lupe","Watson"]},
+    {main:"Jane Austen",impostors:["Heiratsantrag","Landhaus","Stolz"]},
+    {main:"Dostojewski",impostors:["Schuld","St. Petersburg","Roulette"]},
+    {main:"Homer",impostors:["Troja","Sirenen","blind"]},
+    {main:"Dante",impostors:["Hölle","Beatrice","neun Kreise"]},
+    {main:"Victor Hugo",impostors:["Notre-Dame","Glocken","Quasimodo"]},
+    {main:"Charles Dickens",impostors:["Waisenhaus","London","Nebel"]},
+    {main:"Oscar Wilde",impostors:["Nelke","Dorian","Witz"]},
+    {main:"J.K. Rowling",impostors:["Hogwarts","Zug","Zauberer"]},
+    {main:"Dan Brown",impostors:["Vatikan","Code","Symbole"]},
+  ]},
+
+  {label:"🏔 Natur & Geografie",pairs:[
+    {main:"Everest",impostors:["Sherpa","Todeszone","Nepal"]},
+    {main:"Sahara",impostors:["Dünen","Karawane","heiß"]},
+    {main:"Amazonas",impostors:["Piranhas","Regenwald","Grün"]},
+    {main:"Niagara",impostors:["Vorhang","Kanada","Regenbogen"]},
+    {main:"Alpen",impostors:["Matterhorn","Gletscher","Passhöhe"]},
+    {main:"Grand Canyon",impostors:["Colorado","rot","Schichten"]},
+    {main:"Kilimandscharo",impostors:["Schneekappe","Tansania","Hemingway"]},
+    {main:"Großes Barrier Riff",impostors:["Korallen","Queensland","Bleichen"]},
+    {main:"Totes Meer",impostors:["Salz","Israel","schwimmen ohne Können"]},
+    {main:"Gobi",impostors:["Mongolei","Kamel","Sandstürme"]},
+    {main:"Marianengraben",impostors:["Tiefsee","Lichtlosigkeit","tiefer als Everest"]},
+    {main:"Dschungel",impostors:["Liane","Tarzan","Feuchtigkeit"]},
+    {main:"Gletscher",impostors:["Schmelzen","Kalbung","blau"]},
+    {main:"Geysir",impostors:["Yellowstone","Island","Dampf"]},
+    {main:"Aurora Borealis",impostors:["Grönland","grün","Sonnensturm"]},
+    {main:"Vulkan",impostors:["Lava","Asche","Pompeji"]},
+    {main:"Korallenriff",impostors:["Clownfisch","bunt","Symbiose"]},
+    {main:"Permafrost",impostors:["Mammut","Sibirien","Tauen"]},
+    {main:"Monsun",impostors:["Indien","Reisernte","Überschwemmung"]},
+    {main:"Fjord",impostors:["Norwegen","steil","Kreuzfahrt"]},
+  ]},
+
+  {label:"🧸 Disney & Märchen",pairs:[
+    {main:"Cinderella",impostors:["Glasschuh","Kutsche","Mitternacht"]},
+    {main:"Schneewittchen",impostors:["Apfel","sieben Zwerge","Spiegel"]},
+    {main:"Dornröschen",impostors:["Spindel","hundert Jahre","Dornenhecke"]},
+    {main:"Rotkäppchen",impostors:["Wolf","Korb","Großmutter"]},
+    {main:"Pinocchio",impostors:["Nase","Holz","Jiminy"]},
+    {main:"Rapunzel",impostors:["Haar","Turm","Frying Pan"]},
+    {main:"Hänsel und Gretel",impostors:["Hexe","Lebkuchenhaus","Ofen"]},
+    {main:"König der Löwen",impostors:["Simba","Timon","Hakuna Matata"]},
+    {main:"Bambi",impostors:["Wald","Mutter stirbt","Klopfer"]},
+    {main:"Arielle",impostors:["Flosse","Ursula","Gabel"]},
+    {main:"Aladdin",impostors:["Lampe","Abu","Dschinni"]},
+    {main:"Mulan",impostors:["Drachen","Mushu","Krieger"]},
+    {main:"Moana",impostors:["Herzinsel","Maui","Ozean"]},
+    {main:"Frozen",impostors:["Eis","Elsa","Snowman"]},
+    {main:"Toy Story",impostors:["Unendlichkeit","Woody","Pizza Planet"]},
+    {main:"Findet Nemo",impostors:["Australien","P. Sherman","Schildkröte"]},
+    {main:"Ratatouille",impostors:["Küche","Remy","Paris"]},
+    {main:"Up",impostors:["Luftballons","Russell","Abenteuer"]},
+    {main:"WALL-E",impostors:["Müll","EVE","Raumschiff"]},
+    {main:"Minions",impostors:["Banane","Gru","gelb"]},
+    {main:"Shrek",impostors:["Sumpf","Esel","Zwiebeln"]},
+    {main:"Pippi Langstrumpf",impostors:["Pferd","Herr Nilsson","Villa Kunterbunt"]},
+    {main:"Asterix",impostors:["Zaubertrank","Obelix","Gallien"]},
+    {main:"Pumuckl",impostors:["Kobold","Meister Eder","rot"]},
+    {main:"Biene Maja",impostors:["Willi","Honig","Klatschmohn"]},
+    {main:"Winnie the Pooh",impostors:["Honig","Ferkel","Hundermorgen-Wald"]},
+    {main:"Peter Pan",impostors:["Nimmerland","Tinkerbell","Haken"]},
+    {main:"Alice im Wunderland",impostors:["Kaninchen","Hutmacher","Uhr"]},
+    {main:"Schneemann Olaf",impostors:["Karotte als Nase","Sommer","warm"]},
+    {main:"Käpt'n Blaubär",impostors:["Lüge","Dreimaster","Humpbackal"]},
+  ]},
+
+  {label:"🎮 Videospiele",pairs:[
+    {main:"Super Mario",impostors:["Pilz","Flagge","Bowser"]},
+    {main:"Zelda",impostors:["Triforce","Schwert","Hyrule"]},
+    {main:"Minecraft",impostors:["Creeper","Diamant","Pickaxe"]},
+    {main:"Fortnite",impostors:["Schirm","Bauen","Battle Pass"]},
+    {main:"Pac-Man",impostors:["Kirschen","Geist","Waka Waka"]},
+    {main:"Tetris",impostors:["fallende Steine","Reihe voll","L-Stein"]},
+    {main:"Pokemon",impostors:["Pika","Pokeball","Trainer"]},
+    {main:"FIFA",impostors:["Karrieremodus","Ultimate Team","EA"]},
+    {main:"Grand Theft Auto",impostors:["Polizei","Chop Shop","Liberty City"]},
+    {main:"Call of Duty",impostors:["Prestige","Killstreak","Lobby"]},
+    {main:"The Sims",impostors:["Plumbob","Bedürfnisse","Bauen"]},
+    {main:"Among Us",impostors:["Impostor","Notfall","Vent"]},
+    {main:"Roblox",impostors:["Robux","Avatar","Obby"]},
+    {main:"Candy Crush",impostors:["Gelee","Bonus","Leben kaufen"]},
+    {main:"Angry Birds",impostors:["Schleuder","Schwein","Steine"]},
+    {main:"Mario Kart",impostors:["Blaue Schildkröte","Schikane","Regenbogenstraße"]},
+    {main:"Donkey Kong",impostors:["Fass","Krawatte","Kletterer"]},
+    {main:"Sonic",impostors:["Laufen","Igel","Ringe"]},
+    {main:"Street Fighter",impostors:["Hadouken","Runde eins","Arcade"]},
+    {main:"Diablo",impostors:["Tristram","Dunkel","Loot"]},
+  ]},
+
+  {label:"🏛 Geschichte & Antike",pairs:[
+    {main:"Julius Caesar",impostors:["Iden des März","Rubikon","Salat"]},
+    {main:"Napoleon",impostors:["Elba","Hand in Mantel","klein"]},
+    {main:"Kleopatra",impostors:["Asp","Nil","Augenmakeup"]},
+    {main:"Alexander der Große",impostors:["Bukephalos","Makedonien","Gordischer Knoten"]},
+    {main:"Karl der Große",impostors:["Aachen","Krönung","Franken"]},
+    {main:"Dschingis Khan",impostors:["Steppe","Horde","Pfeil"]},
+    {main:"Nero",impostors:["Brand","Geige","Muttermord"]},
+    {main:"Ludwig XIV",impostors:["Sonnenkönig","Versailles","Perücke"]},
+    {main:"Marie Antoinette",impostors:["Guillotine","Kuchen","Versailles"]},
+    {main:"Abraham Lincoln",impostors:["Theater","Hut","Beard"]},
+    {main:"Winston Churchill",impostors:["Zigarre","V-Zeichen","Bunker"]},
+    {main:"Mahatma Gandhi",impostors:["Salz","Dhoti","gewaltlos"]},
+    {main:"Nelson Mandela",impostors:["Robben Island","27 Jahre","Versöhnung"]},
+    {main:"Rosa Parks",impostors:["Bus","Montgomery","Sitzplatz"]},
+    {main:"Martin Luther King",impostors:["Traum","Washington","Baptistenprediger"]},
+    {main:"Che Guevara",impostors:["Baskenmütze","Kuba","Guerilla"]},
+    {main:"Spartacus",impostors:["Gladiator","Thrakien","Aufstand"]},
+    {main:"Robin Hood",impostors:["Sherwood Forest","Pfeil","Reichen stehlen"]},
+    {main:"Attila",impostors:["Hunnen","Reitervolk","Geißel Gottes"]},
+    {main:"Kleopatra",impostors:["Caesar","Marcus Antonius","Sphinx"]},
+  ]},
+
+  {label:"🌱 Pflanzen & Natur",pairs:[
+    {main:"Kaktus",impostors:["Stacheln","Wüste","Wasser speichern"]},
+    {main:"Sonnenblume",impostors:["Kerne","Van Gogh","dreht sich"]},
+    {main:"Efeu",impostors:["klettern","Mauer","immergrün"]},
+    {main:"Bambus",impostors:["wächst schnell","Panda","Japan"]},
+    {main:"Weinstock",impostors:["Rebe","Wachau","Lese"]},
+    {main:"Orchidee",impostors:["Epiphyt","Tropfen","edel"]},
+    {main:"Venusfliegenfalle",impostors:["Insekt","zuklappen","fleischfressend"]},
+    {main:"Baobab",impostors:["Wasser speichern","Afrika","Der kleine Prinz"]},
+    {main:"Sequoia",impostors:["riesig","Kalifornien","Jahrtausende"]},
+    {main:"Kirschblüte",impostors:["Japan","Hanami","rosa"]},
+    {main:"Lavendel",impostors:["Provence","Duft","violett"]},
+    {main:"Tulpe",impostors:["Niederlande","Zwiebel","Keukenhof"]},
+    {main:"Rose",impostors:["Dorn","Valentinstag","rot"]},
+    {main:"Löwenzahn",impostors:["pusten","Wunsch","überall"]},
+    {main:"Mohn",impostors:["rot","Schlaf","Feld"]},
+    {main:"Aloe Vera",impostors:["Gel","Sonnenbrand","Wüste"]},
+    {main:"Trüffel",impostors:["Schwein","Périgord","teuer"]},
+    {main:"Mistel",impostors:["Kuss","Weihnachten","Parasit"]},
+    {main:"Edelweiß",impostors:["Alpen","Schutzgebiet","Sound of Music"]},
+    {main:"Klee",impostors:["vier Blätter","Glück","grün"]},
+    {main:"Holunder",impostors:["Hugo","Sirup","Blüte"]},
+    {main:"Hagebutte",impostors:["Tee","Vitamin C","Herbst"]},
+    {main:"Kastanie",impostors:["Igelschale","Prater","Maroni"]},
+    {main:"Fliegenpilz",impostors:["rot-weiß","giftig","Zwerg"]},
+    {main:"Shiitake",impostors:["Asien","Waldpilz","Heilwirkung"]},
+    {main:"Knoblauch",impostors:["Vampir","Zehe","Atem"]},
+    {main:"Ingwer",impostors:["Wurzel","scharf","Tee"]},
+    {main:"Kurkuma",impostors:["gelb färbt","Curry","Superfood"]},
+    {main:"Wasabi",impostors:["Schärfe","Sushi","grün"]},
+    {main:"Basilikum",impostors:["Pesto","Tomate","Italia"]},
+  ]},
+
+  {label:"🛋 Möbel & Einrichtung",pairs:[
+    {main:"Sofa",impostors:["Wohnzimmer","Kissen","Couch"]},
+    {main:"Bett",impostors:["Schlafzimmer","Matratze","Kissen"]},
+    {main:"Kasten",impostors:["Kleidung","Schiebetür","Einbau"]},
+    {main:"Regal",impostors:["Bücher","Wand","Billy"]},
+    {main:"Esstisch",impostors:["Stühle","Küche","Familie"]},
+    {main:"Schreibtisch",impostors:["Büro","Laptop","Lampe"]},
+    {main:"Fauteuil",impostors:["Lesen","Leder","Oma"]},
+    {main:"Kommode",impostors:["Schublade","Flur","Spiegel"]},
+    {main:"Nachtkästchen",impostors:["Buch","Lampe","Wecker"]},
+    {main:"Couchtisch",impostors:["Fernbedienung","Wohnzimmer","Glas"]},
+    {main:"Badewanne",impostors:["Blasen","Bad","Entspannen"]},
+    {main:"Dusche",impostors:["Bad","Vorhang","morgens"]},
+    {main:"Waschbecken",impostors:["Bad","Spiegel","Zahnbürste"]},
+    {main:"Garderobe",impostors:["Flur","Haken","Jacke"]},
+    {main:"Spiegel",impostors:["Bad","Reflexion","Königin"]},
+    {main:"Teppich",impostors:["Wohnzimmer","Perser","weich"]},
+    {main:"Vorhang",impostors:["Fenster","Stoff","abdunkeln"]},
+    {main:"Hängematte",impostors:["Garten","Urlaub","schaukeln"]},
+    {main:"Barhocker",impostors:["Küche","Tresen","hoch"]},
+    {main:"Hochbett",impostors:["Kind","Leiter","oben"]},
+    {main:"Schuhregal",impostors:["Flur","Paar","Stapel"]},
+    {main:"Küchenzeile",impostors:["Herd","Spüle","Arbeitsfläche"]},
+    {main:"Geschirrschrank",impostors:["Porzellan","Glas","Küche"]},
+    {main:"Bücherschrank",impostors:["Glas","Leder","Wohnzimmer"]},
+    {main:"Boxspringbett",impostors:["Federkern","hoch","amerikanisch"]},
+  ]},
+
+  {label:"🏠 Alltagsgegenstände",pairs:[
+    {main:"Toaster",impostors:["Küche","Steckdose","Brot"]},
+    {main:"Kühlschrank",impostors:["Küche","summen","Magnete"]},
+    {main:"Kaffeemaschine",impostors:["Bohnen","morgens","Knopf"]},
+    {main:"Staubsauger",impostors:["Teppich","Lärm","Beutel"]},
+    {main:"Bügeleisen",impostors:["Hemd","Dampf","Brett"]},
+    {main:"Wasserkocher",impostors:["Tee","Küche","Knopf"]},
+    {main:"Mikrowelle",impostors:["Piepen","aufwärmen","Drehteller"]},
+    {main:"Geschirrspüler",impostors:["Tabs","Körbe","Maschine"]},
+    {main:"Waschmaschine",impostors:["Schleuder","Trommel","Waschmittel"]},
+    {main:"Wecker",impostors:["klingeln","Bett","verschlafen"]},
+    {main:"Fernbedienung",impostors:["Batterie","verloren","Sofa"]},
+    {main:"Schlüssel",impostors:["Tür","verloren","Bund"]},
+    {main:"Regenschirm",impostors:["Regen","Griff","aufspannen"]},
+    {main:"Schere",impostors:["Papier","Klinge","Basteln"]},
+    {main:"Klebeband",impostors:["Paket","Rolle","Tesafilm"]},
+    {main:"Zange",impostors:["Werkzeug","greifen","Nagel"]},
+    {main:"Schraubenzieher",impostors:["Schraube","drehen","Kreuz"]},
+    {main:"Hammer",impostors:["Nagel","klopfen","Thor"]},
+    {main:"Maßband",impostors:["messen","einrollen","Schneider"]},
+    {main:"Thermometer",impostors:["Fieber","Achsel","Arzt"]},
+    {main:"Briefkasten",impostors:["Post","Schlüssel","gelb"]},
+    {main:"Kübel",impostors:["Tüte","Küche","leeren"]},
+    {main:"Besen",impostors:["fegen","Hexe","Boden"]},
+    {main:"Gießkanne",impostors:["Pflanzen","Garten","gießen"]},
+    {main:"Leiter",impostors:["Dach","Stufe","anlehnen"]},
+    {main:"Nähmaschine",impostors:["Faden","Oma","Singer"]},
+    {main:"Wäschekorb",impostors:["Schmutzwäsche","Bad","voll"]},
+    {main:"Flaschenöffner",impostors:["Bier","Zapfhahn","Hebel"]},
+    {main:"Korkenzieher",impostors:["Wein","Spirale","ziehen"]},
+    {main:"Reibe",impostors:["Käse","Knöchel","Metallzähne"]},
+  ]},
+
+  {label:"👕 Kleidung",pairs:[
+    {main:"Pullover",impostors:["Winter","Wolle","überziehen"]},
+    {main:"Jeans",impostors:["Nieten","Baumwolle","Reißverschluss"]},
+    {main:"Hemd",impostors:["Büro","Knopf","Bügeln"]},
+    {main:"Bluse",impostors:["Damen","Seide","Knopf"]},
+    {main:"Kleid",impostors:["Damen","Abend","Reißverschluss"]},
+    {main:"Rock",impostors:["Falten","Gürtel","Schottland"]},
+    {main:"Hose",impostors:["Bein","Hosenbund","Bügelfalte"]},
+    {main:"Shorts",impostors:["Sommer","kurz","Beine"]},
+    {main:"Jacke",impostors:["Reißverschluss","Außen","Kragen"]},
+    {main:"Mantel",impostors:["Winter","lang","Knöpfe"]},
+    {main:"Socken",impostors:["Paar","Michael Jackson","Laufmasche"]},
+    {main:"Strumpfhose",impostors:["Laufmasche","Denier","Damen"]},
+    {main:"Unterwäsche",impostors:["täglich","Baumwolle","Schublade"]},
+    {main:"Schlafanzug",impostors:["Flanell","Knöpfe","Schlafmütze"]},
+    {main:"Bademantel",impostors:["Frottee","Gürtel","Dusche"]},
+    {main:"Bikini",impostors:["Strand","Schnürung","Bikini-Atoll"]},
+    {main:"Badehose",impostors:["Schwimmbad","Gummi","nass"]},
+    {main:"Turnschuhe",impostors:["Schnürsenkel","Sohle","Sport"]},
+    {main:"Stiefel",impostors:["Herbst","Leder","hoch"]},
+    {main:"Sandalen",impostors:["Sommer","Zehen","Riemen"]},
+    {main:"Hausschuhe",impostors:["zuhause","warm","Sohle"]},
+    {main:"Mütze",impostors:["Winter","Wolle","Bommeln"]},
+    {main:"Schal",impostors:["Winter","wickeln","Wolle"]},
+    {main:"Handschuhe",impostors:["Winter","Finger","Leder"]},
+    {main:"Krawatte",impostors:["Büro","Knoten","Seide"]},
+    {main:"Hosenträger",impostors:["Clip","Charlie Chaplin","Gummizug"]},
+    {main:"Gürtel",impostors:["Schnalle","Leder","Hose"]},
+    {main:"Kaputze",impostors:["Hoodie","anonym","regenfest"]},
+    {main:"Latzhose",impostors:["Träger","Handwerker","Bib"]},
+    {main:"Dirndl",impostors:["Schürze","Tracht","Wiesn"]},
+  ]},
+
+  {label:"🥦 Grundnahrungsmittel",pairs:[
+    {main:"Brot",impostors:["Kruste","Scheibe","Bäcker"]},
+    {main:"Butter",impostors:["Brot","gelb","Rühren"]},
+    {main:"Milch",impostors:["Kuh","weiß","Glas"]},
+    {main:"Eier",impostors:["Frühstück","Huhn","Karton"]},
+    {main:"Mehl",impostors:["Backen","weiß","stauben"]},
+    {main:"Zucker",impostors:["Süßes","Würfel","Rohr"]},
+    {main:"Salz",impostors:["Meer","Streuer","Hallstatt"]},
+    {main:"Öl",impostors:["Pfanne","Olive","Flasche"]},
+    {main:"Essig",impostors:["sauer","Salat","gären"]},
+    {main:"Reis",impostors:["Asien","Reisfeld","kochen"]},
+    {main:"Nudeln",impostors:["Topf","al dente","Spaghetti"]},
+    {main:"Erdäpfel",impostors:["Erde","Österreich","kochen"]},
+    {main:"Paradeiser",impostors:["Salat","rot","Soße"]},
+    {main:"Zwiebeln",impostors:["weinen","Schichten","anbraten"]},
+    {main:"Knoblauch",impostors:["Vampir","Zehe","drücken"]},
+    {main:"Karotten",impostors:["Hase","orange","Suppe"]},
+    {main:"Paprika",impostors:["rot","Ungarn","anbraten"]},
+    {main:"Gurkerl",impostors:["Salat","Einlegen","grün"]},
+    {main:"Häupelsalat",impostors:["Blätter","Dressing","Wiener Art"]},
+    {main:"Äpfel",impostors:["Baum","Südtirol","knirschen"]},
+    {main:"Bananen",impostors:["gelb","krumm","Minions"]},
+    {main:"Orangen",impostors:["Saft","Vitamine","Schale"]},
+    {main:"Zitrone",impostors:["sauer","Tee","gelb"]},
+    {main:"Erdbeeren",impostors:["Wimbledon","Sahne","Sommer"]},
+    {main:"Käse",impostors:["Rinde","Schimmel","Laib"]},
+    {main:"Topfen",impostors:["Käsekuchen","cremig","Magerstufe"]},
+    {main:"Joghurt",impostors:["Frühstück","Beeren","Löffel"]},
+    {main:"Schinken",impostors:["Brot","Serrano","rosa"]},
+    {main:"Faschiertes",impostors:["Laibchen","Fett","braten"]},
+    {main:"Linsen",impostors:["Suppe","Silvester","Glück"]},
+  ]},
+
+];
+;
+
+const BUILTIN_PAIRS = PAIR_GROUPS.flatMap(g => g.pairs);
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let customPairs = loadCustomPairs();
+let activeGroups = loadActiveGroups(); // set of group labels that are enabled
+let selectedPairIndex = -1;   // -1 = random
+let players = [];
+let gameOrder = [];
+let currentRevealIndex = 0;
+let impostorIndex = -1;
+let currentPair = null;
+let wordRevealed = false;
+let currentQueueRemaining = 0;
+let wmFilter = 'all';
+
+const avatarColors = ['#e8ff00','#ff3c6e','#00e5a0','#7b61ff','#ff9f0a','#00cfff','#ff6b35','#c77dff'];
+
+// ─── PERSISTENCE ──────────────────────────────────────────────────────────────
+function loadCustomPairs() {
+  try { return JSON.parse(localStorage.getItem('impostor_custom_pairs') || '[]'); }
+  catch { return []; }
+}
+function loadActiveGroups() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('impostor_active_groups'));
+    if (Array.isArray(saved)) return new Set(saved);
+  } catch {}
+  // default: all groups active
+  return new Set(PAIR_GROUPS.map(g => g.label));
+}
+function saveActiveGroups() {
+  try { localStorage.setItem('impostor_active_groups', JSON.stringify([...activeGroups])); }
+  catch {}
+}
+
+// ─── SHUFFLE QUEUE ────────────────────────────────────────────────────────────
+const LAST_PLAYED_BUFFER = 50;
+
+function loadQueue() {
+  try {
+    const q = JSON.parse(localStorage.getItem('impostor_queue'));
+    if (Array.isArray(q) && q.length > 0) return q;
+  } catch {}
+  return null;
+}
+function saveQueue(q) {
+  try { localStorage.setItem('impostor_queue', JSON.stringify(q)); } catch {}
+}
+function loadLastPlayed() {
+  try {
+    const lp = JSON.parse(localStorage.getItem('impostor_last_played'));
+    if (Array.isArray(lp)) return lp;
+  } catch {}
+  return [];
+}
+function saveLastPlayed(arr) {
+  try { localStorage.setItem('impostor_last_played', JSON.stringify(arr)); } catch {}
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildNewQueue(pairs) {
+  const lastPlayed = loadLastPlayed();
+  const lastKeys = new Set(lastPlayed.map(p => p.main));
+
+  // Split: recent vs rest
+  const recent = pairs.filter(p => lastKeys.has(p.main));
+  const rest   = pairs.filter(p => !lastKeys.has(p.main));
+
+  // Divide rest randomly into two equal halves
+  const restShuffled = shuffle(rest);
+  const mid = Math.ceil(restShuffled.length / 2);
+  const firstHalf  = restShuffled.slice(0, mid);
+  const secondHalf = shuffle([...restShuffled.slice(mid), ...recent]);
+
+  return [...firstHalf, ...secondHalf];
+}
+
+function getNextPairFromQueue() {
+  const pairs = allPairs();
+  if (!pairs.length) return null;
+
+  let queue = loadQueue();
+
+  // Filter queue to only still-active pairs
+  const activeKeys = new Set(pairs.map(p => p.main));
+  queue = (queue || []).filter(p => activeKeys.has(p.main));
+
+  let reshuffled = false;
+  if (!queue.length) {
+    queue = buildNewQueue(pairs);
+    reshuffled = true;
+  }
+
+  const chosen = queue.shift();
+  saveQueue(queue);
+
+  // Track last played (keep last LAST_PLAYED_BUFFER)
+  const lastPlayed = loadLastPlayed();
+  lastPlayed.push({ main: chosen.main });
+  if (lastPlayed.length > LAST_PLAYED_BUFFER) lastPlayed.shift();
+  saveLastPlayed(lastPlayed);
+
+  return { pair: chosen, reshuffled, remaining: queue.length };
+}
+function saveCustomPairs() {
+  try { localStorage.setItem('impostor_custom_pairs', JSON.stringify(customPairs)); }
+  catch {}
+}
+function allPairs() {
+  const builtins = PAIR_GROUPS
+    .filter(g => activeGroups.has(g.label))
+    .flatMap(g => g.pairs)
+    .map(p => ({ ...p, source:'builtin' }));
+  return [
+    ...builtins,
+    ...customPairs.map(p => ({ ...p, source:'custom' })),
+  ];
+}
+
+// ─── IMPOSTOR ROTATION ────────────────────────────────────────────────────────
+function loadImpostorCounters() {
+  try { return JSON.parse(localStorage.getItem('impostor_counters') || '{}'); }
+  catch { return {}; }
+}
+function saveImpostorCounters(c) {
+  try { localStorage.setItem('impostor_counters', JSON.stringify(c)); } catch {}
+}
+function getNextImpostor(pair) {
+  const impostors = pair.impostors || [pair.impostor || '?'];
+  if (impostors.length === 1) return impostors[0];
+  const counters = loadImpostorCounters();
+  const idx = (counters[pair.main] || 0) % impostors.length;
+  counters[pair.main] = (idx + 1) % impostors.length;
+  saveImpostorCounters(counters);
+  return impostors[idx];
+}
+
+// ─── NAVIGATION ───────────────────────────────────────────────────────────────
+function goto(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  if (screenId === 'screen-wordmanager') renderWordManager();
+  if (screenId === 'screen-players') renderGroupToggles();
+}
+
+// ─── TOAST ────────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ─── COLLAPSIBLE ──────────────────────────────────────────────────────────────
+function toggleSection(bodyId, chevronId) {
+  const body = document.getElementById(bodyId);
+  const chev = document.getElementById(chevronId);
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+  if (body.classList.contains('open')) renderPairGrid();
+}
+
+// ─── PLAYERS ──────────────────────────────────────────────────────────────────
+function addPlayer() {
+  const input = document.getElementById('player-input');
+  const name = input.value.trim();
+  if (!name) return;
+  if (players.includes(name)) { showToast('Name bereits vorhanden!'); return; }
+  if (players.length >= 12) { showToast('Maximal 12 Spieler!'); return; }
+  players.push(name);
+  input.value = '';
+  renderPlayers();
+  input.focus();
+}
+function removePlayer(i) { players.splice(i,1); renderPlayers(); }
+function renderPlayers() {
+  document.getElementById('player-list').innerHTML = players.map((name,i) => `
+    <div class="player-chip">
+      <div class="player-avatar" style="background:${avatarColors[i%avatarColors.length]};color:#000">${name[0].toUpperCase()}</div>
+      <span class="player-name">${esc(name)}</span>
+      <button class="remove-btn" onclick="removePlayer(${i})">×</button>
+    </div>`).join('');
+}
+
+// ─── GROUP TOGGLES (players screen) ──────────────────────────────────────────
+function renderGroupToggles() {
+  const list = document.getElementById('group-toggle-list');
+  if (!list) return;
+  const allOn = PAIR_GROUPS.every(g => activeGroups.has(g.label));
+  list.innerHTML =
+    `<span class="group-select-all" onclick="toggleAllGroups(${allOn})">${allOn ? 'Alle deaktivieren' : 'Alle aktivieren'}</span>` +
+    PAIR_GROUPS.map(g => `
+      <div class="group-toggle-row">
+        <span class="group-toggle-label">${esc(g.label)}</span>
+        <span class="group-count">${g.pairs.length} Paare</span>
+        <button class="toggle-switch ${activeGroups.has(g.label)?'on':''}"
+          onclick="toggleGroup(${JSON.stringify(g.label).replace(/"/g,'&quot;')})"></button>
+      </div>`).join('') +
+    (customPairs.length > 0 ? `
+      <div class="group-toggle-row">
+        <span class="group-toggle-label">⭐ Eigene Paare</span>
+        <span class="group-count">${customPairs.length} Paare</span>
+        <button class="toggle-switch on" style="opacity:0.5;cursor:default"></button>
+      </div>` : '');
+  updateActiveGroupCount();
+}
+
+function toggleGroup(label) {
+  if (activeGroups.has(label)) {
+    if (activeGroups.size <= 1 && customPairs.length === 0) {
+      showToast('Mindestens eine Kategorie muss aktiv sein!'); return;
+    }
+    activeGroups.delete(label);
+  } else {
+    activeGroups.add(label);
+  }
+  saveActiveGroups();
+  renderGroupToggles();
+}
+
+function toggleAllGroups(currentlyAllOn) {
+  if (currentlyAllOn) {
+    // turn all off except first
+    activeGroups = new Set([PAIR_GROUPS[0].label]);
+  } else {
+    activeGroups = new Set(PAIR_GROUPS.map(g => g.label));
+  }
+  saveActiveGroups();
+  renderGroupToggles();
+}
+
+function updateActiveGroupCount() {
+  const el = document.getElementById('active-group-count');
+  if (!el) return;
+  const active = PAIR_GROUPS.filter(g => activeGroups.has(g.label)).length;
+  const total = PAIR_GROUPS.length;
+  el.textContent = active === total ? 'Alle' : `${active} / ${total} aktiv`;
+}
+
+// ─── GAME START ───────────────────────────────────────────────────────────────
+function startGame() {
+  if (players.length < 3) { showToast('Mindestens 3 Spieler nötig!'); return; }
+  const pairs = allPairs();
+  if (!pairs.length) { showToast('Keine Wortpaare vorhanden!'); return; }
+
+  const { pair: chosenPair, reshuffled, remaining } = getNextPairFromQueue();
+  const chosenImpostor = getNextImpostor(chosenPair);
+  currentPair = { ...chosenPair, activeImpostor: chosenImpostor };
+  currentQueueRemaining = remaining;
+
+  if (reshuffled) {
+    showToast('Alle Wörter gespielt – neu gemischt! 🎲');
+  }
+
+  gameOrder = [...players].sort(()=>Math.random()-0.5);
+  impostorIndex = Math.floor(Math.random()*gameOrder.length);
+  currentRevealIndex = 0;
+  goto('screen-reveal');
+  renderRevealScreen();
+}
+
+// ─── REVEAL ───────────────────────────────────────────────────────────────────
+function renderRevealScreen() {
+  wordRevealed = false;
+  const card = document.getElementById('reveal-card');
+  card.classList.remove('impostor-card','safe-card');
+  const isImpostor = currentRevealIndex===impostorIndex;
+  const total = gameOrder.length;
+  document.getElementById('reveal-counter').textContent = `Spieler ${currentRevealIndex+1} von ${total}`;
+  document.getElementById('progress-fill').style.width = `${(currentRevealIndex/total)*100}%`;
+  document.getElementById('reveal-name').textContent = gameOrder[currentRevealIndex];
+  const badge = document.getElementById('reveal-badge');
+  badge.className = 'role-badge '+(isImpostor?'badge-impostor':'badge-safe');
+  badge.textContent = isImpostor?'🎭 Impostor!':'✅ Mitspieler';
+  document.getElementById('reveal-word-btn').style.display='block';
+  document.getElementById('reveal-word-btn').textContent='👆 Tippen um aufzudecken';
+  document.getElementById('reveal-word-display').style.display='none';
+  document.getElementById('next-btn').style.display='none';
+  document.getElementById('reveal-badge').style.display='none';
+  document.getElementById('reveal-hint').textContent = isImpostor
+    ? 'Du bist der Impostor! Dein Tarnwort hilft dir in der ersten Runde.'
+    : 'Merke dir das Wort. Verrate es nicht! Gib das Gerät weiter wenn du fertig bist.';
+  document.getElementById('reveal-dots').innerHTML = gameOrder.map((_,i)=>
+    `<div class="dot ${i<currentRevealIndex?'done':i===currentRevealIndex?'current':''}"></div>`
+  ).join('');
+}
+function revealWord() {
+  if (wordRevealed) return;
+  wordRevealed = true;
+  const isImpostor = currentRevealIndex===impostorIndex;
+  document.getElementById('reveal-card').classList.add(isImpostor?'impostor-card':'safe-card');
+  document.getElementById('reveal-badge').style.display='';
+  document.getElementById('reveal-word-btn').style.display='none';
+  document.getElementById('reveal-word-display').style.display='block';
+  const wt = document.getElementById('word-text');
+  wt.textContent = isImpostor ? currentPair.activeImpostor : currentPair.main;
+  wt.className = 'word-display '+(isImpostor?'impostor-word':'safe-word');
+  document.getElementById('next-btn').style.display='block';
+}
+function nextPlayer() {
+  currentRevealIndex++;
+  if (currentRevealIndex>=gameOrder.length) {
+    document.getElementById('play-word-count').textContent =
+      `${gameOrder.length} Spieler`;
+    const lp = loadLastPlayed();
+    const lpEl = document.getElementById('play-last-played');
+    if (lpEl) {
+      const total = allPairs().length;
+      const played = lp.length;
+      lpEl.textContent = `Noch ${currentQueueRemaining} Wörter bis zur Wiederholung`;
+    }
+    goto('screen-play');
+    return;
+  }
+  renderRevealScreen();
+}
+function newRound() { startGame(); }
+
+// ─── WORD MANAGER ─────────────────────────────────────────────────────────────
+function renderWordManager() {
+  renderWmStats();
+  renderAllPairsList();
+}
+function renderWmStats() {
+  const c = customPairs.length, t = BUILTIN_PAIRS.length+c;
+  document.getElementById('wm-stats').innerHTML = `
+    <div class="stat-chip"><strong>${t}</strong><span>Gesamt</span></div>
+    <div class="stat-chip"><strong style="color:var(--accent)">${c}</strong><span>Eigene</span></div>
+    <div class="stat-chip"><strong style="color:var(--muted)">${BUILTIN_PAIRS.length}</strong><span>Standard</span></div>`;
+}
+function switchWmTab(tab) {
+  ['list','add','import'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('panel-'+t).classList.toggle('active', t===tab);
+  });
+  if (tab==='list') renderAllPairsList();
+}
+function setFilter(f) {
+  wmFilter = f;
+  ['all','custom','builtin'].forEach(x =>
+    document.getElementById('filter-'+x).classList.toggle('active', x===f));
+  renderAllPairsList();
+}
+function renderAllPairsList() {
+  const pairs = allPairs();
+  const filtered = wmFilter==='all' ? pairs : pairs.filter(p=>p.source===wmFilter);
+  const list = document.getElementById('all-pairs-list');
+  if (!filtered.length) {
+    list.innerHTML = `<div style="color:var(--muted);text-align:center;padding:30px;font-size:14px">Keine Paare vorhanden</div>`;
+  } else {
+    list.innerHTML = filtered.map((p, fi) => {
+      // find global index in allPairs()
+      const globalIdx = pairs.indexOf(p);
+      const imps = p.impostors || [p.impostor||''];
+      const impDisplay = imps.map(i => `<span class="cw-imp-chip">${esc(i)}</span>`).join('');
+      return `
+      <div class="custom-pair-item" style="flex-wrap:wrap;gap:6px">
+        <div class="custom-pair-words" style="flex:1;min-width:0">
+          <span class="cw-main">${esc(p.main)}</span>
+          <span class="cw-sep">›</span>
+          <span style="display:inline-flex;gap:4px;flex-wrap:wrap">${impDisplay}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;flex-shrink:0">
+          <span class="cw-source ${p.source}">${p.source==='custom'?'Eigenes':'Standard'}</span>
+          <button class="edit-btn" onclick="openEditModal(${globalIdx})" title="Bearbeiten">✏️</button>
+          ${p.source==='custom' ? `<button class="remove-btn" onclick="deletePairByGlobal(${globalIdx})" title="Löschen">×</button>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('delete-all-custom-btn').style.display = customPairs.length>0?'block':'none';
+  renderWmStats();
+}
+
+// ─── EDIT MODAL ───────────────────────────────────────────────────────────────
+// editingGlobalIdx: index into allPairs() — builtin first, then custom
+let editingGlobalIdx = -1;
+
+function openEditModal(globalIdx) {
+  editingGlobalIdx = globalIdx;
+  const p = allPairs()[globalIdx];
+  const imps = p.impostors || [p.impostor||'', '', ''];
+  document.getElementById('edit-main').value = p.main;
+  document.getElementById('edit-impostor').value = imps[0] || '';
+  document.getElementById('edit-impostor2').value = imps[1] || '';
+  document.getElementById('edit-impostor3').value = imps[2] || '';
+  document.getElementById('edit-modal').classList.add('open');
+  setTimeout(() => document.getElementById('edit-main').focus(), 350);
+}
+
+function closeEditModal(e) {
+  if (e && e.target !== document.getElementById('edit-modal')) return;
+  document.getElementById('edit-modal').classList.remove('open');
+  editingGlobalIdx = -1;
+}
+
+function saveEdit() {
+  if (editingGlobalIdx < 0) return;
+  const main = document.getElementById('edit-main').value.trim();
+  const imp1 = document.getElementById('edit-impostor').value.trim();
+  const imp2 = document.getElementById('edit-impostor2').value.trim();
+  const imp3 = document.getElementById('edit-impostor3').value.trim();
+  const imp  = imp1;
+  if (!main || !imp1) { showToast('Bitte Hauptwort und Tarnwort 1 ausfüllen!'); return; }
+  const newImpostors = [imp1, imp2, imp3].filter(Boolean);
+
+  const pairs = allPairs();
+  const oldMain = pairs[editingGlobalIdx].main;
+
+  // Duplicate check (ignore same pair)
+  if (main.toLowerCase() !== oldMain.toLowerCase() &&
+      pairs.some(p => p.main.toLowerCase() === main.toLowerCase())) {
+    showToast(`"${main}" ist bereits vorhanden!`); return;
+  }
+
+  if (editingGlobalIdx < BUILTIN_PAIRS.length) {
+    // Edit builtin directly
+    BUILTIN_PAIRS[editingGlobalIdx] = { main, impostors: newImpostors };
+  } else {
+    // Edit custom
+    const customIdx = editingGlobalIdx - BUILTIN_PAIRS.length;
+    customPairs[customIdx] = { main, impostors: newImpostors };
+    saveCustomPairs();
+  }
+
+  // Update selected pair display if this was selected
+  if (selectedPairIndex === editingGlobalIdx) {
+    document.getElementById('selected-pair-display').textContent = main + ' / ' + imp;
+  }
+
+  document.getElementById('edit-modal').classList.remove('open');
+  editingGlobalIdx = -1;
+  renderAllPairsList();
+  showToast(`✅ "${main}" gespeichert`);
+}
+
+// ─── ADD SINGLE PAIR ──────────────────────────────────────────────────────────
+function addSinglePair() {
+  const main = document.getElementById('add-main').value.trim();
+  const imp1 = document.getElementById('add-impostor').value.trim();
+  const imp2 = document.getElementById('add-impostor2').value.trim();
+  const imp3 = document.getElementById('add-impostor3').value.trim();
+  if (!main||!imp1) { showToast('Bitte Hauptwort und Tarnwort 1 ausfüllen!'); return; }
+  const all = allPairs();
+  if (all.some(p=>p.main.toLowerCase()===main.toLowerCase())) {
+    showToast(`"${main}" ist schon vorhanden!`); return;
+  }
+  const impostors = [imp1, imp2, imp3].filter(Boolean);
+  customPairs.push({ main, impostors });
+  saveCustomPairs();
+  ['add-main','add-impostor','add-impostor2','add-impostor3'].forEach(id => {
+    document.getElementById(id).value='';
+  });
+  document.getElementById('add-main').focus();
+  renderWmStats();
+  showToast(`✅ "${main}" hinzugefügt!`);
+}
+
+// ─── DELETE ───────────────────────────────────────────────────────────────────
+function deletePairByGlobal(globalIdx) {
+  const customIdx = globalIdx - BUILTIN_PAIRS.length;
+  deletePair(customIdx);
+}
+function deletePair(idx) {
+  if (idx<0||idx>=customPairs.length) return;
+  const name = customPairs[idx].main;
+  customPairs.splice(idx,1);
+  saveCustomPairs();
+  if (selectedPairIndex >= BUILTIN_PAIRS.length) selectedPairIndex=-1;
+  renderAllPairsList();
+  showToast(`"${name}" gelöscht`);
+}
+function deleteAllCustom() {
+  if (!confirm(`Alle ${customPairs.length} eigenen Wortpaare löschen?`)) return;
+  customPairs=[];
+  saveCustomPairs();
+  selectedPairIndex=-1;
+  renderAllPairsList();
+  showToast('Alle eigenen Paare gelöscht');
+}
+
+// ─── IMPORT TEXT ──────────────────────────────────────────────────────────────
+function importFromText() {
+  const raw = document.getElementById('import-textarea').value.trim();
+  if (!raw) { showToast('Kein Text eingegeben!'); return; }
+  const r = parsePairsText(raw);
+  if (!r.added) { showToast('Keine neuen Paare gefunden. Format: Hauptwort ; Tarnwort'); return; }
+  document.getElementById('import-textarea').value='';
+  renderWmStats();
+  switchWmTab('list');
+  showToast(`✅ ${r.added} Paare importiert${r.skipped?`, ${r.skipped} übersprungen`:''}`);
+}
+function parsePairsText(raw) {
+  const lines = raw.split('\n').map(l=>l.trim()).filter(Boolean);
+  let added=0, skipped=0;
+  const all = allPairs();
+  for (const line of lines) {
+    if (line.startsWith('#')) continue; // skip header/comment lines
+    const sep = line.includes(';') ? ';' : ',';
+    const parts = line.split(sep).map(s=>s.trim());
+    if (parts.length<2||!parts[0]||!parts[1]) { skipped++; continue; }
+    const [main,imp] = parts;
+    if (all.some(p=>p.main.toLowerCase()===main.toLowerCase())) { skipped++; continue; }
+    customPairs.push({ main, impostor:imp });
+    all.push({ main, impostor:imp, source:'custom' });
+    added++;
+  }
+  if (added) saveCustomPairs();
+  return { added, skipped };
+}
+
+// ─── FILE IMPORT ──────────────────────────────────────────────────────────────
+function handleFileImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const r = parsePairsText(ev.target.result);
+    e.target.value='';
+    if (!r.added) { showToast('Keine neuen Paare gefunden.'); return; }
+    renderWmStats();
+    switchWmTab('list');
+    showToast(`✅ ${r.added} Paare aus Datei importiert${r.skipped?`, ${r.skipped} übersprungen`:''}`);
+  };
+  reader.readAsText(file,'UTF-8');
+}
+
+// Drag & Drop
+document.addEventListener('DOMContentLoaded', () => {
+  const dz = document.getElementById('drop-zone');
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const r = parsePairsText(ev.target.result);
+      if (!r.added) { showToast('Keine neuen Paare gefunden.'); return; }
+      renderWmStats();
+      switchWmTab('list');
+      showToast(`✅ ${r.added} Paare importiert${r.skipped?`, ${r.skipped} übersprungen`:''}`);
+    };
+    reader.readAsText(file,'UTF-8');
+  });
+});
+
+// ─── EXPORT ───────────────────────────────────────────────────────────────────
+function exportCustomPairs() {
+  if (!customPairs.length) { showToast('Keine eigenen Paare zum Exportieren!'); return; }
+  const csv = 'Hauptwort;Tarnwort\n' + customPairs.map(p=>`${p.main};${p.impostor}`).join('\n');
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'})),
+    download: 'impostor-wortpaare.csv'
+  });
+  a.click();
+  showToast(`✅ ${customPairs.length} Paare exportiert`);
+}
+
+
+// ─── PIN PROTECTION ───────────────────────────────────────────────────────────
+const MANAGER_PIN = '1701';
+
+function showPinPrompt() {
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-error').textContent = '';
+  document.getElementById('pin-modal').classList.add('open');
+  setTimeout(() => document.getElementById('pin-input').focus(), 350);
+}
+
+function closePinModal(e) {
+  if (e && e.target !== document.getElementById('pin-modal')) return;
+  document.getElementById('pin-modal').classList.remove('open');
+}
+
+function clearPinError() {
+  document.getElementById('pin-error').textContent = '';
+}
+
+function checkPin() {
+  const val = document.getElementById('pin-input').value.trim();
+  if (val === MANAGER_PIN) {
+    document.getElementById('pin-modal').classList.remove('open');
+    goto('screen-wordmanager');
+  } else {
+    document.getElementById('pin-error').textContent = '❌ Falscher Code. Bitte erneut versuchen.';
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-input').focus();
+  }
+}
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
