@@ -19,13 +19,13 @@ unabhängig von n8n, Notion und Telegram-Zustellung.
 
 | Wächter | Prüft | Rhythmus | Alarmweg |
 |---|---|---|---|
-| Kernassets-Wächter (`idKwb6eMTGqmGV1H`) | haraldschwack.at, photocoach.cc, gettingadddone.com, Etsy-Shop per HTTP + Inhalts-Check; Historie in Data Table `core_assets_status` | täglich 07:00 | Telegram direkt |
+| Kernassets-Wächter v2 (`G4jfSndI2rjQjd7P`) | haraldschwack.at, photocoach.cc, gettingadddone.com, Etsy-Shop per HTTP + Inhalts-Check; Historie in Data Table `core_assets_status` | täglich 07:00 | Telegram direkt |
 | Posting-Wächter (`8iYJgvNv6S5nHiWv`) | Social-Post heute Published? | täglich 19:30 | Telegram direkt |
 | Fehler-Log-Check (Cowork-Skill `daily-fehler-log-check`) | n8n-Fehlermeldungen, fehlgeschlagene Workflows, fixt Kleinigkeiten | täglich | Briefing |
 
 ## Schicht 2 — außerhalb n8n (Claude-Routine "n8n System-Watchdog")
 
-Claude-Routine `trig_01VieXtnzoYUk1BbDZ5mdeoE`, täglich 05:45 UTC
+Claude-Routine `trig_018mUnYFK3ZMQTzqTNfUHb1w`, täglich 05:45 UTC
 (07:45 Wien im Sommer, 06:45 im Winter), gebunden an die Session
 `session_01KRNEPJSVFtw4SkLu4tRLsJ` (dort sind n8n- und Notion-Connector
 verfügbar). **Report-only** — repariert nichts.
@@ -36,7 +36,7 @@ Prüfungen (Fokus: *stille* Ausfälle, die kein Fehler-Log erzeugen):
    down → kritischer Alarm per Push.
 2. **Scheduler lebt?** Executions der letzten 26 h; null Executions =
    Scheduler tot.
-3. **Kern-Workflows gelaufen?** Daily Briefing Sender, Kernassets-Wächter,
+3. **Kern-Workflows gelaufen?** Daily Briefing Sender, Kernassets-Wächter v2,
    instapost MI, Posting-Wächter, sendemaifromexecute — jeder braucht ≥1
    Lauf in 26 h, sonst Alarm "läuft still nicht mehr".
 4. **Fehl-Executions** (error/crashed) → Warnung (Details übernimmt der
@@ -66,6 +66,9 @@ Watchdog selbst lebt.
   und `TEST: Tages-Trigger-Format via MCP` (`iZojMixasWMuLlgz`) sowie
   `SETUP: Data Table core_assets_status` (`6eEIpJVB8B9JXDYS`) können in n8n
   gelöscht werden (Wegwerf-Artefakte vom 20.07.2026).
+- Kernassets-Wächter **v1** (`idKwb6eMTGqmGV1H`) ist deaktiviert (Fehlalarm-Bug
+  im Inhalts-Check, am 21.07.2026 durch v2 `G4jfSndI2rjQjd7P` ersetzt) und
+  kann ebenfalls gelöscht werden.
 - Kern-Workflow-Liste der Routine bei neuen täglichen Workflows ergänzen
   (Routine in claude.ai → Routinen bearbeiten).
 - Cron der Routine ist UTC-fix: 05:45 UTC = 07:45 Wien im Sommer,

@@ -2,8 +2,13 @@
 
 Täglicher Verfügbarkeits-Check der Kernassets, gebaut am 20.07.2026.
 
-**n8n-Workflow:** `Kernassets-Wächter: Webseiten & Etsy (täglich 07:00)`
-https://n8n.haraldschwack.at/workflow/idKwb6eMTGqmGV1H
+**n8n-Workflow (aktiv):** `Kernassets-Wächter v2: Webseiten & Etsy (täglich 07:00)`
+https://n8n.haraldschwack.at/workflow/G4jfSndI2rjQjd7P
+
+> Update 21.07.2026: v1 (`idKwb6eMTGqmGV1H`) hatte einen Fehlalarm-Bug —
+> der Inhalts-Check las `r.body`, aber bei `responseFormat: 'text'` liegt
+> der Seiteninhalt in `r.data`. v1 ist deaktiviert (löschbar), v2 mit
+> korrigiertem Check ist aktiv. Der Code unten ist der v2-Stand.
 
 ## Was wird geprüft (täglich 07:00 Wien)
 
@@ -156,8 +161,8 @@ for (let i = 0; i < sites.length; i++) {
   } else if (status !== null) {
     ok = status >= 200 && status < 400;
     if (ok && site.keyword) {
-      const body = typeof r.body === 'string' ? r.body : JSON.stringify(r.body || '');
-      if (!body.toLowerCase().includes(String(site.keyword).toLowerCase())) {
+      const raw = (typeof r.data === 'string' && r.data) ? r.data : ((typeof r.body === 'string' && r.body) ? r.body : JSON.stringify(r.data ?? r.body ?? ''));
+      if (!raw.toLowerCase().includes(String(site.keyword).toLowerCase())) {
         ok = false;
         note = 'HTTP ' + status + ', aber erwarteter Inhalt "' + site.keyword + '" fehlt';
       }
