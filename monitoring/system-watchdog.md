@@ -74,12 +74,41 @@ Agenten derzeit still.
 
 Behoben/To-do:
 - Verpasster Task wurde manuell in der Tasks-DB angelegt (Tickler 05.08.).
-- **To-do Harald:** In n8n unter Workflows → Filter "Archived" mindestens
-  den Taskagent ent-archivieren; bei den übrigen 6 entscheiden:
-  ent-archivieren oder als Tool aus dem ultimate intern entfernen
-  (sonst bietet der Agent kaputte Fähigkeiten an).
 - Watchdog-Routine auf 04:30 Wien vorverlegt, damit die Meldung vor dem
   Morgenbriefing ankommt (Zustellung ~05:00 mit dem ersten Sender-Lauf).
+
+### Trigger-Analyse (24.07.2026): Wer ruft den ultimate intern noch?
+
+Alle nachvollziehbaren ultimate-intern-Läufe (16.07., 21.07., 23.07.; die
+Läufe 14./15.07. passen ins selbe 5-Minuten-Raster) kamen über **einen**
+Pfad: Der aktive Poller **"gmail@ V"** (`IOzKdyNtEABSYoi9`, Schedule alle
+5 Min) übergibt Mails von Kontakten mit **AutoAction-Flag in der
+People-DB** (`1e7252a0-0a25-4a14-9171-8abe34e3150c`) an den ultimate
+intern. Der einzige Absender, der das zuletzt auslöste:
+**HOTdomains (servicecenter@hotdomains.at)** — Domain-Rechnungen/Quittungen
+(16.07. Rechnung photocoach.cc 23,88 EUR, 21.07. Zahlungsquittung dazu,
+23.07. Rechnung mindful-images.com 21,90 EUR).
+
+Zweiter, strukturell noch verdrahteter Pfad: `info@ XI` → Switch
+"VIP? attachments" (Flags AutoAction/AutoEvent/AutoResponse/AutoCRM aus
+der People-DB) → "Call 'ultimate intern'". Im Ausführungszeitraum nie
+gefeuert.
+
+**Dekommissionierungs-Empfehlung** (statt Ent-Archivieren): In der
+People-DB alle Kontakte mit gesetzten Auto-Flags filtern (AutoAction /
+AutoEvent / AutoResponse / AutoCRM = true) und die Flags abschalten —
+mindestens beim Kontakt HOTdomains. Damit ist der letzte lebende Weg in
+das Agenten-Konstrukt gekappt; die Mails landen weiterhin in der
+Notion-Emails-DB und die Claude-E-Mail-Triage (4×/Tag) erzeugt daraus
+Tasks (Regel: Rechnung mit Frist → Task, Tickler = Frist − 1 Tag).
+Taskagent & Co. können archiviert bleiben; ultimate intern + Tool-Workflows
+danach schrittweise stilllegen.
+
+Randnotiz: Die Fehl-Execution von `info@ XI` am 23.07. 07:05 betraf eine
+Phishing-Mail ("Nespresso"/Surface-Köder an paypal@haraldschwack.at) —
+nicht klicken, kann gelöscht werden. Auffällig: Für paypal@haraldschwack.at
+existiert ein People-Eintrag mit VIP-Flag; Spam an diese Adresse wird
+dadurch bevorzugt behandelt — Eintrag prüfen.
 
 ## Wartung / offene Punkte
 
