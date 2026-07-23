@@ -60,6 +60,27 @@ Watchdog selbst lebt.
 | n8n komplett down / Scheduler tot | System-Watchdog (Schicht 2) | **Push** (n8n-unabhängig) |
 | Briefing-Zustellung kaputt | System-Watchdog (Schicht 2) | **Push** (n8n-unabhängig) |
 
+## Incident 23.07.2026 — "Taskagent"-Meldung
+
+Der E-Mail-Verarbeiter `info@ XI` (`mucRYz36ldoE4Zq6`) meldete per Telegram,
+er könne einen Task (Überweisung Domain-Rechnung mindful-images.com,
+21,90 EUR, fällig 06.08.2026) nicht anlegen. Ursache: Der Tool-Workflow
+**Taskagent** (`uSNXeAwkTdUmW7Qy`) des Agenten "ultimate intern" ist
+**archiviert** → jeder Aufruf endet mit "Workflow is not active and cannot
+be executed". Prüfung aller 16 Tool-Workflows des ultimate intern ergab
+**7 archivierte**: Taskagent, Noteagent, Peopleagent, Areaagent,
+Rezeptagent, Reiseagent, Contentcommander — diese Fähigkeiten fehlen dem
+Agenten derzeit still.
+
+Behoben/To-do:
+- Verpasster Task wurde manuell in der Tasks-DB angelegt (Tickler 05.08.).
+- **To-do Harald:** In n8n unter Workflows → Filter "Archived" mindestens
+  den Taskagent ent-archivieren; bei den übrigen 6 entscheiden:
+  ent-archivieren oder als Tool aus dem ultimate intern entfernen
+  (sonst bietet der Agent kaputte Fähigkeiten an).
+- Watchdog-Routine auf 04:30 Wien vorverlegt, damit die Meldung vor dem
+  Morgenbriefing ankommt (Zustellung ~05:00 mit dem ersten Sender-Lauf).
+
 ## Wartung / offene Punkte
 
 - Test-Workflows `TEST: Trigger-Registrierung via MCP` (`wNRYQ7ImxxTyuBwV`)
