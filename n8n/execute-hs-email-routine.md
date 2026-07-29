@@ -279,49 +279,48 @@ manuellen Anstoßen aber zu beachten.
 
 ---
 
-## 7. Signaturen — Entwurf
+## 7. Signaturen — festgelegt
 
-Grundsatzentscheidung: **bildfrei**, außer bei info@haraldschwack.at.
+**Vorgabe Harald:** Es ist ein durchgehendes Thema. Er ist immer Harald Schwack,
+mit vollständiger Anschrift und Telefonnummer. Prominent variiert nur die
+Domain, um die es geht, sowie die E-Mail-Adresse — und die ist immer die
+Absenderadresse.
 
-Begründung: Die bestehende Mindful-Images-Signatur lädt vier Bilder nach, drei
-davon von `mail-signatures.com` — einer fremden Generator-Seite. Fällt die aus
-oder sperrt sie Hotlinking, bricht die Signatur. Dazu sind nachgeladene Bilder
-in vielen Clients standardmäßig blockiert und zählen als Spam-Signal.
+Daraus folgt: **eine** Vorlage statt sieben, vollständig aus `Emailfrom`
+abgeleitet. Kein Pflegeaufwand bei neuen Absendern, keine Divergenz.
 
-Eine reine Textsignatur mit farbigem Akzentbalken rendert in Gmail, Outlook,
-Apple Mail und Thunderbird identisch, bricht nie und kostet keine Zustellrate.
-Farbe: Teal `#00b09a` aus dem hinterlegten Brand-System.
+| Bestandteil | Wert |
+|---|---|
+| Name | Harald Schwack (konstant) |
+| Prominente Zeile | Domain aus `Emailfrom`, verlinkt |
+| Telefon | +43 699 1699 2411 (konstant) |
+| E-Mail | `Emailfrom` selbst |
+| Anschrift | Hintere Liesingbachstraße 14-16/A4/3 · 1100 Wien (konstant) |
+| Akzent | Teal `#00b09a` |
 
-```html
-<table cellpadding="0" cellspacing="0" border="0"
-       style="margin-top:20px;font-family:Arial,Helvetica,sans-serif;
-              font-size:13px;line-height:1.55;color:#3C3C3B">
-  <tr><td style="border-left:3px solid #00b09a;padding:2px 0 2px 12px">
-    <div style="font-size:15px;font-weight:bold;color:#00b09a">Harald Schwack</div>
-    <div style="font-size:13px;font-weight:bold;color:#00b09a;padding-bottom:7px">Photocoach</div>
-    <div><strong>T:</strong> +43 699 1699 2411<br>
-      <strong>E:</strong> <a href="mailto:coach@photocoach.cc">coach@photocoach.cc</a><br>
-      <strong>W:</strong> <a href="https://www.photocoach.cc">www.photocoach.cc</a><br>
-      Hintere Liesingbachstraße 14-16/A4/3 · 1100 Wien</div>
-  </td></tr>
-</table>
-```
+Sonderfall: `harald.schwack@gmail.com` — gmail.com taugt nicht als prominente
+Domain, dort steht schwack.com.
 
-Zuordnung der Markenzeile:
+Logos werden über eine `LOGOS`-Tabelle im Code-Node nachgerüstet, eine Zeile je
+Domain. Ist der Eintrag leer, entfällt die Logospalte ersatzlos — die Signatur
+bleibt in jedem Fall gültig.
 
-| Absender | Markenzeile | Website |
+**Damit entfällt die bisherige Mindful-Images-Signatur für info@haraldschwack.at.**
+Falls sie dort erhalten bleiben soll, ist das ein Eintrag in der Zuordnung.
+
+Bildfrei, bis Logo-URLs vorliegen.
+
+Ergebnis je Absender:
+
+| Absender | Prominente Zeile | E-Mail in der Signatur |
 |---|---|---|
-| info@haraldschwack.at | Mindful Images | haraldschwack.at (bestehende Bildsignatur) |
-| contact@schwack.com | schwack.com | www.schwack.com |
-| office@schwack.com | schwack.com | www.schwack.com |
-| coach@photocoach.cc | Photocoach | www.photocoach.cc |
-| support@gettingadddone.com | Getting ADD Done ⚠️ | www.gettingadddone.com |
-| shop@gettingadddone.com | Getting ADD Done ⚠️ | www.gettingadddone.com |
-| harald.schwack@gmail.com | Harald Schwack | www.schwack.com |
-
-⚠️ = aus dem Domainnamen abgeleitet, von Harald noch nicht bestätigt.
-
-Telefon und Adresse sind laut Harald bei allen Absendern identisch.
+| info@haraldschwack.at | haraldschwack.at | info@haraldschwack.at |
+| contact@schwack.com | schwack.com | contact@schwack.com |
+| office@schwack.com | schwack.com | office@schwack.com |
+| coach@photocoach.cc | photocoach.cc | coach@photocoach.cc |
+| support@gettingadddone.com | gettingadddone.com | support@gettingadddone.com |
+| shop@gettingadddone.com | gettingadddone.com | shop@gettingadddone.com |
+| harald.schwack@gmail.com | schwack.com (Sonderfall) | harald.schwack@gmail.com |
 
 ### Logos
 
