@@ -443,6 +443,14 @@ Korrektur der zwei falsch markierten Zeilen.
 | coach@photocoach.cc | 342201 | `250 Ok: queued as 942305151205` |
 | office@schwack.com | 342216 | `250 Ok: queued as 3A87D50D28A9` |
 | support@gettingadddone.com | 342217 | `250 Ok: queued as B09CB50D28A9` |
+| contact@schwack.com | 342256 | `250 Ok: queued as A7B995151870` |
+| harald.schwack@gmail.com | 342247 | Gmail-API, Message-ID `19fae6dc7d7b8366` ⚠️ |
+
+⚠️ Gmail lief nur, weil im Testdatensatz im Feld `to` eine echte Adresse stand.
+Mit dem üblichen Inhalt („Harald") schlägt die Route fehl — siehe F5. Der Node
+selbst und das OAuth-Token sind in Ordnung, defekt ist ausschließlich das Mapping.
+
+**Damit sind alle sieben Absender belegt.**
 
 Alle Message-IDs tragen die jeweils richtige Absenderdomain. Kalenderzweig
 ebenfalls bestätigt (Execution 342208, Kino-Termin angelegt).
@@ -456,7 +464,7 @@ ebenfalls bestätigt (Execution 342208, Kino-Termin angelegt).
 | 3 | Tote Referenz auf `Signatur` in `Send email info` | Verweist auf ein gelöschtes Feld |
 | 4 | Gmail-Node `sendTo: {{ $json.to }}` | Route kann nicht zustellen, Feld enthält „Harald" |
 | 5 | `Get many database pages` steht auf `limit: 1` | Maximal 6 Mails pro Stunde |
-| 6 | contact@schwack.com und harald.schwack@gmail.com ungetestet | Unbekannt |
+| ~~6~~ | ~~contact@ und Gmail ungetestet~~ | **erledigt 17:21** |
 
 Punkt 1 ist der einzige, der stillen Datenverlust verursacht — alle anderen
 sind sichtbar, sobald sie auftreten.
