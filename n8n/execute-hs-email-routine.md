@@ -275,5 +275,89 @@ manuellen Anstoßen aber zu beachten.
 | Zeitpunkt | Änderung | Grund |
 |---|---|---|
 | 29.07. 15:14 | `Execute` entfernt bei „Testantwort an Harald (2)–(5)" | Endlosschleife alle 10 Min gestoppt |
+| 29.07. 15:20 | Testzeile „TEST 01" angelegt und versendet | Nachweis, dass `SMTP account info` funktioniert |
 
-Am Workflow selbst wurde noch nichts geändert.
+---
+
+## 7. Signaturen — Entwurf
+
+Grundsatzentscheidung: **bildfrei**, außer bei info@haraldschwack.at.
+
+Begründung: Die bestehende Mindful-Images-Signatur lädt vier Bilder nach, drei
+davon von `mail-signatures.com` — einer fremden Generator-Seite. Fällt die aus
+oder sperrt sie Hotlinking, bricht die Signatur. Dazu sind nachgeladene Bilder
+in vielen Clients standardmäßig blockiert und zählen als Spam-Signal.
+
+Eine reine Textsignatur mit farbigem Akzentbalken rendert in Gmail, Outlook,
+Apple Mail und Thunderbird identisch, bricht nie und kostet keine Zustellrate.
+Farbe: Teal `#00b09a` aus dem hinterlegten Brand-System.
+
+```html
+<table cellpadding="0" cellspacing="0" border="0"
+       style="margin-top:20px;font-family:Arial,Helvetica,sans-serif;
+              font-size:13px;line-height:1.55;color:#3C3C3B">
+  <tr><td style="border-left:3px solid #00b09a;padding:2px 0 2px 12px">
+    <div style="font-size:15px;font-weight:bold;color:#00b09a">Harald Schwack</div>
+    <div style="font-size:13px;font-weight:bold;color:#00b09a;padding-bottom:7px">Photocoach</div>
+    <div><strong>T:</strong> +43 699 1699 2411<br>
+      <strong>E:</strong> <a href="mailto:coach@photocoach.cc">coach@photocoach.cc</a><br>
+      <strong>W:</strong> <a href="https://www.photocoach.cc">www.photocoach.cc</a><br>
+      Hintere Liesingbachstraße 14-16/A4/3 · 1100 Wien</div>
+  </td></tr>
+</table>
+```
+
+Zuordnung der Markenzeile:
+
+| Absender | Markenzeile | Website |
+|---|---|---|
+| info@haraldschwack.at | Mindful Images | haraldschwack.at (bestehende Bildsignatur) |
+| contact@schwack.com | schwack.com | www.schwack.com |
+| office@schwack.com | schwack.com | www.schwack.com |
+| coach@photocoach.cc | Photocoach | www.photocoach.cc |
+| support@gettingadddone.com | Getting ADD Done ⚠️ | www.gettingadddone.com |
+| shop@gettingadddone.com | Getting ADD Done ⚠️ | www.gettingadddone.com |
+| harald.schwack@gmail.com | Harald Schwack | www.schwack.com |
+
+⚠️ = aus dem Domainnamen abgeleitet, von Harald noch nicht bestätigt.
+
+Telefon und Adresse sind laut Harald bei allen Absendern identisch.
+
+### Logos
+
+Nicht beschaffbar in dieser Session: photocoach.cc und gettingadddone.com sind
+über die Netzwerk-Policy gesperrt (`connect_rejected — policy denial`). Der
+Umweg über einen n8n-HTTP-Request scheitert an der fehlenden Freigabe zum
+Anlegen von Workflows. Das im Brand-System hinterlegte HS-Logo liegt als
+Inline-SVG vor — für E-Mail unbrauchbar, da Gmail und Outlook SVG verwerfen.
+
+Wenn Logos gewünscht sind, brauche ich je eine PNG-URL. Einbau ist dann eine
+Zeile pro Absender.
+
+---
+
+## 8. Vorbereiteter Umbau (wartet auf Freigabe)
+
+`update_workflow` auf `4r1b9Vs8XOynpAqc`, 33 Operationen, gezielt statt
+Neuanlage — Credentials bleiben unangetastet.
+
+| # | Operation | Behebt |
+|---|---|---|
+| 1 | Code-Node „Build Signature" zwischen `Edit Fields` und `Switch` | F4 |
+| 2 | Signatur pro Absender, `htmlBody` = Text + Signatur | F4 |
+| 3 | `pageId` wird mitgeführt (für den Fehlerpfad) | — |
+| 4 | Alle 7 Versand-Nodes: `html`/`message` → `{{ $json.htmlBody }}` | F4 |
+| 5 | Alle 7: `retryOnFail`, `maxTries: 3`, `waitBetweenTries: 5000` | F9, Entscheidung Harald |
+| 6 | Alle 7: `onError: continueErrorOutput`, `alwaysOutputData: false` | **F2** |
+| 7 | Gmail `sendTo` → `{{ $json.toemail }}` | F5 |
+| 8 | Fallback-Ausgang an `Switch` und `Route by Emailfrom` | F6 |
+| 9 | Neu: `Execute zuruecksetzen` (Notion, entfernt nur den Haken) | F3 |
+| 10 | Neu: `Alert Fehler` (Telegram an 622619977) | F9 |
+| 11 | Fehlerausgänge aller 7 Nodes + beide Fallbacks → Fehlerpfad | F2, F3, F6 |
+
+Wirkung: Ein Fehlschlag setzt `Executed` **nicht** mehr, entfernt den Haken
+(keine Schleife) und meldet sich per Telegram. `Executed` wird ausschließlich
+nach einem echten `250 Ok` gesetzt.
+
+Nicht enthalten, bewusst später: Meta-DM-Body (F7), Draft/Active-Divergenz (F8),
+Korrektur der zwei falsch markierten Zeilen.
