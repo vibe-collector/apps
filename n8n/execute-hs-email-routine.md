@@ -208,8 +208,8 @@ Briefing (Route fehlt, F6) · Send DM (Node leer, F7).
 | # | Absender | SMTP-Credential | n8n-Status | Zugestellt | Signatur | Notiz |
 |---|---|---|---|---|---|---|
 | 1 | info@haraldschwack.at | SMTP account info | **250 Ok, queued** ✅ | Prüfung Harald | vorhanden | Test 01, 15:20 |
-| 2 | coach@photocoach.cc | SMTP account contact | **Timeout** | nein | fehlt | heute erforderlich |
-| 3 | shop@gettingadddone.com | SMTP account contact | **Timeout** | nein | fehlt | heute erforderlich |
+| 2 | coach@photocoach.cc | SMTP coach@photocoach.cc | **Timeout** | nein | fehlt | Test 02, Credential neu, Host/Port offen |
+| 3 | shop@gettingadddone.com | SMTP shop@gettingadddone.com | offen | offen | fehlt | Test 03 liegt bereit |
 | 4 | contact@schwack.com | — | offen | offen | fehlt | Zeile fälschlich auf „Executed" |
 | 5 | office@schwack.com | SMTP account contact | **Timeout** | nein | fehlt | |
 | 6 | support@gettingadddone.com | SMTP account contact | **Timeout** | nein | fehlt | |
@@ -239,6 +239,50 @@ Offen: Zustellung im Postfach und Darstellung der Signatur (prüft Harald).
 Nebenbefund: Eine frisch angelegte Notion-Zeile ist ca. 10–60 s lang nicht über
 die gefilterte API-Abfrage sichtbar. Für den 10-Minuten-Takt irrelevant, beim
 manuellen Anstoßen aber zu beachten.
+
+### Ergebnis Test 02 — coach@photocoach.cc
+
+Execution `342183`, 29.07. 16:35:12, Laufzeit **120.011 ms**.
+
+```
+Send coach photocoach → ETIMEDOUT
+messages:   ["Connection timeout", "Connection timeout"]
+credential: SMTP coach@photocoach.cc  (aLcKjxqRJrdoTzUc)
+```
+
+Wichtig: Das Credential ist **neu und korrekt zugeordnet** — Harald hat je
+Postfach ein eigenes angelegt (`aLcKjxqRJrdoTzUc` für coach@,
+`vHmoAivaE4lBIYLN` für shop@) und der Node zeigt darauf. Das
+Platzhalter-Problem aus F1 ist damit erledigt. Auch die Passwörter wurden in
+Plesk und in n8n neu vergeben.
+
+**Der Timeout bleibt trotzdem — und das grenzt die Ursache eindeutig ein.**
+
+### F10 — Es ist nicht das Passwort, es ist Host oder Port
+
+| Beobachtung | Schlussfolgerung |
+|---|---|
+| `SMTP account info` antwortet in **369 ms** mit `250 Ok` | Der Weg von n8n zu diesem Mailserver ist frei |
+| `SMTP coach@photocoach.cc` schweigt **120.000 ms** | Die TCP-Verbindung kommt nie zustande |
+
+Ein falsches Passwort ergäbe einen Authentifizierungsfehler nach
+Millisekunden. 120 Sekunden Stille bedeutet: der Server hat auf den
+Verbindungsversuch nie geantwortet. Die Zugangsdaten wurden gar nicht erst
+gesendet — es gab nichts, wohin man sie hätte senden können.
+
+Mögliche Ursachen, nach Wahrscheinlichkeit:
+
+1. **Port 25.** Wird von den meisten Hostern ausgehend blockiert. Das Symptom
+   ist exakt dieses stille Timeout. Richtig sind 587 (STARTTLS) oder 465 (SSL/TLS).
+2. **Falscher Host.** Tippfehler, oder ein Hostname der nicht auf den
+   Mailserver zeigt.
+3. Firewall zwischen n8n und dem Mailserver.
+
+**Lösung:** Host und Port aus `SMTP account info` übernehmen — von dieser
+Kombination ist erwiesen, dass sie von n8n aus durchgeht. Da alle Domains auf
+demselben Plesk liegen, bedient ein einziger Mailserver sie alle; der Host ist
+für coach@photocoach.cc derselbe wie für info@haraldschwack.at. Nur Benutzer
+(die vollständige Adresse) und Passwort sind je Postfach verschieden.
 
 ---
 
