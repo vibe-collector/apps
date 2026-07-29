@@ -429,3 +429,45 @@ nach einem echten `250 Ok` gesetzt.
 
 Nicht enthalten, bewusst später: Meta-DM-Body (F7), Draft/Active-Divergenz (F8),
 Korrektur der zwei falsch markierten Zeilen.
+
+---
+
+## 9. Live-Checkliste (Stand 29.07. 17:05)
+
+### Bestätigt
+
+| Absender | Execution | Serverantwort |
+|---|---|---|
+| info@haraldschwack.at | 342115 | `250 Ok: queued as 96C8850A4D6F` |
+| shop@gettingadddone.com | 342203 | `250 Ok: queued as 5E6F05151205` |
+| coach@photocoach.cc | 342201 | `250 Ok: queued as 942305151205` |
+| office@schwack.com | 342216 | `250 Ok: queued as 3A87D50D28A9` |
+| support@gettingadddone.com | 342217 | `250 Ok: queued as B09CB50D28A9` |
+
+Alle Message-IDs tragen die jeweils richtige Absenderdomain. Kalenderzweig
+ebenfalls bestätigt (Execution 342208, Kino-Termin angelegt).
+
+### Offen vor dem Livegang
+
+| # | Punkt | Wirkung wenn nicht behoben |
+|---|---|---|
+| 1 | `alwaysOutputData` + `onError: continueRegularOutput` bei `Send email info` und `Send contact` | Fehlgeschlagene Mails werden in Notion als „Executed" abgehakt. Verlust ohne Spur. |
+| 2 | Sieben `Sig*`-Felder in `Edit Fields` fehlen | Keine Mail hat eine Signatur |
+| 3 | Tote Referenz auf `Signatur` in `Send email info` | Verweist auf ein gelöschtes Feld |
+| 4 | Gmail-Node `sendTo: {{ $json.to }}` | Route kann nicht zustellen, Feld enthält „Harald" |
+| 5 | `Get many database pages` steht auf `limit: 1` | Maximal 6 Mails pro Stunde |
+| 6 | contact@schwack.com und harald.schwack@gmail.com ungetestet | Unbekannt |
+
+Punkt 1 ist der einzige, der stillen Datenverlust verursacht — alle anderen
+sind sichtbar, sobald sie auftreten.
+
+### Zustand des Workflows
+
+Unverändert gegenüber dem Ausgangszustand, mit zwei Ausnahmen:
+`Send coach photocoach` hat `retryOnFail: true` erhalten, und das Feld
+`Signatur` in `Edit Fields` wurde gelöscht.
+
+Sämtliche schreibenden MCP-Aufrufe (`update_workflow`,
+`create_workflow_from_code`, `execute_workflow`, `search_nodes`) werden vom
+n8n-Connector mit `requires approval` abgelehnt. Die Änderungen sind daher
+manuell einzutragen: `umbau-manuell.md` und `signaturen-pro-adresse.md`.
