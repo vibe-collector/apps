@@ -207,13 +207,38 @@ Briefing (Route fehlt, F6) · Send DM (Node leer, F7).
 
 | # | Absender | SMTP-Credential | n8n-Status | Zugestellt | Signatur | Notiz |
 |---|---|---|---|---|---|---|
-| 1 | info@haraldschwack.at | — | offen | offen | offen | |
-| 2 | contact@schwack.com | — | offen | offen | offen | Zeile fälschlich auf „Executed" |
-| 3 | office@schwack.com | SMTP account contact | **Timeout** | nein | fehlt | |
-| 4 | coach@photocoach.cc | SMTP account contact | **Timeout** | nein | fehlt | |
-| 5 | support@gettingadddone.com | SMTP account contact | **Timeout** | nein | fehlt | |
-| 6 | shop@gettingadddone.com | SMTP account contact | **Timeout** | nein | fehlt | |
+| 1 | info@haraldschwack.at | SMTP account info | **250 Ok, queued** ✅ | Prüfung Harald | vorhanden | Test 01, 15:20 |
+| 2 | coach@photocoach.cc | SMTP account contact | **Timeout** | nein | fehlt | heute erforderlich |
+| 3 | shop@gettingadddone.com | SMTP account contact | **Timeout** | nein | fehlt | heute erforderlich |
+| 4 | contact@schwack.com | — | offen | offen | fehlt | Zeile fälschlich auf „Executed" |
+| 5 | office@schwack.com | SMTP account contact | **Timeout** | nein | fehlt | |
+| 6 | support@gettingadddone.com | SMTP account contact | **Timeout** | nein | fehlt | |
 | 7 | harald.schwack@gmail.com | Gmail OAuth | offen | offen | fehlt | F5 blockiert |
+
+**Heutiger Scope (Entscheidung Harald):** info@haraldschwack.at ·
+coach@photocoach.cc · shop@gettingadddone.com
+**Fehlerverhalten (Entscheidung Harald):** 3× Retry, danach parken + Telegram-Alarm
+
+### Ergebnis Test 01 — info@haraldschwack.at
+
+Execution `342115`, 29.07. 15:20:57, Laufzeit 1,8 s.
+
+```
+accepted:  ["info@haraldschwack.at"]
+rejected:  []
+response:  "250 2.0.0 Ok: queued as 96C8850A4D6F"
+messageId: <f821a4d6-d831-c45a-b404-2706e9cc1d5f@haraldschwack.at>
+```
+
+Der Mailserver hat die Nachricht angenommen — kein stiller Fehlschlag, sondern
+ein belegter Versand. **Damit ist bewiesen: `SMTP account info` funktioniert.**
+Der Ausfall betrifft ausschließlich `SMTP account contact`.
+
+Offen: Zustellung im Postfach und Darstellung der Signatur (prüft Harald).
+
+Nebenbefund: Eine frisch angelegte Notion-Zeile ist ca. 10–60 s lang nicht über
+die gefilterte API-Abfrage sichtbar. Für den 10-Minuten-Takt irrelevant, beim
+manuellen Anstoßen aber zu beachten.
 
 ---
 
