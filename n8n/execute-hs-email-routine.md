@@ -208,8 +208,8 @@ Briefing (Route fehlt, F6) · Send DM (Node leer, F7).
 | # | Absender | SMTP-Credential | n8n-Status | Zugestellt | Signatur | Notiz |
 |---|---|---|---|---|---|---|
 | 1 | info@haraldschwack.at | SMTP account info | **250 Ok, queued** ✅ | Prüfung Harald | vorhanden | Test 01, 15:20 |
-| 2 | coach@photocoach.cc | SMTP coach@photocoach.cc | **Timeout** | nein | fehlt | Test 02, Credential neu, Host/Port offen |
-| 3 | shop@gettingadddone.com | SMTP shop@gettingadddone.com | offen | offen | fehlt | Test 03 liegt bereit |
+| 2 | coach@photocoach.cc | SMTP coach@photocoach.cc | **250 Ok, 447 ms** | Prüfung Harald | fehlt | Test 02, nach Portwechsel |
+| 3 | shop@gettingadddone.com | SMTP shop@gettingadddone.com | **250 Ok, 472 ms** | Prüfung Harald | fehlt | Test 03, nach Portwechsel |
 | 4 | contact@schwack.com | — | offen | offen | fehlt | Zeile fälschlich auf „Executed" |
 | 5 | office@schwack.com | SMTP account contact | **Timeout** | nein | fehlt | |
 | 6 | support@gettingadddone.com | SMTP account contact | **Timeout** | nein | fehlt | |
@@ -283,6 +283,31 @@ Kombination ist erwiesen, dass sie von n8n aus durchgeht. Da alle Domains auf
 demselben Plesk liegen, bedient ein einziger Mailserver sie alle; der Host ist
 für coach@photocoach.cc derselbe wie für info@haraldschwack.at. Nur Benutzer
 (die vollständige Adresse) und Passwort sind je Postfach verschieden.
+
+### F10 gelöst — es war der Port
+
+Harald hat auf **Port 587 mit ausgeschaltetem SSL** umgestellt, analog zum
+funktionierenden `SMTP account info`. Beide Absender gehen seitdem durch:
+
+| | shop@gettingadddone.com | coach@photocoach.cc |
+|---|---|---|
+| Execution | `342194` | `342196` |
+| Antwort | `250 2.0.0 Ok: queued as ADF52515184B` | `250 2.0.0 Ok: queued as 589725151205` |
+| Message-ID | `…@gettingadddone.com` | `…@photocoach.cc` |
+| Dauer | 472 ms | 447 ms |
+| vorher | 120.011 ms Timeout | 120.011 ms Timeout |
+
+Die Message-IDs tragen jeweils die richtige Absenderdomain — für die
+DKIM-Zuordnung das gewünschte Bild.
+
+Port 587 ohne SSL ist korrekt: dort wird unverschlüsselt verbunden und per
+STARTTLS hochgestuft. Der SSL-Schalter gehört zu Port 465, wo die
+Verschlüsselung von der ersten Sekunde an steht. Beides gleichzeitig ergäbe
+denselben Timeout aus anderer Ursache.
+
+Damit gilt für die verbleibenden Absender dieselbe Kombination — es unterscheiden
+sich nur Benutzername und Passwort. Offen: contact@schwack.com,
+office@schwack.com, support@gettingadddone.com.
 
 ---
 
