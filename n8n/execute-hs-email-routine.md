@@ -479,3 +479,74 @@ Sämtliche schreibenden MCP-Aufrufe (`update_workflow`,
 `create_workflow_from_code`, `execute_workflow`, `search_nodes`) werden vom
 n8n-Connector mit `requires approval` abgelehnt. Die Änderungen sind daher
 manuell einzutragen: `umbau-manuell.md` und `signaturen-pro-adresse.md`.
+
+---
+
+## 10. Umsetzung 30.07.2026 — Schreibzugriff zurück, Signaturen live
+
+Nach einem Reconnect des n8n-Connectors funktionierten die schreibenden
+MCP-Aufrufe wieder. Der Umbau wurde daraufhin direkt abgesetzt.
+
+### Angewendet
+
+| Änderung | Umfang |
+|---|---|
+| Signatur je Absender **direkt im Versand-Node** (Haralds Variante 1) | 7 Nodes |
+| `retryOnFail` mit 3 Versuchen, 5 s Abstand | alle 7 Versand-Nodes |
+| `alwaysOutputData: false` + `onError: stopWorkflow` | `Send email info`, `Send contact` |
+| Publiziert | `activeVersionId f3d76208-bd0f-45b4-8a9b-0f76d0813f03` |
+
+`Edit Fields` wurde bewusst **nicht** angefasst — damit sind Haralds manuelle
+Änderungen (Gmail-Empfänger) unberührt und die tote Referenz auf das gelöschte
+Feld `Signatur` ist mit ersetzt.
+
+### Warum `stopWorkflow` statt `continueErrorOutput`
+
+Ursprünglich war „Continue (using error output)" empfohlen — das galt für die
+Version **mit** angeschlossenem Fehlerpfad. Der existiert nicht. Ein
+unverbundener Fehlerausgang bedeutet: Das Item wird lautlos verworfen **und die
+Execution meldet trotzdem Erfolg** — schlechter für die Diagnose als vorher.
+
+Mit `stopWorkflow` schlägt der Lauf sichtbar fehl, `Executed` bleibt leer, und
+der Fehler ist im n8n-Dashboard rot.
+
+### Verifikation
+
+Execution `343097`, 30.07. 07:20:57, Absender info@haraldschwack.at:
+
+```
+messageSize: 1326        (Testmails ohne Signatur lagen bei 332–347)
+response:    250 2.0.0 Ok: queued as D0B3C514FBBA
+messageId:   <49549469-30eb-31a3-c3f3-68a36303f622@haraldschwack.at>
+```
+
+Keine Fehl-Execution zwischen 29.07. 15:21 und 30.07. 07:22.
+
+### Einstellungen nach Haralds Entscheidung
+
+* **Intervall 5 Minuten** (statt 10) → 12 Durchläufe pro Stunde
+* **`limit: 1` bleibt bewusst** — eine Execution entspricht genau einem Fall,
+  was die Fehlersuche erheblich vereinfacht. Bei ~6 Einträgen in 14 Tagen ist
+  der Durchsatz reichlich bemessen.
+
+### Bekannte Nebenwirkung von `limit: 1`
+
+Schlägt eine Zeile dauerhaft fehl, bleibt ihr Haken gesetzt. Da pro Lauf nur
+**eine** Zeile geholt wird, kann diese Zeile bei jedem Durchlauf erneut gezogen
+werden und nachfolgende Einträge blockieren. Bei zehn Zeilen pro Lauf fiele das
+nicht auf, bei einer schon.
+
+Zwei Wege damit umzugehen:
+1. Rot markierte Executions im Dashboard beobachten und den Haken manuell
+   entfernen (aktueller Zustand)
+2. Fehlerpfad nachrüsten, der den Haken automatisch entfernt und per Telegram
+   meldet — oder den bestehenden Workflow `Error Logger Notion lastruns` als
+   Error Workflow in den Settings eintragen. Dann greift auch der tägliche
+   Watchdog.
+
+### Weiterhin offen
+
+* Fallback-Ausgänge an beiden Switches (F6) — `Briefing` und leeres `Emailfrom`
+* Meta-DM-Node ohne Body (F7)
+* Zwei Notion-Zeilen fälschlich auf „Executed" (`Testantwort an Harald`, `(1)`)
+* Logos in den Signaturen, sobald PNG-URLs vorliegen
