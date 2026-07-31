@@ -645,3 +645,33 @@ und aktive Version sind identisch. Damit sind live:
   sich der Kanal selbst blockieren kann
 * Meta-DM-Node ohne Body (F7) — `Type = Send DM` funktionslos
 * Zwei Notion-Zeilen vom 29.07. fälschlich auf „Executed"
+
+---
+
+## 13. Korrektur 31.07.2026 — es ist nur eine Zeile, nicht zwei
+
+Durchgehend war in diesem Dokument von *zwei* fälschlich auf „Executed"
+markierten Zeilen die Rede. Nachgeprüft trifft das nur auf eine zu.
+
+**Belegt falsch:** `Testantwort an Harald (1)` — contact@schwack.com,
+Executed 29.07. 14:42.
+Beweis: Execution `342072`, `Send contact` gibt `{"error":"Connection timeout"}`
+mit Status *success* aus, der Notion-Node stempelt daraufhin.
+<https://app.notion.com/3aca4c35b2a780fa8b38fac1c6a59277>
+
+**Vermutlich korrekt:** `Testantwort an Harald` — info@haraldschwack.at,
+Executed 29.07. 14:33. War eine Annahme aus der geteilten Fehlkonfiguration,
+kein Befund. Dagegen sprechen:
+
+* `342069` verarbeitete Zeile (5) (coach@), nicht diese
+* `342065` war ein manueller Lauf ab 12:33:28 UTC, den Harald um 12:35 abbrach —
+  der Zeitstempel passt
+* `Send email info` lief bereits auf `SMTP account info`, dem einzigen
+  durchgehend funktionierenden Credential (später mit 369 ms belegt)
+
+Abschließend klären lässt es sich nur im Postfach: eine Mail vom 29.07., 14:33,
+Betreff „Testantwort" in info@haraldschwack.at. n8n speichert für abgebrochene
+Läufe keine Node-Daten.
+
+Die Zeilen (2) bis (5) tragen Stempel von 14:45 und 14:57 aus Haralds späteren
+Testläufen nach der Credential-Reparatur und sind korrekt.
