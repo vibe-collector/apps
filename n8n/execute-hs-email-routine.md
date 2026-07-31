@@ -604,3 +604,44 @@ anderen sechs. Liegt im Entwurf, geht mit dem nächsten Publish live.
   Workflow abgearbeitet werden.
 * **Meta-DM-Node** hat einen leeren Body, `Type = Send DM` ist funktionslos.
 * Zwei Notion-Zeilen vom 29.07. stehen fälschlich auf „Executed".
+
+---
+
+## 12. Abschluss 31.07.2026
+
+**Publiziert.** `activeVersionId 737e3a96-f703-45cc-b8d2-e57a680b716a` — Entwurf
+und aktive Version sind identisch. Damit sind live:
+
+* Absender-Anzeigenamen in allen sechs SMTP-Nodes
+  (`Harald Schwack I Mindful Images <info@…>`, `GettingADDDone Support <support@…>` …)
+* Entfernte Domainzeile in den Signaturen von contact@ und Gmail
+* office@-Logo auf `www.schwack.com`
+* `Send a message` (Gmail) auf `stopWorkflow` — war der letzte Node mit
+  stiller Erfolgsmeldung
+
+### Endstand
+
+| | |
+|---|---|
+| Absender produktiv | 7 von 7 |
+| Fehl-Executions 30.07. 07:22 → 31.07. 11:22 | 0 |
+| Zeilen mit hängendem Haken | 0 |
+| Takt | alle 4 Minuten, eine Zeile pro Lauf |
+| Fehlerverhalten | 3× Retry, danach sichtbarer Abbruch ohne `Executed`-Stempel |
+| Signaturen | je Absender eigen, mit Logo bei info@, coach@, support@, shop@, office@ |
+| Erste echte Korrespondenz | 30.07. 18:39 |
+
+### Geloggt
+
+* Focus Log 29.07. — Diagnose und Inbetriebnahme
+* Focus Log 30.07. — Mailversand fertiggestellt (Harald) + Telegram-Freigabe (Harald)
+* Focus Log 31.07. — Abschlusscheck
+* Projekt-Log `📋 Projekt-Log: AI Automatisierungen n8n` — Einträge 29., 30. (2×), 31.07.
+* Session-Note 29.07. — vollständiges Diagnoseprotokoll
+
+### Bleibt offen
+
+* Fallback-Ausgänge an beiden Switches (F6) — einziger verbleibender Weg, wie
+  sich der Kanal selbst blockieren kann
+* Meta-DM-Node ohne Body (F7) — `Type = Send DM` funktionslos
+* Zwei Notion-Zeilen vom 29.07. fälschlich auf „Executed"
