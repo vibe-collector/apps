@@ -550,3 +550,57 @@ Zwei Wege damit umzugehen:
 * Meta-DM-Node ohne Body (F7)
 * Zwei Notion-Zeilen fälschlich auf „Executed" (`Testantwort an Harald`, `(1)`)
 * Logos in den Signaturen, sobald PNG-URLs vorliegen
+
+---
+
+## 11. Abschlusscheck 31.07.2026, 13:15
+
+### Betriebsbilanz
+
+| Prüfung | Ergebnis |
+|---|---|
+| Fehl-Executions seit 30.07. 07:22 | **0** in über 28 Stunden |
+| Zeilen mit hängendem `Execute`-Haken | **0** — jede Zeile hat einen `Executed`-Stempel |
+| Blockade durch `limit: 1` | nicht eingetreten |
+| Erste echte Korrespondenz | „Antwort Sammelgeschenk Florian (50.) — Zusage", 30.07. 18:39 |
+
+Harald hat am 30.07. abends alle sieben Absender zweimal durchgetestet
+(Signatur, dann Signatur mit Logo) plus einen finalen Testrun. Logos sind in
+der aktiven Version enthalten. Takt steht inzwischen auf **4 Minuten**.
+
+### Offen: Entwurf ist nicht publiziert
+
+`versionId 2b57e9ab` ≠ `activeVersionId 9da93e0c`. Im Entwurf liegen
+Änderungen, die nicht live sind:
+
+| Node | Entwurf | Aktiv |
+|---|---|---|
+| Send email info | `Harald Schwack I Mindful Images <info@…>` | `info@haraldschwack.at` |
+| Send contact | `Harald Schwack <contact@…>`, Domainzeile entfernt | `contact@schwack.com`, mit Domainzeile |
+| Send support GAD | `GettingADDDone Support <support@…>` | `support@gettingadddone.com` |
+| Send shop GAD | `GettingADDDone Shop <shop@…>` | `shop@gettingadddone.com` |
+| Send office schwack | `Harald Schwack I schwack.com <office@…>`, Logo auf `www.` | `office@schwack.com` |
+| Send coach photocoach | `Harald Schwack I photocoach.cc <coach@…>` | `coach@photocoach.cc` |
+| Send a message | Domainzeile entfernt | mit Domainzeile |
+
+Anzeigenamen im From-Header sind eine gute Idee — sie erhöhen die
+Wiedererkennung im Posteingang. Sie sind aber noch nie durch einen Testlauf
+gegangen. Vor dem Publish einen Testversand je Absender, danach Absenderzeile
+im Postfach prüfen.
+
+### Nachgezogen am 31.07.
+
+`Send a message` (Gmail) stand als **einziger** Versand-Node noch auf
+`onError: continueRegularOutput` — ein Gmail-Fehler wäre weiterhin als Erfolg
+nach Notion durchgereicht worden. Jetzt auf `stopWorkflow` plus Retry, wie die
+anderen sechs. Liegt im Entwurf, geht mit dem nächsten Publish live.
+
+### Weiterhin latent
+
+* **Fallback-Ausgänge fehlen** an beiden Switches. Eine Zeile mit unbekanntem
+  `Type` oder leerem `Emailfrom` wird lautlos verworfen, `Execute` bleibt
+  gesetzt — und blockiert bei `limit: 1` alle vier Minuten die Warteschlange.
+  Bisher nicht aufgetreten, weil `Briefing`-Zeilen von einem separaten
+  Workflow abgearbeitet werden.
+* **Meta-DM-Node** hat einen leeren Body, `Type = Send DM` ist funktionslos.
+* Zwei Notion-Zeilen vom 29.07. stehen fälschlich auf „Executed".
