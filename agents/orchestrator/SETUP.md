@@ -1,6 +1,6 @@
 # Scheduled Task `orchestrator` — Einrichtung
 
-Stand: 05.08.2026. **Der Task ist noch NICHT angelegt** (Grund siehe „Blocker").
+Stand: 05.08.2026. **Der Task ist angelegt und aktiv.**
 
 `PROMPT.md` enthält den vollständigen Seiteninhalt der Notion-Seite
 [🧠 Orchestrator (COO)](https://app.notion.com/p/390a4c35b2a7818dbffde3156f190a73)
@@ -13,25 +13,54 @@ Laufzeit keinen garantierten Notion-Zugriff auf diese Seite.
 | Feld | Wert |
 |---|---|
 | Name | `orchestrator` |
-| Cron | `20 */4 * * *` |
+| Cron | `20 2,6,10,14,18,22 * * *` |
 | Modell | Opus |
 | Session | eigene Session pro Lauf |
 | Connector | Notion |
-| Zeitplan initial | deaktiviert |
+| Zeitplan | aktiv |
 
 ### Achtung Zeitzone
 
-Cron wird in **UTC** ausgewertet. Wien liegt im Sommer auf CEST (UTC+2), damit
-trifft `20 */4 * * *` genau die gewünschten Zeiten 02:20 / 06:20 / 10:20 / 14:20 /
-18:20 / 22:20 Wien.
+**Cowork wertet Cron in Lokalzeit aus, nicht in UTC.** Der Ausdruck oben trifft
+direkt 02:20 / 06:20 / 10:20 / 14:20 / 18:20 / 22:20 Wien und bleibt über die
+Zeitumstellung hinweg richtig.
 
-Ab Ende Oktober (CET, UTC+1) verschiebt derselbe Ausdruck die Läufe auf
-01:20 / 05:20 / … Wien. Sollen die Uhrzeiten ganzjährig stehen, muss der Cron zur
-Zeitumstellung auf `20 1,5,9,13,17,21 * * *` geändert werden — und im Frühjahr zurück.
+Frühere Annahme in diesem Dokument war `20 */4 * * *` mit UTC-Auswertung — das
+hätte die Läufe zwei Stunden zu früh gefeuert (00:20 / 04:20 / …).
 
-## Blocker
+## Lauf-Weiche: Heartbeat statt `state.json`
 
-Alle Aufrufe des MCP-Servers `claude-code-remote` scheitern mit:
+Der Prompt unterscheidet Voll-Lauf (erster Lauf des Tages: Pflicht-Schritt 0 **und**
+neue Vorschläge) von Rücklauf (nur Pflicht-Schritt 0) anhand von `state.json`. Diese
+Datei existiert nirgends, und jeder Lauf startet mit frischem Clone — ohne Fix hätte
+**jeder** Lauf als Voll-Lauf gegolten, also 6× täglich bis zu 3 neue Vorschläge statt 1×.
+
+Ersetzt durch eine Heartbeat-Zeile in 🔁 Routinen HS
+(`214a4c35-b2a7-8012-8185-000b1acc0a5c`): Existiert für heute bereits ein Eintrag mit
+`Routine ID = orchestrator`, ist der Lauf ein Rücklauf. Sonst Voll-Lauf, und der
+Eintrag wird geschrieben.
+
+## Lese-Abfragen laufen über n8n
+
+`query_data_sources` und `query_database_view` sind im Notion-Plan gedeckelt
+(`available_with_limit`); `fetch`, `search`, `create_pages` und `update_page` nicht.
+Die Leseabfragen des Orchestrators laufen deshalb über n8n gegen die öffentliche
+Notion-REST-API — eigene Tür, kein MCP-Kontingent.
+
+| Workflow | ID | Zweck |
+|---|---|---|
+| Orchestrator Kontext (Lesen) | `WkJjONip3SfOpC0E` | Aktive Agenten, Routinen, Rückfrage-Tasks → `laufArt`, `heartbeatMarker`, `rueckfrageTasks` |
+| Content-Kalender (Lesen) | `0Tkr1VDXV7zfG97j` | Kampagnen + Planungs-Items + Tasks → Tickler-Regel-Check |
+| Agent Queue Reader | `1xnXAQYxoX98PHCf` | Queue-Filter für alle Agenten |
+
+Beim Queue Reader lag der Fix des Rückfrage-Filters als gespeicherte, aber **nie
+veröffentlichte** Version vor (`versionId` ≠ `activeVersionId`). Speichern reicht in
+n8n nicht — erst `publish_workflow` schaltet die Version scharf. Nach dem Publish
+waren 5 wochenlang unsichtbare Tasks wieder in der Queue.
+
+## MCP-Blocker `claude-code-remote`
+
+Alle Aufrufe des MCP-Servers `claude-code-remote` scheitern in dieser Umgebung mit:
 
 ```
 MCP error -32003: MCP tool call requires approval
@@ -39,22 +68,11 @@ MCP error -32003: MCP tool call requires approval
 
 Das betrifft auch reine Lese-Aufrufe (`list_triggers`, `list_environments`), also den
 gesamten Server — nicht einzelne Werkzeuge. Ein Freigabe-Dialog erreicht die Oberfläche
-nicht. Eine Allow-Regel in `~/.claude/settings.json` (siehe unten) hat den Fehler in der
-laufenden Session nicht behoben; ob sie nach einem Neustart greift, ist offen.
+nicht. Eine Allow-Regel in `~/.claude/settings.json` hat den Fehler in der laufenden
+Session nicht behoben.
 
-```json
-{ "permissions": { "allow": ["mcp__claude-code-remote", "mcp__bf7c680d-5fdc-5ef4-b4a0-abadb619bf0a"] } }
-```
-
-## Offener Punkt: `state.json`
-
-Die Lauf-Weiche unterscheidet Voll-Lauf und Rücklauf daran, ob `state.json` bereits einen
-Eintrag mit dem heutigen Datum hat. Diese Datei existiert nirgends, und jeder Lauf startet
-mit frischem Clone.
-
-Konsequenz ohne Fix: **jeder** Lauf gilt als erster Lauf des Tages, also 6× täglich
-Voll-Lauf mit bis zu 3 neuen Vorschlägen statt 1× — genau die Vervielfachung, die die
-Weiche verhindern soll. Vor dem Scharfschalten zu klären.
+Umgangen über Dispatch: Task-Anlage, Testlauf und Aktivierung liefen dort. Ursache
+ungeklärt.
 
 ## Vorher-Snapshot (05.08.2026, 08:27 UTC)
 
@@ -87,3 +105,13 @@ Nur eine der vier agentenlosen Zeilen hat einen eindeutigen Treffer — und die 
   Treffer. Task-Taker sollte sich nicht selbst diagnostizieren, Watchdog ist als
   „kein Task-Output — Observability-Rolle" geführt. Erwartung: „Kein passender Agent —
   Kandidat: …" im Task-Body.
+
+## Offen
+
+- **Newsletter Creator liest seine Queue nicht.** `Auslöser = „Manuell (Harald)"`, kein
+  Prompt auf der Registry-Seite, 11 verknüpfte Tasks mit durchgehend leerem
+  `Agent-Status`, der älteste 34 Tage. Newsletter-Arbeit passiert nachweislich —
+  vermutlich über `newsletter-regelkreis-lauf` (täglich 02:39), der unter den 134
+  n8n-Workflows nicht existiert. Vor dem Schreiben eines Prompts muss die tatsächliche
+  Cowork-Task-Liste vorliegen, sonst entsteht ein Doppel.
+- `Verantwortlich = Prozess-Coach` dort nachtragen, wo es noch fehlt.
